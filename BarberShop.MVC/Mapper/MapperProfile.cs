@@ -10,6 +10,7 @@ namespace BarberShop.MVC.Mapper
         {
             CreateMap<Employee, EmployeeModel>().ReverseMap();
             CreateMap<Barber, BarberModel>().ReverseMap();
+            CreateMap<Review, ReviewModel>().ReverseMap();
         }
     }
 }

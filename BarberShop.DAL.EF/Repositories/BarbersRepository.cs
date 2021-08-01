@@ -9,9 +9,9 @@ namespace BarberShop.DAL.EF.Repositories
 {
     public class BarbersRepository: IRepository<Barber>
     {
-        private readonly BarberContext _context;
+        private readonly ApplicationContext _context;
 
-        public BarbersRepository(BarberContext context)
+        public BarbersRepository(ApplicationContext context)
         {
             _context = context;
         }

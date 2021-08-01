@@ -12,4 +12,10 @@
     <ProjectReference Include="..\BarberShop.DAL.EF\BarberShop.DAL.EF.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

@@ -5,6 +5,7 @@ using BarberShop.DAL.Common;
 using BarberShop.DAL.EF.Contexts;
 using BarberShop.DAL.EF.Repositories;
 using BarberShop.MVC.Mapper;
+using BarberShop.MVC.Utils;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -25,12 +26,15 @@ namespace BarberShop.MVC
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<BarberContext>(options => options.UseSqlServer(
-                "Server=(localdb)\\mssqllocaldb;Database=BarberShopDb;Trusted_Connection=True;"
+            string connectionString = DbOptionsBuilder.GetConnectionString();
+            services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(
+                connectionString
                 ));
             services.AddScoped<IRepository<Barber>, BarbersRepository>();
+            services.AddScoped<IRepository<Review>, ReviewRepository>();
 
             services.AddScoped<IBarberService, BarberService>();
+            services.AddScoped<IReviewService, ReviewService>();
 
             var mapperConfig = new MapperConfiguration(mc =>
             {

@@ -8,6 +8,5 @@ namespace BarberShop.BLL.Models
         public string Name { get; set; }
         public string Surname { get; set; }
         public string FatherName { get; set; }
-        //public EmployeesType Type;
     }
 }
