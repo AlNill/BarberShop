@@ -1,0 +1,21 @@
+﻿@model IEnumerable<BarberModel>
+@{
+    ViewData["Title"] = "Barbers";
+}
+
+<h1>Barbers</h1>
+<table class="table table-bordered">
+    <tr>
+        <th>Name</th>
+        <th>Surname</th>
+    </tr>
+    @foreach (var barber in Model.OrderBy(s => s.Surname))
+    {
+        <tr>
+            <td>@barber.Name</td>
+            <td>@barber.Surname</td>
+        </tr>
+    }
+    
+    <tr><div class="text-info">Total: @Model.Count()</div></tr>
+</table>

@@ -1,0 +1,22 @@
+﻿@model IEnumerable<ReviewModel>
+@{
+    ViewData["Title"] = "Reviews";
+}
+
+<h1>Reviews</h1>
+<table class="table table-bordered">
+    <tr>
+        <th>Review</th>
+        <th>Barber</th>
+    </tr>
+    @foreach (var review in Model.OrderBy(s => s.Id))
+    {
+        <tr>
+            <td>@review.UserReview</td>
+            <td>@review.BarberId</td>
+            <!--<td>@review.Barber?.Surname + @review.Barber?.Name</td> -->
+        </tr>
+    }
+
+    <tr><div class="text-info">Total: @Model.Count()</div></tr>
+</table>
