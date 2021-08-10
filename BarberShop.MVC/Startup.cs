@@ -31,6 +31,7 @@ namespace BarberShop.MVC
             services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(
                 connectionString
                 ));
+
             services.AddScoped<IRepository<Barber>, BarbersRepository>();
             services.AddScoped<IRepository<Review>, ReviewRepository>();
             services.AddScoped<IRepository<User>, UserRepository>();

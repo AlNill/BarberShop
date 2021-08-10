@@ -7,5 +7,6 @@ namespace BarberShop.BLL.Interfaces
     {
         Barber GetById(int id);
         IEnumerable<Barber> GetAll();
+        void Create(Barber barber);
     }
 }

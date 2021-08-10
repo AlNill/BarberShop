@@ -1,6 +1,13 @@
+using AutoMapper;
+using BarberShop.BLL.Interfaces;
+using BarberShop.BLL.Models;
+using BarberShop.BLL.Services;
+using BarberShop.DAL.Common;
+using BarberShop.DAL.EF.Contexts;
+using BarberShop.DAL.EF.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -8,10 +15,17 @@ namespace BarberShop.Web
 {
     public class Startup
     {
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            string connectionString = "Server=(localdb)\\mssqllocaldb;Database=BarberShopDb;Trusted_Connection=True;";
+            services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(
+                connectionString
+            ));
+
+            services.AddScoped<IRepository<Barber>, BarbersRepository>();
+
+            services.AddScoped<IBarberService, BarberService>();
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -26,10 +40,7 @@ namespace BarberShop.Web
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
+                endpoints.MapControllers();
             });
         }
     }
