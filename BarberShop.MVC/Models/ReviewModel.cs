@@ -1,6 +1,4 @@
-﻿using BarberShop.BLL.Models;
-
-namespace BarberShop.MVC.Models
+﻿namespace BarberShop.MVC.Models
 {
     public class ReviewModel
     {

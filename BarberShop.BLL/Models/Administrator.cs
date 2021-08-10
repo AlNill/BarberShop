@@ -1,10 +1,7 @@
 ﻿namespace BarberShop.BLL.Models
 {
-    public class Administrator: Employee
+    public class Administrator: Person
     {
-        //public Administrator()
-        //{
-        //    Type = EmployeesType.Administrator;
-        //}
+        public string Phone { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 using AutoMapper;
+using BarberShop.BLL.Interfaces;
 using BarberShop.BLL.Models;
 using BarberShop.BLL.Services;
 using BarberShop.DAL.Common;
@@ -32,9 +33,11 @@ namespace BarberShop.MVC
                 ));
             services.AddScoped<IRepository<Barber>, BarbersRepository>();
             services.AddScoped<IRepository<Review>, ReviewRepository>();
+            services.AddScoped<IRepository<User>, UserRepository>();
 
             services.AddScoped<IBarberService, BarberService>();
             services.AddScoped<IReviewService, ReviewService>();
+            services.AddScoped<IUserService, UserService>();
 
             var mapperConfig = new MapperConfiguration(mc =>
             {

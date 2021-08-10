@@ -8,9 +8,10 @@ namespace BarberShop.MVC.Mapper
     {
         public MapperProfile()
         {
-            CreateMap<Employee, EmployeeModel>().ReverseMap();
+            CreateMap<Person, PersonModel>().ReverseMap();
             CreateMap<Barber, BarberModel>().ReverseMap();
             CreateMap<Review, ReviewModel>().ReverseMap();
+            CreateMap<User, UserModel>().ReverseMap();
         }
     }
 }

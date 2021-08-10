@@ -7,47 +7,46 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BarberShop.DAL.EF.Repositories
 {
-    public class ReviewRepository : IRepository<Review>
+    public class UserRepository : IRepository<User>
     {
         private readonly ApplicationContext _context;
 
-        public ReviewRepository(ApplicationContext context)
+        public UserRepository(ApplicationContext context)
         {
             _context = context;
         }
 
-        public IEnumerable<Review> GetAll()
+        public IEnumerable<User> GetAll()
         {
-            // Use the Eager loading
-            return _context.Reviews.Include(r => r.Barber).ToList();
+            return _context.Users.ToList();
         }
 
-        public Review Get(int id)
+        public User Get(int id)
         {
-            return _context.Reviews.Find(id);
+            return _context.Users.Find(id);
         }
 
-        public IEnumerable<Review> Find()
+        public IEnumerable<User> Find()
         {
             throw new System.NotImplementedException();
         }
 
-        public void Create(Review item)
+        public void Create(User item)
         {
-            _context.Reviews.Add(item);
+            _context.Users.Add(item);
             _context.SaveChanges();
         }
 
-        public void Update(Review item)
+        public void Update(User item)
         {
             _context.Entry(item).State = EntityState.Modified;
         }
 
         public void Delete(int id)
         {
-            var review = _context.Reviews.Find(id);
-            if (review != null)
-                _context.Reviews.Remove(review);
+            var user = _context.Users.Find(id);
+            if (user != null)
+                _context.Users.Remove(user);
         }
     }
 }
