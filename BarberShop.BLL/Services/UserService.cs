@@ -5,23 +5,28 @@ using BarberShop.DAL.Common;
 
 namespace BarberShop.BLL.Services
 {
-    public class ReviewService : IReviewService
+    public class UserService: IUserService
     {
-        private readonly IRepository<Review> _repository;
+        private readonly IRepository<User> _repository;
 
-        public ReviewService(IRepository<Review> repository)
+        public UserService(IRepository<User> repository)
         {
             _repository = repository;
         }
 
-        public Review GetById(int id)
+        public User GetById(int id)
         {
             return _repository.Get(id);
         }
 
-        public IEnumerable<Review> GetAll()
+        public IEnumerable<User> GetAll()
         {
             return _repository.GetAll();
+        }
+
+        public void Create(User user)
+        {
+            _repository.Create(user);
         }
     }
 }

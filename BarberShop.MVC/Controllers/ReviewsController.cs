@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
+using BarberShop.BLL.Interfaces;
 using BarberShop.BLL.Services;
 using BarberShop.MVC.Models;
 

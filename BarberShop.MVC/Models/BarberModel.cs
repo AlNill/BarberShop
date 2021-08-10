@@ -1,6 +1,6 @@
 ﻿namespace BarberShop.MVC.Models
 {
-    public class BarberModel: EmployeeModel
+    public class BarberModel: PersonModel
     {
         //public BarberModel()
         //{
