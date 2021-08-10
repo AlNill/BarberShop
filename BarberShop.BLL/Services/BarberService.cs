@@ -28,5 +28,10 @@ namespace BarberShop.BLL.Services
         {
             _repository.Create(barber);
         }
+
+        public void Update(Barber barber)
+        {
+            _repository.Update(barber);
+        }
     }
 }

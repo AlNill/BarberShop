@@ -21,11 +21,15 @@ namespace BarberShop.Web
                 connectionString
             ));
 
+            // Inject repositories
             services.AddScoped<IRepository<Barber>, BarbersRepository>();
-
+            services.AddScoped<IRepository<Review>, ReviewRepository>();
+            // Inject services
             services.AddScoped<IBarberService, BarberService>();
-            services.AddControllers();
+            services.AddScoped<IReviewService, ReviewService>();
 
+            services.AddControllers();
+            // Add swagger
             services.AddSwaggerGen();
         }
 
