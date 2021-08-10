@@ -1,4 +1,3 @@
-using AutoMapper;
 using BarberShop.BLL.Interfaces;
 using BarberShop.BLL.Models;
 using BarberShop.BLL.Services;
@@ -26,6 +25,8 @@ namespace BarberShop.Web
 
             services.AddScoped<IBarberService, BarberService>();
             services.AddControllers();
+
+            services.AddSwaggerGen();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -35,6 +36,13 @@ namespace BarberShop.Web
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.RoutePrefix = string.Empty;
+            });
 
             app.UseRouting();
 
