@@ -1,79 +1,58 @@
-using AutoMapper;
 using BarberShop.BLL.Interfaces;
 using BarberShop.BLL.Models;
 using BarberShop.BLL.Services;
 using BarberShop.DAL.Common;
 using BarberShop.DAL.EF.Contexts;
 using BarberShop.DAL.EF.Repositories;
-using BarberShop.MVC.Mapper;
-using BarberShop.MVC.Utils;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace BarberShop.MVC
+namespace BarberShop.Web
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
-        public IConfiguration Configuration { get; }
-
         public void ConfigureServices(IServiceCollection services)
         {
-            string connectionString = DbOptionsBuilder.GetConnectionString();
+            string connectionString = "Server=(localdb)\\mssqllocaldb;Database=BarberShopDb;Trusted_Connection=True;";
             services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(
                 connectionString
-                ));
+            ));
 
+            // Inject repositories
             services.AddScoped<IRepository<Barber>, BarbersRepository>();
             services.AddScoped<IRepository<Review>, ReviewRepository>();
-            services.AddScoped<IRepository<User>, UserRepository>();
-
+            // Inject services
             services.AddScoped<IBarberService, BarberService>();
             services.AddScoped<IReviewService, ReviewService>();
-            services.AddScoped<IUserService, UserService>();
 
-            var mapperConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new MapperProfile());
-            });
-
-            IMapper mapper = mapperConfig.CreateMapper();
-            services.AddSingleton(mapper);
-
-            services.AddControllersWithViews();
+            services.AddControllers();
+            // Add swagger
+            services.AddSwaggerGen();
         }
 
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
             {
-                app.UseExceptionHandler("/Home/Error");
-                app.UseHsts();
-            }
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.RoutePrefix = string.Empty;
+            });
 
             app.UseRouting();
 
-            app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllers();
             });
         }
     }
