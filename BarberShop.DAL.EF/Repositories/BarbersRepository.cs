@@ -38,7 +38,9 @@ namespace BarberShop.DAL.EF.Repositories
 
         public void Update(Barber item)
         {
-            _context.Entry(item).State = EntityState.Modified;
+            var barber = _context.Barbers.Find(item.Id);
+            _context.Entry(barber).CurrentValues.SetValues(item);
+            _context.SaveChanges();
         }
 
         public void Delete(int id)
