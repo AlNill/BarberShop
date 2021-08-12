@@ -3,19 +3,15 @@
     ViewData["Title"] = "Barbers";
 }
 
-<h1>Barbers</h1>
-<table class="table table-bordered">
-    <tr>
-        <th>Name</th>
-        <th>Surname</th>
-    </tr>
+<div class="d-flex justify-content-start flex-row flex-wrap">
     @foreach (var barber in Model.OrderBy(s => s.Surname))
     {
-        <tr>
-            <td>@barber.Name</td>
-            <td>@barber.Surname</td>
-        </tr>
+        <div class="card" style="width: 18rem; margin: 2rem;">
+            <img class="card-img-top" src="~/images/standart_short.jpg" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">@barber.Name @barber.Surname</h5>
+                <p class="card-text">@barber.Information</p>
+            </div>
+        </div>
     }
-    
-    <tr><div class="text-info">Total: @Model.Count()</div></tr>
-</table>
+</div>

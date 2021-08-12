@@ -2,9 +2,6 @@
 {
     public class BarberModel: PersonModel
     {
-        //public BarberModel()
-        //{
-        //    Type = EmployeesType.Barber;
-        //}
+        public string Information { get; set; }
     }
 }
