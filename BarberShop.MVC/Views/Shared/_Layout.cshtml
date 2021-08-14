@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/styles.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-datepicker3.css" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/scripts.js"></script>
+    <script type="text/javascript" src="~/lib/bootstrap/dist/js/bootstrap-datepicker.min.js"></script>
 </head>
 <body>
     <div class="d-flex flex-row">
@@ -17,7 +23,8 @@
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" asp-area="" asp-controller="Barbers" asp-action="Index">Barbers</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" asp-area="" asp-controller="Reviews" asp-action="Index">Reviews</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" asp-area="" asp-controller="Users" asp-action="Index">Users</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" asp-area="" asp-controller="Users" asp-action="Index">About</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" asp-area="" asp-controller="BusyRecords" asp-action="Index">Recording</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" asp-area="" asp-controller="About" asp-action="Index">About</a>
                 </div>
             </div>
         </div>
@@ -35,17 +42,25 @@
                     </div>
                 </div>
             </nav>
-            <div class="container-fluid">
-                <main role="main" class="pb-3">
-                    @RenderBody()
-                </main>
+            <div class="d-flex" style="width: 100%; height: 90%;">
+                @RenderBody()
             </div>
         </div>
     </div>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/scripts.js"></script>
     @RenderSection("Scripts", required: false)
+<script>
+    $(document).ready(function () {
+        var date_input = $('input[name="date"]');
+        var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
+        var options = {
+            format: 'mm/dd/yyyy',
+            container: container,
+            todayHighlight: true,
+            autoclose: true,
+            datesDisabled: ['08/06/2021', '08/14/2021']
+        };
+        date_input.datepicker(options);
+    })
+</script>
 </body>
 </html>

@@ -7,7 +7,7 @@ namespace BarberShop.DAL.Common
     {
         IEnumerable<T> GetAll();
         T Get(int id);
-        IEnumerable<T> Find();
+        T IsExists(Func<T, bool> predicate);
         void Create(T item);
         void Update(T item);
         void Delete(int id);

@@ -6,7 +6,7 @@
 <div class="d-flex justify-content-start flex-row flex-wrap">
     @foreach (var barber in Model.OrderBy(s => s.Surname))
     {
-        <div class="card" style="width: 18rem; margin: 2rem;">
+        <div class="card" style="width: 18rem; height: 28rem; margin: 2rem;">
             <img class="card-img-top" src="~/images/standart_short.jpg" alt="Card image cap">
             <div class="card-body">
                 <h5 class="card-title">@barber.Name @barber.Surname</h5>

@@ -1,0 +1,24 @@
+﻿@model IEnumerable<BarberModel>
+@{
+    ViewData["Title"] = "Records";
+}
+@using (Html.BeginForm("Index", "BusyRecords", FormMethod.Post))
+{
+    <div class="bootstrap-iso">
+        <div class="d-flex justify-content-start flex-row flex-wrap">
+            <div class="row" style="width: 40rem">
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <select name="barberId">
+                        @foreach (var barber in Model.OrderBy(b => b.Surname))
+                        {
+                            <option value="@barber.Id">@barber.Name @barber.Surname</option>
+                        }
+                    </select>
+                    <label class="control-label" for="date">Date</label>
+                    <input class="form-control" id="date" name="date" placeholder="MM/DD/YYYY" type="text" />
+                    <button class="btn btn-primary " name="submit" type="submit">Send report</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}

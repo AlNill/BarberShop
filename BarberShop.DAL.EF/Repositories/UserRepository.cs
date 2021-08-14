@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BarberShop.BLL.Models;
 using BarberShop.DAL.Common;
@@ -26,9 +27,9 @@ namespace BarberShop.DAL.EF.Repositories
             return _context.Users.Find(id);
         }
 
-        public IEnumerable<User> Find()
+        public User IsExists(Func<User, bool> predicate)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void Create(User item)
