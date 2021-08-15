@@ -48,19 +48,5 @@
         </div>
     </div>
     @RenderSection("Scripts", required: false)
-<script>
-    $(document).ready(function () {
-        var date_input = $('input[name="date"]');
-        var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
-        var options = {
-            format: 'mm/dd/yyyy',
-            container: container,
-            todayHighlight: true,
-            autoclose: true,
-            datesDisabled: ['08/06/2021', '08/14/2021']
-        };
-        date_input.datepicker(options);
-    })
-</script>
 </body>
 </html>
