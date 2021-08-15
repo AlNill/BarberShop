@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BarberShop.BLL.Models;
 using BarberShop.DAL.Common;
 using BarberShop.DAL.EF.Contexts;
-using Microsoft.EntityFrameworkCore;
 
 namespace BarberShop.DAL.EF.Repositories
 {
@@ -22,12 +22,9 @@ namespace BarberShop.DAL.EF.Repositories
         }
 
         public Barber Get(int id) => _context.Barbers.Find(id);
-
-        public IEnumerable<Barber> Find()
+        public Barber IsExists(Func<Barber, bool> predicate)
         {
-            //public IEnumerable<Barber> Find(Func<Barber, bool> predicate)
-            //return _context.Barbers.Where(predicate).ToList();
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void Create(Barber item)

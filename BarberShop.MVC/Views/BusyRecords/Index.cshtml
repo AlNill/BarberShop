@@ -1,0 +1,43 @@
+﻿@model IEnumerable<BarberModel>
+@{
+    ViewData["Title"] = "Records";
+}
+<div class="d-flex justify-content-center align-items-center" style="width: 100%; height: 85%;">
+    @using (Html.BeginForm("Index", "BusyRecords", FormMethod.Post))
+    {
+        <div class="bootstrap-iso">
+            <div class="d-flex justify-content-start flex-row flex-wrap">
+                <div class="row" style="width: 40rem">
+                    <div class="d-flex justify-content-start">
+                        <select name="barberId" style="margin: 10px;">
+                            @foreach (var barber in Model.OrderBy(b => b.Surname))
+                            {
+                                <option value="@barber.Id">@barber.Name @barber.Surname</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="d-flex justify-content-start">
+                        <input class="form-control" style="margin: 10px;" name="date" placeholder="MM/DD/YYYY" type="text" />
+                    </div>
+                    <div class="d-flex justify-content-start">
+                        <button class="btn btn-primary " name="submit" type="submit" style="margin: 10px">Send report</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $(document).ready(function () {
+                var date_input = $('input[name="date"]');
+                var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
+                var options = {
+                    format: 'mm/dd/yyyy',
+                    container: container,
+                    todayHighlight: true,
+                    autoclose: true,
+                    datesDisabled: ['08/06/2021', '08/14/2021']
+                };
+                date_input.datepicker(options);
+            })
+        </script>
+    }
+</div>

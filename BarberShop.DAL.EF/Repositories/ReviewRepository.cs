@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BarberShop.BLL.Models;
 using BarberShop.DAL.Common;
@@ -27,9 +28,9 @@ namespace BarberShop.DAL.EF.Repositories
             return _context.Reviews.Find(id);
         }
 
-        public IEnumerable<Review> Find()
+        public Review IsExists(Func<Review, bool> predicate)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void Create(Review item)

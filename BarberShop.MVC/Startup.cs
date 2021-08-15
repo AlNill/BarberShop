@@ -35,10 +35,12 @@ namespace BarberShop.MVC
             services.AddScoped<IRepository<Barber>, BarbersRepository>();
             services.AddScoped<IRepository<Review>, ReviewRepository>();
             services.AddScoped<IRepository<User>, UserRepository>();
+            services.AddScoped<IRepository<BusyRecord>, BusyRecordsRepository>();
 
             services.AddScoped<IBarberService, BarberService>();
             services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IBusyRecordService, BusyRecordService>();
 
             var mapperConfig = new MapperConfiguration(mc =>
             {
@@ -73,7 +75,7 @@ namespace BarberShop.MVC
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=About}/{action=Index}");
             });
         }
     }
