@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using BarberShop.BLL.Interfaces;
 using BarberShop.BLL.Models;
 using BarberShop.MVC.Models;
+using BarberShop.MVC.Validators;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BarberShop.MVC.Controllers
@@ -30,17 +32,32 @@ namespace BarberShop.MVC.Controllers
         [HttpPost]
         public IActionResult Index(int barberId, DateTime date)
         {
+            var barbers = _barberService.GetAll();
             var result = _busyService.IsExists(barberId, date);
             if (result != null)
-                throw new Exception("Bad date");
+            {
+                ViewData["Message"] = "Sorry, this record exist";
+                return View(_mapper.Map<IEnumerable<Barber>, IEnumerable<BarberModel>>(barbers));
+            }
+                
             var barber = _barberService.GetById(barberId);
-            _busyService.Create(new BusyRecord()
+
+            var record = new BusyRecord()
             {
                 BarberId = barberId,
                 Barber = barber,
                 RecordTime = date,
-            });
-            var barbers = _barberService.GetAll();
+            };
+
+            var validator = new BusyRecordsValidator();
+            var validationResult = validator.Validate(record);
+            if (!validationResult.IsValid)
+            {
+                ViewData["Message"] = validationResult.Errors.First().ToString();
+                return View(_mapper.Map<IEnumerable<Barber>, IEnumerable<BarberModel>>(barbers));
+            }
+
+            _busyService.Create(record);
             return View(_mapper.Map<IEnumerable<Barber>, IEnumerable<BarberModel>>(barbers));
         }
     }
