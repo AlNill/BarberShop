@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using BarberShop.BLL.Interfaces;
-using BarberShop.BLL.Models;
 using BarberShop.DAL.Common;
-using Microsoft.VisualBasic;
+using BarberShop.DAL.Common.Models;
 
 namespace BarberShop.BLL.Services
 {

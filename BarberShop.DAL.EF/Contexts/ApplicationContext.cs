@@ -1,4 +1,4 @@
-﻿using BarberShop.BLL.Models;
+﻿using BarberShop.DAL.Common.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace BarberShop.DAL.EF.Contexts

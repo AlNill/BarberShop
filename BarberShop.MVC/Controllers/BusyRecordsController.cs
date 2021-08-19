@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using BarberShop.BLL.Interfaces;
-using BarberShop.BLL.Models;
+using BarberShop.DAL.Common.Models;
 using BarberShop.MVC.Models;
 using BarberShop.MVC.Validators;
 using Microsoft.AspNetCore.Mvc;

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BarberShop.BLL.Models;
 using BarberShop.DAL.Common;
+using BarberShop.DAL.Common.Models;
 using BarberShop.DAL.EF.Contexts;
 
 namespace BarberShop.DAL.EF.Repositories

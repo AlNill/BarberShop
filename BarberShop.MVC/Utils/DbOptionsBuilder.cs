@@ -1,6 +1,4 @@
 ﻿using System.IO;
-using BarberShop.DAL.EF.Contexts;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace BarberShop.MVC.Utils

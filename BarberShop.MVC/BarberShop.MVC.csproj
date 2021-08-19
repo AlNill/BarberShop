@@ -10,6 +10,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BarberShop.BLL\BarberShop.BLL.csproj" />
+    <ProjectReference Include="..\BarberShop.DAL.Common\BarberShop.DAL.Common.csproj" />
     <ProjectReference Include="..\BarberShop.DAL.EF\BarberShop.DAL.EF.csproj" />
   </ItemGroup>
 

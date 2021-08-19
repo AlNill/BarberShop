@@ -1,4 +1,4 @@
-﻿namespace BarberShop.BLL.Models
+﻿namespace BarberShop.DAL.Common.Models
 {
     public class Review
     {

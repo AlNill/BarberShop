@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using BarberShop.BLL.Models;
+using BarberShop.DAL.Common.Models;
 
 namespace BarberShop.BLL.Interfaces
 {

@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices.ComTypes;
-
-namespace BarberShop.BLL.Models
+﻿namespace BarberShop.DAL.Common.Models
 {
     public abstract class Person
     {

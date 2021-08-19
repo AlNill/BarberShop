@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using BarberShop.BLL.Interfaces;
-using BarberShop.BLL.Models;
 using BarberShop.DAL.Common;
+using BarberShop.DAL.Common.Models;
 
 namespace BarberShop.BLL.Services
 {

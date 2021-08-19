@@ -1,5 +1,5 @@
 ﻿using System;
-using BarberShop.BLL.Models;
+using BarberShop.DAL.Common.Models;
 using FluentValidation;
 
 namespace BarberShop.MVC.Validators

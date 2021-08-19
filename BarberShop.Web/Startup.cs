@@ -1,7 +1,7 @@
 using BarberShop.BLL.Interfaces;
-using BarberShop.BLL.Models;
 using BarberShop.BLL.Services;
 using BarberShop.DAL.Common;
+using BarberShop.DAL.Common.Models;
 using BarberShop.DAL.EF.Contexts;
 using BarberShop.DAL.EF.Repositories;
 using Microsoft.AspNetCore.Builder;

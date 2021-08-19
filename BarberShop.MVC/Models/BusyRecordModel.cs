@@ -1,6 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using BarberShop.BLL.Models;
+using BarberShop.DAL.Common.Models;
 
 namespace BarberShop.MVC.Models
 {
