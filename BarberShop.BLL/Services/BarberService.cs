@@ -7,9 +7,9 @@ namespace BarberShop.BLL.Services
 {
     public class BarberService : IBarberService
     {
-        private readonly IRepository<Barber> _repository;
+        private readonly IGenericRepository<Barber> _repository;
 
-        public BarberService(IRepository<Barber> repository)
+        public BarberService(IGenericRepository<Barber> repository)
         {
             _repository = repository;
         }

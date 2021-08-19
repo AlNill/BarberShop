@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using BarberShop.BLL.Interfaces;
 using BarberShop.DAL.Common;
 using BarberShop.DAL.Common.Models;
@@ -8,8 +9,8 @@ namespace BarberShop.BLL.Services
 {
     public class BusyRecordService: IBusyRecordService
     {
-        private readonly IRepository<BusyRecord> _repository;
-        public BusyRecordService(IRepository<BusyRecord> repository)
+        private readonly IGenericRepository<BusyRecord> _repository;
+        public BusyRecordService(IGenericRepository<BusyRecord> repository)
         {
             _repository = repository;
         }
@@ -36,7 +37,8 @@ namespace BarberShop.BLL.Services
 
         public BusyRecord IsExists(int barberId, DateTime date)
         {
-            return _repository.IsExists(b => b.BarberId == barberId && b.RecordTime == date);
+            var records = _repository.Get(b => b.BarberId == barberId && b.RecordTime == date);
+            return !records.Any() ? null : records.First();
         }
     }
 }

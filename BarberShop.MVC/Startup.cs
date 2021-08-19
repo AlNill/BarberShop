@@ -32,10 +32,10 @@ namespace BarberShop.MVC
                 connectionString
                 ));
 
-            services.AddScoped<IRepository<Barber>, BarbersRepository>();
-            services.AddScoped<IRepository<Review>, ReviewRepository>();
-            services.AddScoped<IRepository<User>, UserRepository>();
-            services.AddScoped<IRepository<BusyRecord>, BusyRecordsRepository>();
+            services.AddScoped<IGenericRepository<Barber>, GenericRepository<Barber>>();
+            services.AddScoped<IGenericRepository<Review>, GenericRepository<Review>>();
+            services.AddScoped<IGenericRepository<User>, GenericRepository<User>>();
+            services.AddScoped<IGenericRepository<BusyRecord>, GenericRepository<BusyRecord>>();
 
             services.AddScoped<IBarberService, BarberService>();
             services.AddScoped<IReviewService, ReviewService>();

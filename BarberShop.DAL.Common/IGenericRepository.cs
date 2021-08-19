@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace BarberShop.DAL.Common
@@ -12,5 +13,6 @@ namespace BarberShop.DAL.Common
         void Create(TEntity item);
         void Update(TEntity item);
         void Delete(int id);
+        public IEnumerable<TEntity> GetWithInclude(params Expression<Func<TEntity, object>>[] includeProperties);
     }
 }

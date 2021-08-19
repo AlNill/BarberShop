@@ -7,9 +7,9 @@ namespace BarberShop.BLL.Services
 {
     public class UserService: IUserService
     {
-        private readonly IRepository<User> _repository;
+        private readonly IGenericRepository<User> _repository;
 
-        public UserService(IRepository<User> repository)
+        public UserService(IGenericRepository<User> repository)
         {
             _repository = repository;
         }
