@@ -1,6 +1,6 @@
 ﻿@model UserModel
 
-@using (Html.BeginForm("Edit", "User", FormMethod.Post))
+@using (Html.BeginForm("Edit", "Users", FormMethod.Post))
 {
     @Html.HiddenFor(x => x.Id)
 
@@ -22,8 +22,8 @@
         <input class="form-control" type="text" asp-for="FatherName" />
     </div>
     <div class="form-group">
-        <label asp-for="Nickname"></label>
-        <input class="form-control" type="text" asp-for="Nickname" />
+        <label asp-for="NickName"></label>
+        <input class="form-control" type="text" asp-for="NickName" />
     </div>
     <div class="form-group">
         <label asp-for="PhoneNumber"></label>

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using BarberShop.BLL.Interfaces;
 using BarberShop.DAL.Common;
 using BarberShop.DAL.Common.Models;
@@ -27,6 +29,11 @@ namespace BarberShop.BLL.Services
         public void Create(User user)
         {
             _repository.Create(user);
+        }
+
+        public User Get(Func<User, bool> predicate)
+        {
+            return _repository.Get(predicate).FirstOrDefault();
         }
     }
 }

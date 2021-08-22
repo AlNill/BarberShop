@@ -37,8 +37,7 @@ namespace BarberShop.BLL.Services
 
         public BusyRecord IsExists(int barberId, DateTime date)
         {
-            var records = _repository.Get(b => b.BarberId == barberId && b.RecordTime == date);
-            return !records.Any() ? null : records.First();
+            return _repository.Get(b => b.BarberId == barberId && b.RecordTime == date).FirstOrDefault();
         }
     }
 }

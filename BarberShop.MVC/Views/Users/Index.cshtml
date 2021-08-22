@@ -10,7 +10,7 @@
         <th>Name</th>
     </tr>
 
-    @foreach (var user in Model.OrderBy(s => s.Nickname))
+    @foreach (var user in Model.OrderBy(s => s.NickName))
     {
         <tr>
             <td><a asp-controller="Users" asp-action="Edit" asp-route-id="@user.Id">@user.Surname @user.Name</a></td>

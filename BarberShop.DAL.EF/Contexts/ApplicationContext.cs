@@ -14,5 +14,11 @@ namespace BarberShop.DAL.EF.Contexts
         {
             Database.EnsureCreated();
         }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=BarberShopDb;Trusted_Connection=True;");
+            base.OnConfiguring(optionsBuilder);
+        }
     }
 }

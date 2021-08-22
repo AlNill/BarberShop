@@ -36,7 +36,7 @@ namespace BarberShop.MVC.Controllers
             var result = _busyService.IsExists(barberId, date);
             if (result != null)
             {
-                ViewData["Message"] = "Sorry, this record exist";
+                ViewBag.Message = "Sorry, this record exist";
                 return View(_mapper.Map<IEnumerable<Barber>, IEnumerable<BarberModel>>(barbers));
             }
                 
@@ -53,7 +53,7 @@ namespace BarberShop.MVC.Controllers
             var validationResult = validator.Validate(record);
             if (!validationResult.IsValid)
             {
-                ViewData["Message"] = validationResult.Errors.First().ToString();
+                ViewBag.Message = validationResult.Errors.First().ToString();
                 return View(_mapper.Map<IEnumerable<Barber>, IEnumerable<BarberModel>>(barbers));
             }
 
