@@ -1,15 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using BarberShop.BLL.Interfaces;
-using BarberShop.BLL.Models;
 using BarberShop.DAL.Common;
+using BarberShop.DAL.Common.Models;
 
 namespace BarberShop.BLL.Services
 {
     public class UserService: IUserService
     {
-        private readonly IRepository<User> _repository;
+        private readonly IGenericRepository<User> _repository;
 
-        public UserService(IRepository<User> repository)
+        public UserService(IGenericRepository<User> repository)
         {
             _repository = repository;
         }
@@ -27,6 +29,11 @@ namespace BarberShop.BLL.Services
         public void Create(User user)
         {
             _repository.Create(user);
+        }
+
+        public User Get(Func<User, bool> predicate)
+        {
+            return _repository.Get(predicate).FirstOrDefault();
         }
     }
 }

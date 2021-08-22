@@ -1,8 +1,8 @@
 using AutoMapper;
 using BarberShop.BLL.Interfaces;
-using BarberShop.BLL.Models;
 using BarberShop.BLL.Services;
 using BarberShop.DAL.Common;
+using BarberShop.DAL.Common.Models;
 using BarberShop.DAL.EF.Contexts;
 using BarberShop.DAL.EF.Repositories;
 using BarberShop.MVC.Mapper;
@@ -32,10 +32,10 @@ namespace BarberShop.MVC
                 connectionString
                 ));
 
-            services.AddScoped<IRepository<Barber>, BarbersRepository>();
-            services.AddScoped<IRepository<Review>, ReviewRepository>();
-            services.AddScoped<IRepository<User>, UserRepository>();
-            services.AddScoped<IRepository<BusyRecord>, BusyRecordsRepository>();
+            services.AddScoped<IGenericRepository<Barber>, GenericRepository<Barber>>();
+            services.AddScoped<IGenericRepository<Review>, GenericRepository<Review>>();
+            services.AddScoped<IGenericRepository<User>, GenericRepository<User>>();
+            services.AddScoped<IGenericRepository<BusyRecord>, GenericRepository<BusyRecord>>();
 
             services.AddScoped<IBarberService, BarberService>();
             services.AddScoped<IReviewService, ReviewService>();

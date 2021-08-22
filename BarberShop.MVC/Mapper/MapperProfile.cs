@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using BarberShop.BLL.Models;
+using BarberShop.DAL.Common.Models;
 using BarberShop.MVC.Models;
 
 namespace BarberShop.MVC.Mapper

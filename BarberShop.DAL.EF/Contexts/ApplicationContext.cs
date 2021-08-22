@@ -1,4 +1,4 @@
-﻿using BarberShop.BLL.Models;
+﻿using BarberShop.DAL.Common.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace BarberShop.DAL.EF.Contexts
@@ -13,6 +13,12 @@ namespace BarberShop.DAL.EF.Contexts
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
             Database.EnsureCreated();
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=BarberShopDb;Trusted_Connection=True;");
+            base.OnConfiguring(optionsBuilder);
         }
     }
 }

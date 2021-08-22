@@ -1,4 +1,5 @@
-﻿@model IEnumerable<BarberModel>
+﻿@using System.Linq
+@model IEnumerable<BarberModel>
 @{
     ViewData["Title"] = "Records";
 }
@@ -8,6 +9,10 @@
         <div class="bootstrap-iso">
             <div class="d-flex justify-content-start flex-row flex-wrap">
                 <div class="row" style="width: 40rem">
+                    <div>@{
+                             var errMessage = ViewBag.Message;
+                             <h1>@errMessage</h1>
+                         }</div>
                     <div class="d-flex justify-content-start">
                         <select name="barberId" style="margin: 10px;">
                             @foreach (var barber in Model.OrderBy(b => b.Surname))
@@ -17,7 +22,7 @@
                         </select>
                     </div>
                     <div class="d-flex justify-content-start">
-                        <input class="form-control" style="margin: 10px;" name="date" placeholder="MM/DD/YYYY" type="text" />
+                        <input class="form-control" style="margin: 10px;" name="date" placeholder="MM/DD/YYYY" type="text"/>
                     </div>
                     <div class="d-flex justify-content-start">
                         <button class="btn btn-primary " name="submit" type="submit" style="margin: 10px">Send report</button>

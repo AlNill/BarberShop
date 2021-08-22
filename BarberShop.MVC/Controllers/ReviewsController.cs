@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using BarberShop.BLL.Interfaces;
-using BarberShop.BLL.Services;
 using BarberShop.MVC.Models;
 
 namespace BarberShop.MVC.Controllers

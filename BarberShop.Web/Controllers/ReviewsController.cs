@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using BarberShop.BLL.Interfaces;
-using BarberShop.BLL.Models;
+using BarberShop.DAL.Common.Models;
 
 namespace BarberShop.Web.Controllers
 {

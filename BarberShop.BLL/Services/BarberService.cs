@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using BarberShop.BLL.Interfaces;
-using BarberShop.BLL.Models;
 using BarberShop.DAL.Common;
+using BarberShop.DAL.Common.Models;
 
 namespace BarberShop.BLL.Services
 {
     public class BarberService : IBarberService
     {
-        private readonly IRepository<Barber> _repository;
+        private readonly IGenericRepository<Barber> _repository;
 
-        public BarberService(IRepository<Barber> repository)
+        public BarberService(IGenericRepository<Barber> repository)
         {
             _repository = repository;
         }

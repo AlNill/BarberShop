@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using BarberShop.BLL.Interfaces;
-using BarberShop.BLL.Models;
 using BarberShop.DAL.Common;
+using BarberShop.DAL.Common.Models;
 
 namespace BarberShop.BLL.Services
 {
     public class ReviewService : IReviewService
     {
-        private readonly IRepository<Review> _repository;
+        private readonly IGenericRepository<Review> _repository;
 
-        public ReviewService(IRepository<Review> repository)
+        public ReviewService(IGenericRepository<Review> repository)
         {
             _repository = repository;
         }
@@ -21,7 +21,7 @@ namespace BarberShop.BLL.Services
 
         public IEnumerable<Review> GetAll()
         {
-            return _repository.GetAll();
+            return _repository.GetWithInclude(x => x.Barber);
         }
     }
 }
