@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using BarberShop.DAL.Common.Models;
 
 namespace BarberShop.BLL.Interfaces
@@ -10,5 +11,7 @@ namespace BarberShop.BLL.Interfaces
         IEnumerable<User> GetAll();
         void Create(User user);
         User Get(Func<User, bool> predicate);
+        public User GetWithInclude();
+        public User GetWithInclude(int id);
     }
 }

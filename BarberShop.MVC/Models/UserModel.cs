@@ -10,5 +10,7 @@ namespace BarberShop.MVC.Models
         [Phone]
         public string PhoneNumber { get; set; }
         public string Password { get; set; }
+        public int RoleId { get; set; } = 2;
+        public RoleModel Role { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using BarberShop.BLL.Interfaces;
 using BarberShop.DAL.Common;
 using BarberShop.DAL.Common.Models;
@@ -34,6 +35,17 @@ namespace BarberShop.BLL.Services
         public User Get(Func<User, bool> predicate)
         {
             return _repository.Get(predicate).FirstOrDefault();
+        }
+
+        public User GetWithInclude()
+        {
+            return _repository.GetWithInclude(u => u.Role).FirstOrDefault();
+        }
+
+        public User GetWithInclude(int id)
+        {
+            var users = _repository.GetWithInclude(u => u.Role);
+            return users.FirstOrDefault(user => user.Id == id);
         }
     }
 }

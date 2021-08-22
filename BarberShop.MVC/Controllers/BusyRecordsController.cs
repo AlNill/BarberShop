@@ -6,10 +6,12 @@ using BarberShop.BLL.Interfaces;
 using BarberShop.DAL.Common.Models;
 using BarberShop.MVC.Models;
 using BarberShop.MVC.Validators;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BarberShop.MVC.Controllers
 {
+    [Authorize]
     public class BusyRecordsController : Controller
     {
         private readonly IBarberService _barberService;
@@ -23,6 +25,7 @@ namespace BarberShop.MVC.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Index()
         {
             var barbers = _barberService.GetAll();
@@ -30,6 +33,7 @@ namespace BarberShop.MVC.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin, User")]
         public IActionResult Index(int barberId, DateTime date)
         {
             var barbers = _barberService.GetAll();

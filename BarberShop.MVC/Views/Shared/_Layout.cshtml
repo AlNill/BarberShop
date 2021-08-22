@@ -36,7 +36,17 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
                             <li class="nav-item active">
-                                <a class="list-group-item list-group-item-action list-group-item-light p-3" asp-area="" asp-controller="About" asp-action="Index">Home</a>
+                                @{
+                                    if (User.Identity.IsAuthenticated)
+                                    {
+                                        <a class="list-group-item list-group-item-action list-group-item-light p-3" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="list-group-item list-group-item-action list-group-item-light p-3" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                                    }
+                                }
+                                <a class="list-group-item list-group-item-action list-group-item-light p-3" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
                             </li>
                         </ul>
                     </div>
