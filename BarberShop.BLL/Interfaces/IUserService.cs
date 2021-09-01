@@ -11,6 +11,7 @@ namespace BarberShop.BLL.Interfaces
         IEnumerable<User> GetAll();
         void Create(User user);
         User Get(Func<User, bool> predicate);
+        void Update(User user);
         public User GetWithInclude();
         public User GetWithInclude(int id);
     }

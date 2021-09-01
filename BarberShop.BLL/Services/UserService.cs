@@ -37,6 +37,11 @@ namespace BarberShop.BLL.Services
             return _repository.Get(predicate).FirstOrDefault();
         }
 
+        public void Update(User user)
+        {
+            _repository.Update(user);
+        }
+
         public User GetWithInclude()
         {
             return _repository.GetWithInclude(u => u.Role).FirstOrDefault();

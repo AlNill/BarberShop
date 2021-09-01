@@ -10,6 +10,7 @@ namespace BarberShop.DAL.EF.Contexts
         public DbSet<User> Users { get; set; }
         public DbSet<BusyRecord> BusyRecords { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<Log> Logs { get; set; }
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
