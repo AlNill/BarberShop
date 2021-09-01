@@ -13,6 +13,7 @@ namespace BarberShop.MVC.Mapper
             CreateMap<Review, ReviewModel>().ReverseMap();
             CreateMap<User, UserModel>().ReverseMap();
             CreateMap<BusyRecord, BusyRecordModel>().ReverseMap();
+            CreateMap<Role, RoleModel>().ReverseMap();
         }
     }
 }

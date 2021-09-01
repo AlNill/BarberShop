@@ -3,10 +3,12 @@ using AutoMapper;
 using BarberShop.BLL.Interfaces;
 using BarberShop.DAL.Common.Models;
 using BarberShop.MVC.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BarberShop.MVC.Controllers
 {
+    [Authorize]
     public class UsersController : Controller
     {
         private readonly IUserService _userService;
@@ -18,6 +20,8 @@ namespace BarberShop.MVC.Controllers
             _mapper = mapper;
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Admin, User")]
         public IActionResult Index()
         {
             var users = _userService.GetAll();
@@ -25,6 +29,7 @@ namespace BarberShop.MVC.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(int id)
         {
             var user = _userService.GetById(id);
@@ -32,6 +37,7 @@ namespace BarberShop.MVC.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(UserModel userModel)
         {
             if (ModelState.IsValid)

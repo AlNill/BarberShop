@@ -2,10 +2,12 @@
 using AutoMapper;
 using BarberShop.BLL.Interfaces;
 using BarberShop.MVC.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BarberShop.MVC.Controllers
 {
+    [Authorize]
     public class BarbersController: Controller
     {
         private readonly IBarberService _barbersService;
@@ -17,6 +19,7 @@ namespace BarberShop.MVC.Controllers
             _mapper = mapper;
         }
 
+        [AllowAnonymous]
         public IActionResult Index()
         {
             var barbers = _barbersService.GetAll();

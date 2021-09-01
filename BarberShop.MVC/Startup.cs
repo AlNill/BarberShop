@@ -7,6 +7,7 @@ using BarberShop.DAL.EF.Contexts;
 using BarberShop.DAL.EF.Repositories;
 using BarberShop.MVC.Mapper;
 using BarberShop.MVC.Utils;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -46,10 +47,14 @@ namespace BarberShop.MVC
             {
                 mc.AddProfile(new MapperProfile());
             });
-
             IMapper mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
 
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(
+                options =>
+                {
+                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
+                });
             services.AddControllersWithViews();
         }
 
@@ -64,6 +69,10 @@ namespace BarberShop.MVC
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
