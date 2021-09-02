@@ -3,15 +3,30 @@
     ViewData["Title"] = "Barbers";
 }
 
+@{if(User.IsInRole("Admin"))
+    @using (Html.BeginForm("Add", "Barbers", FormMethod.Get))
+    {
+        <div class="form-group">
+            <button type="submit" class="btn btn-success">Add barber</button>
+        </div>
+    }
+}
+
+
 <div class="d-flex justify-content-start flex-row flex-wrap">
     @foreach (var barber in Model.OrderBy(s => s.Surname))
     {
-        <div class="card" style="width: 18rem; height: 28rem; margin: 2rem;">
-            <img class="card-img-top" src="~/images/standart_short.jpg" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">@barber.Name @barber.Surname</h5>
-                <p class="card-text">@barber.Information</p>
-            </div>
+    <div class="card" style="width: 18rem; height: 28rem; margin: 2rem;">
+        <img class="card-img-top" src="~/images/standart_short.jpg" alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title">@barber.Name @barber.Surname</h5>
+            <p class="card-text">@barber.Information</p>
         </div>
+        @{if (User.IsInRole("Admin"))
+            {
+                <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("Edit", "Barbers", barber)'">Edit</button>
+            }
+        }
+    </div>
     }
 </div>

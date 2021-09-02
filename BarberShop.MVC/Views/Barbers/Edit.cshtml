@@ -1,0 +1,27 @@
+﻿@model BarberModel
+
+@using (Html.BeginForm("EditBarber", "Barbers", FormMethod.Post))
+{
+    @Html.HiddenFor(x => x.Id)
+
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input class="form-control" type="text" asp-for="Name" />
+        <span class="alert-danger" asp-validation-for="Name" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Surname"></label>
+        <input class="form-control" type="text" asp-for="Surname" />
+    </div>
+    <div class="form-group">
+        <label asp-for="FatherName"></label>
+        <input class="form-control" type="text" asp-for="FatherName" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Information"></label>
+        <input class="form-control" type="text" asp-for="Information" />
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-success">Save</button>
+    </div>
+}
