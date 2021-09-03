@@ -37,11 +37,13 @@ namespace BarberShop.MVC
             services.AddScoped<IGenericRepository<Review>, GenericRepository<Review>>();
             services.AddScoped<IGenericRepository<User>, GenericRepository<User>>();
             services.AddScoped<IGenericRepository<BusyRecord>, GenericRepository<BusyRecord>>();
+            services.AddScoped<IGenericRepository<Log>, GenericRepository<Log>>();
 
             services.AddScoped<IBarberService, BarberService>();
             services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IBusyRecordService, BusyRecordService>();
+            services.AddScoped<ILoggerService, LoggerService>();
 
             var mapperConfig = new MapperConfiguration(mc =>
             {

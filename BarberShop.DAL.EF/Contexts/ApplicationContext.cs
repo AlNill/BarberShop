@@ -10,6 +10,7 @@ namespace BarberShop.DAL.EF.Contexts
         public DbSet<User> Users { get; set; }
         public DbSet<BusyRecord> BusyRecords { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<Log> Logs { get; set; }
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
@@ -30,7 +31,7 @@ namespace BarberShop.DAL.EF.Contexts
             // добавляем роли
             Role adminRole = new Role { Id = 1, Name = adminRoleName };
             Role userRole = new Role { Id = 2, Name = userRoleName };
-            
+
             modelBuilder.Entity<Role>().HasData(new Role[] { adminRole, userRole });
             base.OnModelCreating(modelBuilder);
         }
