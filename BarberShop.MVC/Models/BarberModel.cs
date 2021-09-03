@@ -1,7 +1,11 @@
-﻿namespace BarberShop.MVC.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BarberShop.MVC.Models
 {
     public class BarberModel: PersonModel
     {
+        [Required]
+        [StringLength(150)]
         public string Information { get; set; }
     }
 }

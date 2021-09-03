@@ -51,7 +51,6 @@ namespace BarberShop.MVC.Controllers
                 return View();
             }
             _barbersService.Create(_mapper.Map<BarberModel, Barber>(barber));
-            
             return RedirectToAction("Index");
         }
 
@@ -59,8 +58,13 @@ namespace BarberShop.MVC.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Edit(BarberModel barber)
         {
-            if(ModelState.IsValid)
+            _logger.LogInformation("Get request for Edit Barber");
+            if (ModelState.IsValid)
+            {
+                _logger.LogInformation("Valid model. Send rendered view for editing");
                 return View(barber);
+            }
+            _logger.LogInformation("Bad barber model for editing");
             ModelState.AddModelError("", "Bad barber model");
             return RedirectToAction("Index", "Barbers");
         }
@@ -69,10 +73,17 @@ namespace BarberShop.MVC.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult EditBarber(BarberModel barber)
         {
-            //if (ModelState.IsValid)
-            //    return View(barber);
-            //ModelState.AddModelError("", "Bad barber model");
-            _barbersService.Update(_mapper.Map<BarberModel, Barber>(barber));
+            _logger.LogInformation("Post request for Edit Barber");
+            if (ModelState.IsValid)
+            {
+                _barbersService.Update(_mapper.Map<BarberModel, Barber>(barber));
+                _logger.LogInformation($"Success update barber to: name {barber.Name}, surname {barber.Surname}, " +
+                                       $"{barber.FatherName}");
+                return RedirectToAction("Index", "Barbers");
+            }
+
+            _logger.LogInformation("Model for edit barber is not valid");
+            ModelState.AddModelError("", "Bad barber model");
             return RedirectToAction("Index", "Barbers");
         }
     }
