@@ -4,27 +4,26 @@
 }
 
 
-<div>
-    @if (User.Identity.IsAuthenticated)
-    {
-        <button type="button" class="btn btn-success" 
-                onclick="location.href='@Url.Action("Add", "Reviews")'">Add review</button>
-    }
+<div class="d-flex flex-column" style="width: 90%; height: 80%;">
+    <div class="d-flex flex-row-reverse">
+        <div class="p-2">
+            @if (User.Identity.IsAuthenticated)
+            {
+                <button type="button" class="btn btn-success"
+                        onclick="location.href = '@Url.Action("Add", "Reviews")'">Add review</button>
+            }
+        </div>
+    </div>
+
+    <div class="d-flex flex-column">
+        @foreach (var review in Model.OrderBy(s => s.User.NickName))
+        {
+            <div class="card" style="width: 80%; height: 14rem; margin: 2rem;">
+                <div class="card-body">
+                    <h5 class="card-title">@review.User.NickName</h5>
+                    <p class="card-text">@review.UserReview</p>
+                </div>
+            </div>
+        }
+    </div>
 </div>
-
-<h1>Reviews</h1>
-<table class="table table-bordered">
-    <tr>
-        <th>Review</th>
-        <th>Barber</th>
-    </tr>
-    @foreach (var review in Model.OrderBy(s => s.Id))
-    {
-        <tr>
-            <td>@review.UserReview</td>
-            <td>@review.Barber?.Surname @review.Barber?.Name</td>
-        </tr>
-    }
-
-    <tr><div class="text-info">Total: @Model.Count()</div></tr>
-</table>
