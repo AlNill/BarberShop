@@ -1,0 +1,23 @@
+﻿@model IEnumerable<BarberModel>
+
+@using (Html.BeginForm("Add", "Reviews", FormMethod.Post))
+{
+    <div>
+        <div class="form-group">
+            <label>Write your review</label>
+            <input name="reviewText" class="form-control" type="text"/>
+            <span class="alert-danger"/>
+        </div>
+        <div class="form-group">
+            <select name="barberId" style="margin: 10px;">
+                @foreach (var barber in Model.OrderBy(b => b.Surname))
+                {
+                    <option value="@barber.Id">@barber.Name @barber.Surname</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-success">Add review</button>
+    </div>
+}

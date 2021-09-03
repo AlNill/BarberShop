@@ -7,5 +7,6 @@ namespace BarberShop.BLL.Interfaces
     {
         Review GetById(int id);
         IEnumerable<Review> GetAll();
+        void Create(Review review);
     }
 }

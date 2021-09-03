@@ -10,7 +10,9 @@ namespace BarberShop.MVC.Models
         public string UserReview { get; set; }
         [Required]
         public int BarberId { get; set; }
-        [Required]
         public BarberModel Barber { get; set; }
+        [Required]
+        public int UserId { get; set; }
+        public UserModel User { get; set; }
     }
 }

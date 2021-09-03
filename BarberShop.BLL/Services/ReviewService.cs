@@ -23,5 +23,10 @@ namespace BarberShop.BLL.Services
         {
             return _repository.GetWithInclude(x => x.Barber);
         }
+
+        public void Create(Review review)
+        {
+            _repository.Create(review);
+        }
     }
 }
