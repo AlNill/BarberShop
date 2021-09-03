@@ -23,6 +23,7 @@ namespace BarberShop.MVC.Controllers
             _logger = logger;
         }
 
+        [HttpGet]
         [AllowAnonymous]
         public IActionResult Index()
         {
