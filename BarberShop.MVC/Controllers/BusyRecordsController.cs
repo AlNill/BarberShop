@@ -13,27 +13,24 @@ using Microsoft.Extensions.Logging;
 namespace BarberShop.MVC.Controllers
 {
     [Authorize]
-    public class BusyRecordsController : Controller
+    public class BusyRecordsController : BaseController
     {
         private readonly IBarberService _barberService;
         private readonly IBusyRecordService _busyService;
         private readonly IMapper _mapper;
-        private readonly ILoggerService _logger;
 
-        public BusyRecordsController(IBusyRecordService busyService, IBarberService barberService, IMapper mapper,
-            ILoggerService logger)
+        public BusyRecordsController(IBusyRecordService busyService, IBarberService barberService, IMapper mapper)
         {
             _barberService = barberService;
             _busyService = busyService;
             _mapper = mapper;
-            _logger = logger;
         }
 
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Index()
         {
-            _logger.LogInformation($"Records startup request");
+            Logger.LogInformation($"Records startup request");
             var barbers = _barberService.GetAll();
             return View(_mapper.Map<IEnumerable<Barber>, IEnumerable<BarberModel>>(barbers));
         }
@@ -44,13 +41,13 @@ namespace BarberShop.MVC.Controllers
         {
             try
             {
-                _logger.LogInformation($"Record request with barber id: {barberId}, date {date}");
+                Logger.LogInformation($"Record request with barber id: {barberId}, date {date}");
                 var barbers = _barberService.GetAll();
                 var result = _busyService.IsExists(barberId, date);
                 if (result != null)
                 {
                     ViewBag.Message = "Sorry, this record exist";
-                    _logger.LogInformation($"Tried record to exist time with barber id: {barberId}, date {date}");
+                    Logger.LogInformation($"Tried record to exist time with barber id: {barberId}, date {date}");
                     return View(_mapper.Map<IEnumerable<Barber>, IEnumerable<BarberModel>>(barbers));
                 }
 
@@ -68,18 +65,18 @@ namespace BarberShop.MVC.Controllers
                 if (!validationResult.IsValid)
                 {
                     string msg = validationResult.Errors.First().ToString();
-                    _logger.LogInformation($"In record Validation error {msg}");
+                    Logger.LogInformation($"In record Validation error {msg}");
                     ViewBag.Message = msg;
                     return View(_mapper.Map<IEnumerable<Barber>, IEnumerable<BarberModel>>(barbers));
                 }
 
                 _busyService.Create(record);
-                _logger.LogInformation($"Success record with barber id: {barberId}, date {date}");
+                Logger.LogInformation($"Success record with barber id: {barberId}, date {date}");
                 return View(_mapper.Map<IEnumerable<Barber>, IEnumerable<BarberModel>>(barbers));
             }
             catch (Exception e)
             {
-                _logger.LogError($"Recording error: {e.Message}");
+                Logger.LogError($"Recording error: {e.Message}");
                 return RedirectToAction("Index");
             }
         }

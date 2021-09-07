@@ -10,20 +10,18 @@ using Microsoft.Extensions.Logging;
 namespace BarberShop.MVC.Controllers
 {
     [Authorize]
-    public class ReviewsController : Controller
+    public class ReviewsController : BaseController
     {
         private readonly IReviewService _reviewService;
         private readonly IMapper _mapper;
-        private readonly ILoggerService _logger;
         private readonly IUserService _userService;
         private readonly IBarberService _barberService;
 
-        public ReviewsController(IReviewService reviewService, IMapper mapper, ILoggerService logger,
+        public ReviewsController(IReviewService reviewService, IMapper mapper,
             IUserService userService, IBarberService barberService)
         {
             _reviewService = reviewService;
             _mapper = mapper;
-            _logger = logger;
             _userService = userService;
             _barberService = barberService;
         }
@@ -32,7 +30,7 @@ namespace BarberShop.MVC.Controllers
         [AllowAnonymous]
         public IActionResult Index()
         {
-            _logger.LogInformation($"Get request for reviews get all");
+            Logger.LogInformation($"Get request for reviews get all");
             var reviews = _reviewService.GetAll();
             return View(_mapper.Map<IEnumerable<ReviewModel>>(reviews));
         }
@@ -54,7 +52,7 @@ namespace BarberShop.MVC.Controllers
                     return RedirectToAction("Index", "Reviews");
                 }
 
-                _logger.LogInformation($"Get request for reviews add");
+                Logger.LogInformation($"Get request for reviews add");
                 var review = new ReviewModel()
                 {
                     BarberId = _mapper.Map<Barber, BarberModel>(_barberService.GetById((int)barberId)).Id,
