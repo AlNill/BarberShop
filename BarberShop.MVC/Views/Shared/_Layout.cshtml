@@ -24,7 +24,10 @@
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" asp-area="" asp-controller="Reviews" asp-action="Index">Reviews</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" asp-area="" asp-controller="BusyRecords" asp-action="Index">Recording</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" asp-area="" asp-controller="About" asp-action="Index">About</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" asp-area="" asp-controller="Users" asp-action="Index">Users</a>
+                    @if(User.IsInRole("Admin"))
+                    {
+                        <a class="list-group-item list-group-item-action list-group-item-light p-3" asp-area="" asp-controller="Users" asp-action="Index">Users</a>
+                    }
                 </div>
             </div>
         </div>
@@ -35,7 +38,7 @@
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
-                            <li class="nav-item active">
+                            <li class="nav-item active" style="display: inline; margin: 2px;">
                                 @{
                                     if (User.Identity.IsAuthenticated)
                                     {
@@ -46,6 +49,8 @@
                                         <a class="list-group-item list-group-item-action list-group-item-light p-3" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
                                     }
                                 }
+                            </li>
+                            <li class="nav-item active" style="display: inline; margin: 2px;">
                                 <a class="list-group-item list-group-item-action list-group-item-light p-3" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
                             </li>
                         </ul>

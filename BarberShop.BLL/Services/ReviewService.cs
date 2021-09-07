@@ -21,7 +21,12 @@ namespace BarberShop.BLL.Services
 
         public IEnumerable<Review> GetAll()
         {
-            return _repository.GetWithInclude(x => x.Barber);
+            return _repository.GetWithInclude(x => x.Barber, u => u.User);
+        }
+
+        public void Create(Review review)
+        {
+            _repository.Create(review);
         }
     }
 }
