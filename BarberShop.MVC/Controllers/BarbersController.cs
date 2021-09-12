@@ -10,24 +10,22 @@ using Microsoft.Extensions.Logging;
 namespace BarberShop.MVC.Controllers
 {
     [Authorize]
-    public class BarbersController: Controller
+    public class BarbersController: BaseController
     {
         private readonly IBarberService _barbersService;
         private readonly IMapper _mapper;
-        private readonly ILoggerService _logger;
 
-        public BarbersController(IBarberService barbersService, IMapper mapper, ILoggerService logger)
+        public BarbersController(IBarberService barbersService, IMapper mapper)
         {
             _barbersService = barbersService;
             _mapper = mapper;
-            _logger = logger;
         }
 
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Index()
         {
-            _logger.LogInformation($"Get request for Barbers get all");
+            Logger.LogInformation($"Get request for Barbers get all");
             var barbers = _barbersService.GetAll();
             return View(_mapper.Map<IEnumerable<BarberModel>>(barbers));
         }
@@ -45,8 +43,8 @@ namespace BarberShop.MVC.Controllers
         {
             if (!ModelState.IsValid)
             {
-                _logger.LogInformation($"Bad information for barber add: Name {barber.Name}, Surname {barber.Surname}," +
-                                       $"FatherName {barber.FatherName}, Information {barber.Information}");
+                Logger.LogInformation($"Bad information for barber add: Name {barber.Name}, Surname {barber.Surname}," +
+                                      $"FatherName {barber.FatherName}, Information {barber.Information}");
                 ModelState.AddModelError("", "Badly input information");
                 return View();
             }
@@ -59,28 +57,28 @@ namespace BarberShop.MVC.Controllers
         {
             if (HttpContext.Request.Method.ToLower().Equals("get"))
             {
-                _logger.LogInformation("Get request for Edit Barber");
+                Logger.LogInformation("Get request for Edit Barber");
                 if (ModelState.IsValid)
                 {
-                    _logger.LogInformation("Valid model. Send rendered view for editing");
+                    Logger.LogInformation("Valid model. Send rendered view for editing");
                     return View(barber);
                 }
-                _logger.LogInformation("Bad barber model for editing");
+                Logger.LogInformation("Bad barber model for editing");
                 ModelState.AddModelError("", "Bad barber model");
                 return RedirectToAction("Index", "Barbers");
             }
             else if (HttpContext.Request.Method.ToLower().Equals("post"))
             {
-                _logger.LogInformation("Post request for Edit Barber");
+                Logger.LogInformation("Post request for Edit Barber");
                 if (ModelState.IsValid)
                 {
                     _barbersService.Update(_mapper.Map<BarberModel, Barber>(barber));
-                    _logger.LogInformation($"Success update barber to: name {barber.Name}, surname {barber.Surname}, " +
-                                           $"{barber.FatherName}");
+                    Logger.LogInformation($"Success update barber to: name {barber.Name}, surname {barber.Surname}, " +
+                                          $"{barber.FatherName}");
                     return RedirectToAction("Index", "Barbers");
                 }
 
-                _logger.LogInformation("Model for edit barber is not valid");
+                Logger.LogInformation("Model for edit barber is not valid");
                 ModelState.AddModelError("", "Bad barber model");
                 return RedirectToAction("Index", "Barbers");
             }

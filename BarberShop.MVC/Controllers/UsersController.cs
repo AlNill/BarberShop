@@ -11,24 +11,22 @@ using Microsoft.Extensions.Logging;
 namespace BarberShop.MVC.Controllers
 {
     [Authorize]
-    public class UsersController : Controller
+    public class UsersController : BaseController
     {
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
-        private readonly ILoggerService _logger;
 
-        public UsersController(IUserService userService, IMapper mapper, ILoggerService logger)
+        public UsersController(IUserService userService, IMapper mapper)
         {
             _userService = userService;
             _mapper = mapper;
-            _logger = logger;
         }
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
-            _logger.LogInformation($"Get request for users get all");
+            Logger.LogInformation($"Get request for users get all");
             var users = _userService.GetAll();
             return View(_mapper.Map<IEnumerable<UserModel>>(users));
         }
@@ -37,7 +35,7 @@ namespace BarberShop.MVC.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Edit(int id)
         {
-            _logger.LogInformation($"Get request for edit user with user id {id}");
+            Logger.LogInformation($"Get request for edit user with user id {id}");
             var user = _userService.GetById(id);
             return View(_mapper.Map<UserModel>(user));
         }
@@ -48,7 +46,7 @@ namespace BarberShop.MVC.Controllers
         {
             try
             {
-                _logger.LogInformation($"Get request for edit user with user nickname {userModel.NickName}");
+                Logger.LogInformation($"Get request for edit user with user nickname {userModel.NickName}");
                 if (ModelState.IsValid)
                 {
                     _userService.Update(_mapper.Map<User>(userModel));
@@ -58,8 +56,8 @@ namespace BarberShop.MVC.Controllers
             }
             catch (Exception e)
             {
-                _logger.LogError($"Error to edit user with user nickname {userModel.NickName}. " +
-                                 $"Exception message: {e.Message}");
+                Logger.LogError($"Error to edit user with user nickname {userModel.NickName}. " +
+                                $"Exception message: {e.Message}");
                 return RedirectToAction("Index");
             }
         }
