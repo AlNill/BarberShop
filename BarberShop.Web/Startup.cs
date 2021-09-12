@@ -22,8 +22,8 @@ namespace BarberShop.Web
             ));
 
             // Inject repositories
-            services.AddScoped<IRepository<Barber>, BarbersRepository>();
-            services.AddScoped<IRepository<Review>, ReviewRepository>();
+            services.AddScoped<IGenericRepository<Barber>, GenericRepository<Barber>>();
+            services.AddScoped<IGenericRepository<Review>, GenericRepository<Review>>();
             // Inject services
             services.AddScoped<IBarberService, BarberService>();
             services.AddScoped<IReviewService, ReviewService>();
