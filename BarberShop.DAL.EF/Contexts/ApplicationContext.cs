@@ -69,7 +69,7 @@ namespace BarberShop.DAL.EF.Contexts
 
             Barber barber2 = new Barber()
             {
-                Id = 1,
+                Id = 2,
                 Name = "Petr",
                 Surname = "Petrov",
                 FatherName = "Petrovich",
@@ -78,7 +78,7 @@ namespace BarberShop.DAL.EF.Contexts
 
             Barber barber3 = new Barber()
             {
-                Id = 1,
+                Id = 3,
                 Name = "Pup",
                 Surname = "Pupkin",
                 FatherName = "Pupkinovich",
