@@ -17,3 +17,4 @@
   2. In directory invoke cmd.exe and run "npm start"
   3. Start project BarberShop with BarberShop.Web as startup project 
   4. Go to browser and type https://localhost:4200/barbers
+  5. Wait few seconds ;)
