@@ -13,8 +13,8 @@
   3. User can only see list of barbers, make record, add review.
 
 # Angular use
-  1. You need node_modules in *\BarberShop.Front.Angular\front
-  2. In directory invoke cmd.exe and run "npm start"
+  1. Use Package Manager Console and cd to BarberShop.Web/ClientApp
+  2. Type command npm install
   3. Start project BarberShop with BarberShop.Web as startup project 
-  4. Go to browser and type https://localhost:4200/barbers
+  4. Go to browser and type https://localhost:44395/barbers
   5. Wait few seconds ;)
