@@ -8,5 +8,7 @@ namespace BarberShop.DAL.Common.Models
         public int BarberId { get; set; }
         public Barber Barber { get; set; }
         public DateTime RecordTime { get; set; }
+        public int ServiceId { get; set; }
+        public Service Service { get; set; }
     }
 }
