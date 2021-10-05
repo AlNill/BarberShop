@@ -11,6 +11,7 @@ namespace BarberShop.DAL.EF.Contexts
         public DbSet<BusyRecord> BusyRecords { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Log> Logs { get; set; }
+        public DbSet<Service> Services { get; set; }
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
@@ -85,9 +86,15 @@ namespace BarberShop.DAL.EF.Contexts
                 Information = "Cool information about barber Pupkin must be here.",
             };
 
+            // Seed services
+            Service service1 = new Service() {Id = 1, Title = "Mans haircut", Cost = 35};
+            Service service2 = new Service() {Id = 2, Title = "Child haircut", Cost = 30};
+            Service service3 = new Service() {Id = 3, Title = "Bread trim", Cost = 30};
+
             modelBuilder.Entity<Role>().HasData(new Role[] { adminRole, userRole });
             modelBuilder.Entity<User>().HasData(new User[] { admin , user });
-            modelBuilder.Entity<Barber>().HasData(new Barber[] {barber1, barber2, barber3 });
+            modelBuilder.Entity<Barber>().HasData(new Barber[] { barber1, barber2, barber3 });
+            modelBuilder.Entity<Service>().HasData(new Service[] { service1, service2, service3 });
             base.OnModelCreating(modelBuilder);
         }
     }

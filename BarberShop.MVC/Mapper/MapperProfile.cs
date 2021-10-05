@@ -15,6 +15,7 @@ namespace BarberShop.MVC.Mapper
             CreateMap<BusyRecord, BusyRecordModel>().ReverseMap();
             CreateMap<Role, RoleModel>().ReverseMap();
             CreateMap<Log, LogModel>().ReverseMap();
+            CreateMap<Service, ServiceModel>().ReverseMap();
         }
     }
 }

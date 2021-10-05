@@ -9,8 +9,10 @@ namespace BarberShop.MVC.Models
         public int Id { get; set; }
         [Required]
         public int BarberId { get; set; }
-        public Barber Barber { get; set; }
+        public BarberModel Barber { get; set; }
         [Required]
         public DateTime RecordTime { get; set; }
+        public int ServiceId { get; set; }
+        public ServiceModel Service {get; set; }
     }
 }

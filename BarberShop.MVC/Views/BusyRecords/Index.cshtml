@@ -1,5 +1,5 @@
 ﻿@using System.Linq
-@model IEnumerable<BarberModel>
+@model Tuple<IEnumerable<BarberModel>, IEnumerable<ServiceModel>>
 @{
     ViewData["Title"] = "Records";
 }
@@ -9,40 +9,51 @@
         <div class="bootstrap-iso">
             <div class="d-flex justify-content-start flex-row flex-wrap">
                 <div class="row" style="width: 40rem">
-                    <div>@{
-                             var errMessage = ViewBag.Message;
-                             <h1>@errMessage</h1>
-                         }</div>
+                    <div>
+                        @{
+                            var errMessage = ViewBag.Message;
+                            <h1>@errMessage</h1>
+                        }
+                    </div>
                     <div class="d-flex justify-content-start">
                         <select name="barberId" style="margin: 10px;">
-                            @foreach (var barber in Model.OrderBy(b => b.Surname))
+                            @foreach (var barber in Model.Item1.OrderBy(b => b.Surname))
                             {
                                 <option value="@barber.Id">@barber.Name @barber.Surname</option>
                             }
                         </select>
+                        <select name="serviceId" style="margin: 10px;">
+                            @foreach (var service in Model.Item2.OrderBy(b => b.Cost))
+                            {
+                                <option value="@service.Id">@service.Title @service.Cost</option>
+                            }
+                        </select>
                     </div>
+                    <!--<div class="d-flex justify-content-start">
+                        <input class="form-control" style="margin: 10px;" name="date" placeholder="MM/DD/YYYY" type="text" />
+                    </div>-->
                     <div class="d-flex justify-content-start">
-                        <input class="form-control" style="margin: 10px;" name="date" placeholder="MM/DD/YYYY" type="text"/>
+                        <input class="form-control" style="margin: 10px;" type="datetime-local" name="date" />
                     </div>
                     <div class="d-flex justify-content-start">
                         <button class="btn btn-primary " name="submit" type="submit" style="margin: 10px">Send report</button>
                     </div>
                 </div>
-            </div>
         </div>
-        <script>
-            $(document).ready(function () {
-                var date_input = $('input[name="date"]');
-                var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
-                var options = {
-                    format: 'mm/dd/yyyy',
-                    container: container,
-                    todayHighlight: true,
-                    autoclose: true,
-                    datesDisabled: ['08/06/2021', '08/14/2021']
-                };
-                date_input.datepicker(options);
-            })
-        </script>
+    </div>
+        <!--<script>
+        $(document).ready(function () {
+            var date_input = $('input[name="date"]');
+            var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
+            var options = {
+                format: 'mm/dd/yyyy',
+                container: container,
+                todayHighlight: true,
+                autoclose: true,
+                datesDisabled: ['08/06/2021', '08/14/2021']
+            };
+            date_input.datepicker(options);
+        })
+    </script>-->
     }
 </div>

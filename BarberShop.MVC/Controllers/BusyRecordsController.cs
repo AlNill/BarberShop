@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using AutoMapper;
 using BarberShop.BLL.Interfaces;
@@ -17,13 +18,28 @@ namespace BarberShop.MVC.Controllers
     {
         private readonly IBarberService _barberService;
         private readonly IBusyRecordService _busyService;
+        private readonly IServiceService _serviceService;
         private readonly IMapper _mapper;
 
-        public BusyRecordsController(IBusyRecordService busyService, IBarberService barberService, IMapper mapper)
+        public BusyRecordsController(IBusyRecordService busyService, 
+            IBarberService barberService,
+            IServiceService serviceService,
+            IMapper mapper)
         {
             _barberService = barberService;
+            _serviceService = serviceService;
             _busyService = busyService;
             _mapper = mapper;
+        }
+
+        private Tuple<IEnumerable<BarberModel>, IEnumerable<ServiceModel>> GetViewData()
+        {
+            var barbers = _barberService.GetAll();
+            var services = _serviceService.GetAll();
+            return new Tuple<IEnumerable<BarberModel>, IEnumerable<ServiceModel>>(
+                _mapper.Map<IEnumerable<Barber>, IEnumerable<BarberModel>>(barbers),
+                _mapper.Map<IEnumerable<Service>, IEnumerable<ServiceModel>>(services)
+            );
         }
 
         [HttpGet]
@@ -32,32 +48,36 @@ namespace BarberShop.MVC.Controllers
         {
             Logger.LogInformation($"Records startup request");
             var barbers = _barberService.GetAll();
-            return View(_mapper.Map<IEnumerable<Barber>, IEnumerable<BarberModel>>(barbers));
+            return View(GetViewData());
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin, User")]
-        public IActionResult Index(int barberId, DateTime date)
+        public IActionResult Index(int barberId, int serviceId, string date)
         {
+            // TODO: Make beautiful calendar with hours
+            var date1 = DateTime.Parse(date + " 00:00 AM", new CultureInfo("en-US"));
+            Logger.LogInformation($"Record request with barber id: {barberId}, date {date}");
+            var tupleModel = GetViewData();
             try
             {
-                Logger.LogInformation($"Record request with barber id: {barberId}, date {date}");
-                var barbers = _barberService.GetAll();
-                var result = _busyService.IsExists(barberId, date);
-                if (result != null)
+                if (_busyService.IsExists(barberId, date1) != null)
                 {
                     ViewBag.Message = "Sorry, this record exist";
                     Logger.LogInformation($"Tried record to exist time with barber id: {barberId}, date {date}");
-                    return View(_mapper.Map<IEnumerable<Barber>, IEnumerable<BarberModel>>(barbers));
+                    return View(tupleModel);
                 }
 
                 var barber = _barberService.GetById(barberId);
+                var service = _serviceService.GetById(serviceId);
 
                 var record = new BusyRecord()
                 {
                     BarberId = barberId,
                     Barber = barber,
-                    RecordTime = date,
+                    RecordTime = date1,
+                    ServiceId = serviceId,
+                    Service = service,
                 };
 
                 var validator = new BusyRecordsValidator();
@@ -67,12 +87,13 @@ namespace BarberShop.MVC.Controllers
                     string msg = validationResult.Errors.First().ToString();
                     Logger.LogInformation($"In record Validation error {msg}");
                     ViewBag.Message = msg;
-                    return View(_mapper.Map<IEnumerable<Barber>, IEnumerable<BarberModel>>(barbers));
+                    return View(tupleModel);
                 }
 
                 _busyService.Create(record);
                 Logger.LogInformation($"Success record with barber id: {barberId}, date {date}");
-                return View(_mapper.Map<IEnumerable<Barber>, IEnumerable<BarberModel>>(barbers));
+                ViewBag.Message = $"Success record to barber: {barber.Name + barber.Surname}";
+                return View(tupleModel);
             }
             catch (Exception e)
             {
