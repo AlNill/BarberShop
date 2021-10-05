@@ -1,0 +1,22 @@
+﻿@model IEnumerable<ServiceModel>
+@{
+    ViewData["Title"] = "Services";
+}
+<div class="d-flex justify-content-center flex-column" style="width: 80%; height: 90%;">
+    @using (Html.BeginForm("Index", "Services", FormMethod.Get))
+    {
+        <div class="d-flex justify-content-start flex-row">
+            <input name="serviceTitleSubstr" class="form-control"/>
+            <button class="btn btn-primary" name="submit" type="submit" style="margin: 10px">Find</button>
+        </div>
+    }
+    @{
+        foreach (var service in Model.OrderBy(s => s.Title))
+        {
+            <div class="card" style="width: 20rem; height: 10rem; margin: 2rem;">
+                <h5 class="card-title">@service.Title</h5>
+                <h4 class="card-text">@service.Cost</h4>
+            </div>
+            }
+    }
+</div>

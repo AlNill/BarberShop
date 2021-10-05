@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using BarberShop.BLL.Interfaces;
 using BarberShop.DAL.Common;
 using BarberShop.DAL.Common.Models;
@@ -17,6 +18,11 @@ namespace BarberShop.BLL.Services
         public Service GetById(int id)
         {
             return _repository.Get(id);
+        }
+
+        public IEnumerable<Service> GetServicesForSubTitle(string subTitle)
+        {
+            return _repository.Get(s => s.Title.Contains(subTitle));
         }
 
         public IEnumerable<Service> GetAll()
