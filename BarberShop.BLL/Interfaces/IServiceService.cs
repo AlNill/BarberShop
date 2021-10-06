@@ -11,5 +11,6 @@ namespace BarberShop.BLL.Interfaces
         void Update(Service service);
         void Delete(int id);
         public IEnumerable<Service> GetServicesForSubTitle(string subTitle);
+        public IEnumerable<Service> AdvancedSearch(Service serviceParams);
     }
 }

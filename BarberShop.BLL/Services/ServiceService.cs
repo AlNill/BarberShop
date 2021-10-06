@@ -25,6 +25,26 @@ namespace BarberShop.BLL.Services
             return _repository.Get(s => s.Title.Contains(subTitle));
         }
 
+        public IEnumerable<Service> AdvancedSearch(Service serviceParams)
+        {
+            Func<Service, bool> predicate;
+            if (serviceParams.Title != null && serviceParams.Cost != 0) {
+                predicate = (s => s.Title.Contains(serviceParams.Title) &&
+                                                      s.Cost == serviceParams.Cost);
+            }
+            else if (serviceParams.Title == null && serviceParams.Cost != 0)
+            {
+                predicate = (s => s.Cost == serviceParams.Cost);
+            }
+            else if (serviceParams.Title != null && serviceParams.Cost == 0) {
+                return GetServicesForSubTitle(serviceParams.Title);
+            }
+            else {
+                return _repository.GetAll();
+            }
+            return _repository.Get(predicate);
+        }
+
         public IEnumerable<Service> GetAll()
         {
             return _repository.GetAll();

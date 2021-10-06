@@ -33,5 +33,21 @@ namespace BarberShop.MVC.Controllers
             services = _service.GetServicesForSubTitle((string)serviceTitleSubstr);
             return View(_mapper.Map<IEnumerable<Service>, IEnumerable<ServiceModel>>(services));
         }
+
+        [HttpGet]
+        public IActionResult AdvancedSearch()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult AdvancedSearch(ServiceModel serviceSearchParams)
+        {
+            var services = _mapper.Map<IEnumerable<Service>,
+                IEnumerable<ServiceModel>>(_service.AdvancedSearch(
+                _mapper.Map<ServiceModel, Service>(serviceSearchParams))
+            );
+            return View("Index", services);
+        }
     }
 }

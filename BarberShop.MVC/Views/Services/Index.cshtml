@@ -10,6 +10,12 @@
             <button class="btn btn-primary" name="submit" type="submit" style="margin: 10px">Find</button>
         </div>
     }
+    @using (Html.BeginForm("AdvancedSearch", "Services", FormMethod.Get))
+    {
+        <div class="form-group">
+            <button type="submit" class="btn btn-success">Advanced Search</button>
+        </div>
+    }
     @{
         foreach (var service in Model.OrderBy(s => s.Title))
         {
