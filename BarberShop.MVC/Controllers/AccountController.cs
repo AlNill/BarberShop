@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BarberShop.BLL.Interfaces;
 using BarberShop.DAL.Common.Models;
+using BarberShop.MVC.Filters;
 using BarberShop.MVC.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -35,6 +36,7 @@ namespace BarberShop.MVC.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
+        [CommonExceptionFilter]
         public async Task<IActionResult> Login(LoginModel loginModel)
         {
             Logger.LogInformation("Login request");
@@ -76,6 +78,7 @@ namespace BarberShop.MVC.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
+        [CommonExceptionFilter]
         public async Task<IActionResult> Register(RegisterModel model)
         {
             if (!ModelState.IsValid) 

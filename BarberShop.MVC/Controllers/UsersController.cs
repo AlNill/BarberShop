@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using AutoMapper;
 using BarberShop.BLL.Interfaces;
 using BarberShop.DAL.Common.Models;
+using BarberShop.MVC.Filters;
 using BarberShop.MVC.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -42,6 +43,7 @@ namespace BarberShop.MVC.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
+        [CommonExceptionFilter]
         public IActionResult Edit(UserModel userModel)
         {
             try

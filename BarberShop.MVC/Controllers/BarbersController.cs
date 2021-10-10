@@ -3,6 +3,7 @@ using System.IO;
 using AutoMapper;
 using BarberShop.BLL.Interfaces;
 using BarberShop.DAL.Common.Models;
+using BarberShop.MVC.Filters;
 using BarberShop.MVC.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -41,6 +42,7 @@ namespace BarberShop.MVC.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
+        [CommonExceptionFilter]
         public IActionResult Add(BarberModel barber, IFormFile image)
         {
             if (image != null)
@@ -85,6 +87,7 @@ namespace BarberShop.MVC.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
+        [CommonExceptionFilter]
         public IActionResult Edit(BarberModel barber, IFormFile image)
         {
             if (image != null)

@@ -1,3 +1,5 @@
+using System.IO;
+using System.Net;
 using AutoMapper;
 using BarberShop.BLL.Interfaces;
 using BarberShop.BLL.Services;
@@ -6,10 +8,13 @@ using BarberShop.DAL.Common.Models;
 using BarberShop.DAL.EF.Contexts;
 using BarberShop.DAL.EF.Repositories;
 using BarberShop.MVC.Mapper;
+using BarberShop.MVC.Middleware;
 using BarberShop.MVC.Utils;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -73,7 +78,16 @@ namespace BarberShop.MVC
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
-
+            //app.UseExceptionHandler(errorApp =>
+            //{
+            //    errorApp.Run(async context =>
+            //    {
+            //        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError; ;
+            //        context.Response.ContentType = "text/html";
+            //        context.Response.Redirect("/About");
+            //    });
+            //});
+            //app.UseMiddleware<ExceptionMiddleware>();
             app.UseAuthentication();
             app.UseAuthorization();
 
