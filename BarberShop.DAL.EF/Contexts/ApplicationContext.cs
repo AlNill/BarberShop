@@ -46,17 +46,23 @@ namespace BarberShop.DAL.EF.Contexts
                 RoleId = 1,
             };
 
-            User user = new User()
+
+            User[] users = new User[21];
+            users[0] = admin;
+            for (int i = 1; i < 21; ++i)
             {
-                Id = 2,
-                Name = "UserName",
-                Surname = "UserSurname",
-                FatherName = "UserFatherName",
-                Password = "User",
-                NickName = "User",
-                PhoneNumber = "+111223333333",
-                RoleId = 2,
-            };
+                users[i] = new User()
+                {
+                    Id = i + 1,
+                    Name = $"Name{i}",
+                    Surname = $"Surname{i}",
+                    FatherName = $"FatherName{i}",
+                    Password = $"User{i}",
+                    NickName = $"User{i}",
+                    PhoneNumber = "+111223333333",
+                    RoleId = 2,
+                };
+            }
 
             // Seed barbers
             Barber barber1 = new Barber()
@@ -92,7 +98,7 @@ namespace BarberShop.DAL.EF.Contexts
             Service service3 = new Service() {Id = 3, Title = "Bread trim", Cost = 30};
 
             modelBuilder.Entity<Role>().HasData(new Role[] { adminRole, userRole });
-            modelBuilder.Entity<User>().HasData(new User[] { admin , user });
+            modelBuilder.Entity<User>().HasData(users);
             modelBuilder.Entity<Barber>().HasData(new Barber[] { barber1, barber2, barber3 });
             modelBuilder.Entity<Service>().HasData(new Service[] { service1, service2, service3 });
             base.OnModelCreating(modelBuilder);

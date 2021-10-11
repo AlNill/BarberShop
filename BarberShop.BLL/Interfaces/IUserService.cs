@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using BarberShop.DAL.Common.Models;
 
 namespace BarberShop.BLL.Interfaces
@@ -14,5 +13,7 @@ namespace BarberShop.BLL.Interfaces
         void Update(User user);
         public User GetWithInclude();
         public User GetWithInclude(int id);
+        public int GetCount();
+        public IEnumerable<User> GetRange(int skipPos = 0, int count = 10);
     }
 }
