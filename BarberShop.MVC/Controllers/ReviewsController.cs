@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using BarberShop.BLL.Interfaces;
 using BarberShop.DAL.Common.Models;
+using BarberShop.MVC.Filters;
 using BarberShop.MVC.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
@@ -36,6 +37,7 @@ namespace BarberShop.MVC.Controllers
         }
 
         [Authorize]
+        [CommonExceptionFilter]
         public IActionResult Add(string? reviewText, int? barberId)
         {
             if (HttpContext.Request.Method.ToLower().Equals("get"))

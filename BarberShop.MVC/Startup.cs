@@ -73,7 +73,16 @@ namespace BarberShop.MVC
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
-
+            //app.UseExceptionHandler(errorApp =>
+            //{
+            //    errorApp.Run(async context =>
+            //    {
+            //        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError; ;
+            //        context.Response.ContentType = "text/html";
+            //        context.Response.Redirect("/About");
+            //    });
+            //});
+            //app.UseMiddleware<ExceptionMiddleware>();
             app.UseAuthentication();
             app.UseAuthorization();
 

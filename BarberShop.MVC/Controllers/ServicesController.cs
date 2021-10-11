@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using AutoMapper;
 using BarberShop.BLL.Interfaces;
 using BarberShop.DAL.Common.Models;
+using BarberShop.MVC.Filters;
 using BarberShop.MVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -41,6 +42,7 @@ namespace BarberShop.MVC.Controllers
         }
 
         [HttpPost]
+        [CommonExceptionFilter]
         public IActionResult AdvancedSearch(ServiceModel serviceSearchParams)
         {
             var services = _mapper.Map<IEnumerable<Service>,
