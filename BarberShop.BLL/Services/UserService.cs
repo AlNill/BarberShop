@@ -17,6 +17,16 @@ namespace BarberShop.BLL.Services
             _repository = repository;
         }
 
+        public int GetCount()
+        {
+            return _repository.GetCount();
+        }
+
+        public IEnumerable<User> GetRange(int skipPos = 0, int count = 10)
+        {
+            return _repository.GetRange(skipPos, count);
+        }
+
         public User GetById(int id)
         {
             return _repository.Get(id);

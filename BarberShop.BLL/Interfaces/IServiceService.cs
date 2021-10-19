@@ -5,12 +5,12 @@ namespace BarberShop.BLL.Interfaces
 {
     public interface IServiceService
     {
-        Service GetById(int id);
-        IEnumerable<Service> GetAll();
-        void Create(Service service);
-        void Update(Service service);
+        Offer GetById(int id);
+        IEnumerable<Offer> GetAll();
+        void Create(Offer offer);
+        void Update(Offer offer);
         void Delete(int id);
-        public IEnumerable<Service> GetServicesForSubTitle(string subTitle);
-        public IEnumerable<Service> AdvancedSearch(Service serviceParams);
+        public IEnumerable<Offer> GetServicesForSubTitle(string subTitle);
+        public IEnumerable<Offer> AdvancedSearch(Offer offerParams);
     }
 }

@@ -19,6 +19,16 @@ namespace BarberShop.DAL.EF.Repositories
             _dbSet = _context.Set<TEntity>();
         }
 
+        public int GetCount()
+        {
+            return _dbSet.Count();
+        }
+
+        public IEnumerable<TEntity> GetRange(int skipPos=0, int count=10)
+        {
+            return _dbSet.AsNoTracking().Skip(skipPos).Take(count);
+        }
+
         public IEnumerable<TEntity> GetAll()
         {
             return _dbSet.AsNoTracking().ToList();

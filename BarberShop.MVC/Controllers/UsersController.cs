@@ -5,6 +5,7 @@ using BarberShop.BLL.Interfaces;
 using BarberShop.DAL.Common.Models;
 using BarberShop.MVC.Filters;
 using BarberShop.MVC.Models;
+using BarberShop.MVC.Models.UsersPage;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -25,11 +26,17 @@ namespace BarberShop.MVC.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public IActionResult Index()
+        public IActionResult Index(int pageSize = 10, int page = 0)
         {
             Logger.LogInformation($"Get request for users get all");
-            var users = _userService.GetAll();
-            return View(_mapper.Map<IEnumerable<UserModel>>(users));
+            PageModel pageViewModel = new PageModel(_userService.GetCount(), page, pageSize);
+            IndexModel viewModel = new IndexModel
+            {
+                PageModel = pageViewModel,
+                Users = _mapper.Map<IEnumerable<User>, IEnumerable<UserModel>>(
+                    _userService.GetRange(page * pageSize, pageSize))
+            };
+            return View(viewModel);
         }
 
         [HttpGet]
