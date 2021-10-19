@@ -39,7 +39,7 @@ namespace BarberShop.MVC.Controllers
             var services = _serviceService.GetAll();
             return new Tuple<IEnumerable<BarberModel>, IEnumerable<ServiceModel>>(
                 _mapper.Map<IEnumerable<Barber>, IEnumerable<BarberModel>>(barbers),
-                _mapper.Map<IEnumerable<Service>, IEnumerable<ServiceModel>>(services)
+                _mapper.Map<IEnumerable<Offer>, IEnumerable<ServiceModel>>(services)
             );
         }
 
@@ -77,7 +77,7 @@ namespace BarberShop.MVC.Controllers
                 Barber = barber,
                 RecordTime = date1,
                 ServiceId = serviceId,
-                Service = service,
+                Offer = service,
             };
 
             var validator = new BusyRecordsValidator();

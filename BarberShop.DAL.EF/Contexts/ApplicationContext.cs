@@ -11,17 +11,11 @@ namespace BarberShop.DAL.EF.Contexts
         public DbSet<BusyRecord> BusyRecords { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Log> Logs { get; set; }
-        public DbSet<Service> Services { get; set; }
+        public DbSet<Offer> Offers { get; set; }
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
             Database.EnsureCreated();
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=BarberShopDb;Trusted_Connection=True;");
-            base.OnConfiguring(optionsBuilder);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -93,14 +87,14 @@ namespace BarberShop.DAL.EF.Contexts
             };
 
             // Seed services
-            Service service1 = new Service() {Id = 1, Title = "Mans haircut", Cost = 35};
-            Service service2 = new Service() {Id = 2, Title = "Child haircut", Cost = 30};
-            Service service3 = new Service() {Id = 3, Title = "Bread trim", Cost = 30};
+            Offer service1 = new Offer() {Id = 1, Title = "Mans haircut", Cost = 35};
+            Offer service2 = new Offer() {Id = 2, Title = "Child haircut", Cost = 30};
+            Offer service3 = new Offer() {Id = 3, Title = "Bread trim", Cost = 30};
 
             modelBuilder.Entity<Role>().HasData(new Role[] { adminRole, userRole });
             modelBuilder.Entity<User>().HasData(users);
             modelBuilder.Entity<Barber>().HasData(new Barber[] { barber1, barber2, barber3 });
-            modelBuilder.Entity<Service>().HasData(new Service[] { service1, service2, service3 });
+            modelBuilder.Entity<Offer>().HasData(new Offer[] { service1, service2, service3 });
             base.OnModelCreating(modelBuilder);
         }
     }
