@@ -6,13 +6,13 @@ using BarberShop.DAL.Common.Models;
 
 namespace BarberShop.BLL.Services
 {
-    public class OfferService: IServiceService
+    public class OfferService: IOfferService
     {
         private readonly IGenericRepository<Offer> _repository;
 
-        public OfferService(IGenericRepository<Offer> repository)
+        public OfferService(IUnitOfWork unitOfWork)
         {
-            _repository = repository;
+            _repository = unitOfWork.OfferRepository();
         }
 
         public Offer GetById(int id)

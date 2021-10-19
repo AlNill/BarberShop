@@ -10,9 +10,9 @@ namespace BarberShop.BLL.Services
     public class BusyRecordService: IBusyRecordService
     {
         private readonly IGenericRepository<BusyRecord> _repository;
-        public BusyRecordService(IGenericRepository<BusyRecord> repository)
+        public BusyRecordService(IUnitOfWork unitOfWork)
         {
-            _repository = repository;
+            _repository = unitOfWork.BusyRecordRepository();
         }
 
         public BusyRecord GetById(int id)

@@ -3,7 +3,7 @@ using BarberShop.DAL.Common.Models;
 
 namespace BarberShop.BLL.Interfaces
 {
-    public interface IServiceService
+    public interface IOfferService
     {
         Offer GetById(int id);
         IEnumerable<Offer> GetAll();

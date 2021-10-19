@@ -9,9 +9,9 @@ namespace BarberShop.BLL.Services
     {
         private readonly IGenericRepository<Barber> _repository;
 
-        public BarberService(IGenericRepository<Barber> repository)
+        public BarberService(IUnitOfWork unitOfWork)
         {
-            _repository = repository;
+            _repository = unitOfWork.BarberRepository();
         }
 
         public Barber GetById(int id)

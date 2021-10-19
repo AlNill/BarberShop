@@ -9,9 +9,9 @@ namespace BarberShop.BLL.Services
     {
         private readonly IGenericRepository<Review> _repository;
 
-        public ReviewService(IGenericRepository<Review> repository)
+        public ReviewService(IUnitOfWork unitOfWork)
         {
-            _repository = repository;
+            _repository = unitOfWork.ReviewRepository();
         }
 
         public Review GetById(int id)

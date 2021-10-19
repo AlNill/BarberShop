@@ -12,9 +12,9 @@ namespace BarberShop.BLL.Services
     {
         private readonly IGenericRepository<User> _repository;
 
-        public UserService(IGenericRepository<User> repository)
+        public UserService(IUnitOfWork unitOfWork)
         {
-            _repository = repository;
+            _repository = unitOfWork.UserRepository();
         }
 
         public int GetCount()

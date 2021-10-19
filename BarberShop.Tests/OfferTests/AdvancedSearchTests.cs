@@ -51,8 +51,8 @@ namespace BarberShop.Tests.OfferTests
             var repository = new GenericRepository<Offer>(context);
             IEnumerable<Offer> offers = repository.GetAll();
 
-            OfferService service = new OfferService(repository);
-            Assert.AreEqual(0, service.AdvancedSearch(new Offer{ Title = "Offers" }).Count());
+            OfferService offerService = new OfferOfferService(repository);
+            Assert.AreEqual(0, offerService.AdvancedSearch(new Offer{ Title = "Offers" }).Count());
         }
 
         [Test]
@@ -62,8 +62,8 @@ namespace BarberShop.Tests.OfferTests
             var repository = new GenericRepository<Offer>(context);
             IEnumerable<Offer> offers = repository.GetAll();
 
-            OfferService service = new OfferService(repository);
-            Assert.AreEqual(0, service.AdvancedSearch(new Offer { Cost = 9 }).Count());
+            OfferService offerService = new OfferOfferService(repository);
+            Assert.AreEqual(0, offerService.AdvancedSearch(new Offer { Cost = 9 }).Count());
         }
 
         [Test]
@@ -73,8 +73,8 @@ namespace BarberShop.Tests.OfferTests
             var repository = new GenericRepository<Offer>(context);
             IEnumerable<Offer> offers = repository.GetAll();
 
-            OfferService service = new OfferService(repository);
-            Assert.AreEqual(3, service.AdvancedSearch(new Offer { Title = "Offer" }).Count());
+            OfferService offerService = new OfferOfferService(repository);
+            Assert.AreEqual(3, offerService.AdvancedSearch(new Offer { Title = "Offer" }).Count());
         }
 
         [Test]
@@ -84,8 +84,8 @@ namespace BarberShop.Tests.OfferTests
             var repository = new GenericRepository<Offer>(context);
             IEnumerable<Offer> offers = repository.GetAll();
 
-            OfferService service = new OfferService(repository);
-            Assert.AreEqual(2, service.AdvancedSearch(new Offer { Cost = 40}).Count());
+            OfferService offerService = new OfferOfferService(repository);
+            Assert.AreEqual(2, offerService.AdvancedSearch(new Offer { Cost = 40}).Count());
         }
 
         [Test]
@@ -95,8 +95,8 @@ namespace BarberShop.Tests.OfferTests
             var repository = new GenericRepository<Offer>(context);
             IEnumerable<Offer> offers = repository.GetAll();
 
-            OfferService service = new OfferService(repository);
-            Assert.AreEqual(1, service.AdvancedSearch(new Offer { Title = "Offer", Cost = 40 }).Count());
+            OfferService offerService = new OfferOfferService(repository);
+            Assert.AreEqual(1, offerService.AdvancedSearch(new Offer { Title = "Offer", Cost = 40 }).Count());
         }
     }
 }

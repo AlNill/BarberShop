@@ -19,16 +19,16 @@ namespace BarberShop.MVC.Controllers
     {
         private readonly IBarberService _barberService;
         private readonly IBusyRecordService _busyService;
-        private readonly IServiceService _serviceService;
+        private readonly IOfferService _offerService;
         private readonly IMapper _mapper;
 
         public BusyRecordsController(IBusyRecordService busyService, 
             IBarberService barberService,
-            IServiceService serviceService,
+            IOfferService offerService,
             IMapper mapper)
         {
             _barberService = barberService;
-            _serviceService = serviceService;
+            _offerService = offerService;
             _busyService = busyService;
             _mapper = mapper;
         }
@@ -36,7 +36,7 @@ namespace BarberShop.MVC.Controllers
         private Tuple<IEnumerable<BarberModel>, IEnumerable<ServiceModel>> GetViewData()
         {
             var barbers = _barberService.GetAll();
-            var services = _serviceService.GetAll();
+            var services = _offerService.GetAll();
             return new Tuple<IEnumerable<BarberModel>, IEnumerable<ServiceModel>>(
                 _mapper.Map<IEnumerable<Barber>, IEnumerable<BarberModel>>(barbers),
                 _mapper.Map<IEnumerable<Offer>, IEnumerable<ServiceModel>>(services)
@@ -69,7 +69,7 @@ namespace BarberShop.MVC.Controllers
             }
 
             var barber = _barberService.GetById(barberId);
-            var service = _serviceService.GetById(serviceId);
+            var service = _offerService.GetById(serviceId);
 
             var record = new BusyRecord()
             {

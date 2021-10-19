@@ -13,12 +13,12 @@ namespace BarberShop.MVC.Controllers
     public class ServicesController : BaseController
     {
         private readonly IMapper _mapper;
-        private readonly IServiceService _service;
+        private readonly IOfferService _offerService;
 
-        public ServicesController(IMapper mapper, IServiceService service)
+        public ServicesController(IMapper mapper, IOfferService offerService)
         {
             _mapper = mapper;
-            _service = service;
+            _offerService = offerService;
         }
 
         public IActionResult Index(string? serviceTitleSubstr)
@@ -27,11 +27,11 @@ namespace BarberShop.MVC.Controllers
             if (serviceTitleSubstr == null)
             {
                 Logger.LogInformation($"Get request for Offers get all");
-                services = _service.GetAll();
+                services = _offerService.GetAll();
                 return View(_mapper.Map<IEnumerable<Offer>, IEnumerable<ServiceModel>>(services));
             }
 
-            services = _service.GetServicesForSubTitle((string)serviceTitleSubstr);
+            services = _offerService.GetServicesForSubTitle((string)serviceTitleSubstr);
             return View(_mapper.Map<IEnumerable<Offer>, IEnumerable<ServiceModel>>(services));
         }
 
@@ -46,7 +46,7 @@ namespace BarberShop.MVC.Controllers
         public IActionResult AdvancedSearch(ServiceModel serviceSearchParams)
         {
             var services = _mapper.Map<IEnumerable<Offer>,
-                IEnumerable<ServiceModel>>(_service.AdvancedSearch(
+                IEnumerable<ServiceModel>>(_offerService.AdvancedSearch(
                 _mapper.Map<ServiceModel, Offer>(serviceSearchParams))
             );
             return View("Index", services);

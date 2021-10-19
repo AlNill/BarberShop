@@ -11,9 +11,9 @@ namespace BarberShop.BLL.Services
     {
         private readonly IGenericRepository<Log> _repository;
 
-        public LoggerService(IGenericRepository<Log> repository)
+        public LoggerService(IUnitOfWork unitOfWork)
         {
-            _repository = repository;
+            _repository = unitOfWork.LogRepository();
         }
 
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
