@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using BarberShop.BLL.Interfaces;
 using BarberShop.DAL.Common;
 using BarberShop.DAL.Common.Models;
+using BarberShop.DAL.Common.Repositories;
 
 namespace BarberShop.BLL.Services
 {
     public class OfferService: IOfferService
     {
-        private readonly IGenericRepository<Offer> _repository;
+        private readonly IOfferRepository _repository;
 
         public OfferService(IUnitOfWork unitOfWork)
         {
@@ -27,11 +28,7 @@ namespace BarberShop.BLL.Services
 
         public IEnumerable<Offer> AdvancedSearch(Offer offerParams)
         {
-            Func<Offer, bool> predicate = (s => (
-                (offerParams.Title == null || s.Title.Contains(offerParams.Title)) &&
-                (offerParams.Cost == 0 || s.Cost == offerParams.Cost)
-                ));
-            return _repository.Get(predicate);
+            return _repository.AdvancedSearch(offerParams);
         }
 
         public IEnumerable<Offer> GetAll()
