@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using BarberShop.BLL.Interfaces;
 using BarberShop.DAL.Common;
 using BarberShop.DAL.Common.Models;
+using BarberShop.DAL.Common.Repositories;
 
 namespace BarberShop.BLL.Services
 {
@@ -14,9 +16,9 @@ namespace BarberShop.BLL.Services
             _repository = unitOfWork.ReviewRepository();
         }
 
-        public Review GetById(int id)
+        public async Task<Review> GetById(int id)
         {
-            return _repository.Get(id);
+            return await _repository.Get(id);
         }
 
         public IEnumerable<Review> GetAll()

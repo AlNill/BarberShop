@@ -35,8 +35,8 @@ namespace BarberShop.MVC.Controllers
 
         private Tuple<IEnumerable<BarberModel>, IEnumerable<ServiceModel>> GetViewData()
         {
-            var barbers = _barberService.GetAll();
-            var services = _offerService.GetAll();
+            var barbers = _barberService.GetAll().Result;
+            var services = _offerService.GetAll().Result;
             return new Tuple<IEnumerable<BarberModel>, IEnumerable<ServiceModel>>(
                 _mapper.Map<IEnumerable<Barber>, IEnumerable<BarberModel>>(barbers),
                 _mapper.Map<IEnumerable<Offer>, IEnumerable<ServiceModel>>(services)
@@ -68,8 +68,8 @@ namespace BarberShop.MVC.Controllers
                 return View(tupleModel);
             }
 
-            var barber = _barberService.GetById(barberId);
-            var service = _offerService.GetById(serviceId);
+            var barber = _barberService.GetById(barberId).Result;
+            var service = _offerService.GetById(serviceId).Result;
 
             var record = new BusyRecord()
             {

@@ -43,7 +43,7 @@ namespace BarberShop.MVC.Controllers
             if (HttpContext.Request.Method.ToLower().Equals("get"))
             {
                 IEnumerable<BarberModel> barbers = _mapper.Map<IEnumerable<Barber>, 
-                    IEnumerable<BarberModel>>(_barberService.GetAll());
+                    IEnumerable<BarberModel>>(_barberService.GetAll().Result);
                 return View(barbers);
             }
             else if (HttpContext.Request.Method.ToLower().Equals("post"))
@@ -57,7 +57,7 @@ namespace BarberShop.MVC.Controllers
                 Logger.LogInformation($"Get request for reviews add");
                 var review = new ReviewModel()
                 {
-                    BarberId = _mapper.Map<Barber, BarberModel>(_barberService.GetById((int)barberId)).Id,
+                    BarberId = _mapper.Map<Barber, BarberModel>(_barberService.GetById((int)barberId).Result).Id,
                     UserReview = reviewText,
                     UserId = _userService.Get(u => u.NickName == User.Identity.Name).Id
                 };

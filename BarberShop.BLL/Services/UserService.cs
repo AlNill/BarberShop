@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
+using System.Threading.Tasks;
 using BarberShop.BLL.Interfaces;
 using BarberShop.DAL.Common;
 using BarberShop.DAL.Common.Models;
+using BarberShop.DAL.Common.Repositories;
 
 namespace BarberShop.BLL.Services
 {
@@ -17,9 +18,9 @@ namespace BarberShop.BLL.Services
             _repository = unitOfWork.UserRepository();
         }
 
-        public int GetCount()
+        public async Task<int> GetCount()
         {
-            return _repository.GetCount();
+            return await _repository.GetCount();
         }
 
         public IEnumerable<User> GetRange(int skipPos = 0, int count = 10)
@@ -27,14 +28,14 @@ namespace BarberShop.BLL.Services
             return _repository.GetRange(skipPos, count);
         }
 
-        public User GetById(int id)
+        public async Task<User> GetById(int id)
         {
-            return _repository.Get(id);
+            return await _repository.Get(id);
         }
 
-        public IEnumerable<User> GetAll()
+        public async Task<IEnumerable<User>> GetAll()
         {
-            return _repository.GetAll();
+            return await _repository.GetAll();
         }
 
         public void Create(User user)

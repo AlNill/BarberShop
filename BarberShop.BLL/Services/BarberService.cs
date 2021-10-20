@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using BarberShop.BLL.Interfaces;
 using BarberShop.DAL.Common;
 using BarberShop.DAL.Common.Models;
+using BarberShop.DAL.Common.Repositories;
 
 namespace BarberShop.BLL.Services
 {
@@ -14,14 +16,14 @@ namespace BarberShop.BLL.Services
             _repository = unitOfWork.BarberRepository();
         }
 
-        public Barber GetById(int id)
+        public async Task<Barber> GetById(int id)
         {
-            return _repository.Get(id);
+            return await _repository.Get(id);
         }
 
-        public IEnumerable<Barber> GetAll()
+        public async Task<IEnumerable<Barber>> GetAll()
         {
-            return _repository.GetAll();
+            return await _repository.GetAll();
         }
 
         public void Create(Barber barber)

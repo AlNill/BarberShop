@@ -27,7 +27,7 @@ namespace BarberShop.MVC.Controllers
             if (serviceTitleSubstr == null)
             {
                 Logger.LogInformation($"Get request for Offers get all");
-                services = _offerService.GetAll();
+                services = _offerService.GetAll().Result;
                 return View(_mapper.Map<IEnumerable<Offer>, IEnumerable<ServiceModel>>(services));
             }
 

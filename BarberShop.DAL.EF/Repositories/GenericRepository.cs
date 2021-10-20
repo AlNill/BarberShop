@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using BarberShop.DAL.Common;
+using BarberShop.DAL.Common.Repositories;
 using BarberShop.DAL.EF.Contexts;
 using Microsoft.EntityFrameworkCore;
 
 namespace BarberShop.DAL.EF.Repositories
 {
+    // : IGenericRepository<TEntity>
     public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity: class
     {
         private readonly ApplicationContext _context;
@@ -19,9 +22,9 @@ namespace BarberShop.DAL.EF.Repositories
             DbSet = _context.Set<TEntity>();
         }
 
-        public int GetCount()
+        public async Task<int> GetCount()
         {
-            return DbSet.Count();
+            return await DbSet.CountAsync();
         }
 
         public IEnumerable<TEntity> GetRange(int skipPos=0, int count=10)
@@ -29,14 +32,14 @@ namespace BarberShop.DAL.EF.Repositories
             return DbSet.AsNoTracking().Skip(skipPos).Take(count);
         }
 
-        public IEnumerable<TEntity> GetAll()
+        public async Task<IEnumerable<TEntity>> GetAll()
         {
-            return DbSet.AsNoTracking().ToList();
+            return await DbSet.ToListAsync();
         }
 
-        public TEntity Get(int id)
+        public async Task<TEntity> Get(int id)
         {
-            return DbSet.Find(id);
+            return await DbSet.FindAsync(id);
         }
 
         public IEnumerable<TEntity> Get(Func<TEntity, bool> predicate)
@@ -44,23 +47,23 @@ namespace BarberShop.DAL.EF.Repositories
             return DbSet.AsNoTracking().AsEnumerable().Where(predicate).ToList();
         }
 
-        public void Create(TEntity item)
+        public async void Create(TEntity item)
         {
-            DbSet.Add(item);
-            _context.SaveChanges();
+            await DbSet.AddAsync(item);
+            await _context.SaveChangesAsync();
         }
 
-        public void Update(TEntity item)
+        public async void Update(TEntity item)
         {
             _context.Entry(item).State = EntityState.Modified;
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void Delete(int id)
+        public async void Delete(int id)
         {
-            var item = DbSet.Find(id);
+            var item = await DbSet.FindAsync(id);
             DbSet.Remove(item);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public IEnumerable<TEntity> GetWithInclude(params Expression<Func<TEntity, object>>[] includeProperties)

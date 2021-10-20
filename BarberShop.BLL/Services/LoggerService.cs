@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using BarberShop.BLL.Interfaces;
 using BarberShop.DAL.Common;
 using BarberShop.DAL.Common.Models;
+using BarberShop.DAL.Common.Repositories;
 using Microsoft.Extensions.Logging;
 
 namespace BarberShop.BLL.Services
@@ -32,9 +34,9 @@ namespace BarberShop.BLL.Services
             return null;
         }
 
-        public IEnumerable<Log> GetAll()
+        public async Task<IEnumerable<Log>> GetAll()
         {
-            return _repository.GetAll();
+            return await _repository.GetAll();
         }
     }
 }

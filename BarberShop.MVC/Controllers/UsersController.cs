@@ -29,7 +29,7 @@ namespace BarberShop.MVC.Controllers
         public IActionResult Index(int pageSize = 10, int page = 0)
         {
             Logger.LogInformation($"Get request for users get all");
-            PageModel pageViewModel = new PageModel(_userService.GetCount(), page, pageSize);
+            PageModel pageViewModel = new PageModel(_userService.GetCount().Result, page, pageSize);
             IndexModel viewModel = new IndexModel
             {
                 PageModel = pageViewModel,

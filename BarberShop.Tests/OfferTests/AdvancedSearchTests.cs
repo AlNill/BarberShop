@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BarberShop.BLL.Services;
 using BarberShop.DAL.Common.Models;
+using BarberShop.DAL.EF;
 using BarberShop.DAL.EF.Contexts;
 using BarberShop.DAL.EF.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -48,10 +49,10 @@ namespace BarberShop.Tests.OfferTests
         public void TestEmptySubTitle()
         {
             using var context = new ApplicationContext(Opt);
-            var repository = new GenericRepository<Offer>(context);
-            IEnumerable<Offer> offers = repository.GetAll();
+            var repository = new UnitOfWork(context);
+            IEnumerable<Offer> offers = repository.OfferRepository().GetAll().Result;
 
-            OfferService offerService = new OfferOfferService(repository);
+            OfferService offerService = new OfferService(repository);
             Assert.AreEqual(0, offerService.AdvancedSearch(new Offer{ Title = "Offers" }).Count());
         }
 
@@ -59,10 +60,10 @@ namespace BarberShop.Tests.OfferTests
         public void TestEmptyCost()
         {
             using var context = new ApplicationContext(Opt);
-            var repository = new GenericRepository<Offer>(context);
-            IEnumerable<Offer> offers = repository.GetAll();
+            var repository = new UnitOfWork(context);
+            IEnumerable<Offer> offers = repository.OfferRepository().GetAll().Result;
 
-            OfferService offerService = new OfferOfferService(repository);
+            OfferService offerService = new OfferService(repository);
             Assert.AreEqual(0, offerService.AdvancedSearch(new Offer { Cost = 9 }).Count());
         }
 
@@ -70,10 +71,10 @@ namespace BarberShop.Tests.OfferTests
         public void TestSubTitle()
         {
             using var context = new ApplicationContext(Opt);
-            var repository = new GenericRepository<Offer>(context);
-            IEnumerable<Offer> offers = repository.GetAll();
+            var repository = new UnitOfWork(context);
+            IEnumerable<Offer> offers = repository.OfferRepository().GetAll().Result;
 
-            OfferService offerService = new OfferOfferService(repository);
+            OfferService offerService = new OfferService(repository);
             Assert.AreEqual(3, offerService.AdvancedSearch(new Offer { Title = "Offer" }).Count());
         }
 
@@ -81,10 +82,10 @@ namespace BarberShop.Tests.OfferTests
         public void TestCost()
         {
             using var context = new ApplicationContext(Opt);
-            var repository = new GenericRepository<Offer>(context);
-            IEnumerable<Offer> offers = repository.GetAll();
+            var repository = new UnitOfWork(context);
+            IEnumerable<Offer> offers = repository.OfferRepository().GetAll().Result;
 
-            OfferService offerService = new OfferOfferService(repository);
+            OfferService offerService = new OfferService(repository);
             Assert.AreEqual(2, offerService.AdvancedSearch(new Offer { Cost = 40}).Count());
         }
 
@@ -92,10 +93,10 @@ namespace BarberShop.Tests.OfferTests
         public void TestCostAndSubTitle()
         {
             using var context = new ApplicationContext(Opt);
-            var repository = new GenericRepository<Offer>(context);
-            IEnumerable<Offer> offers = repository.GetAll();
+            var repository = new UnitOfWork(context);
+            IEnumerable<Offer> offers = repository.OfferRepository().GetAll().Result;
 
-            OfferService offerService = new OfferOfferService(repository);
+            OfferService offerService = new OfferService(repository);
             Assert.AreEqual(1, offerService.AdvancedSearch(new Offer { Title = "Offer", Cost = 40 }).Count());
         }
     }

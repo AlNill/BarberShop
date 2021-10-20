@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using BarberShop.BLL.Interfaces;
 using BarberShop.DAL.Common;
 using BarberShop.DAL.Common.Models;
@@ -16,9 +17,9 @@ namespace BarberShop.BLL.Services
             _repository = unitOfWork.OfferRepository();
         }
 
-        public Offer GetById(int id)
+        public async Task<Offer> GetById(int id)
         {
-            return _repository.Get(id);
+            return await _repository.Get(id);
         }
 
         public IEnumerable<Offer> GetServicesForSubTitle(string subTitle)
@@ -31,9 +32,9 @@ namespace BarberShop.BLL.Services
             return _repository.AdvancedSearch(offerParams);
         }
 
-        public IEnumerable<Offer> GetAll()
+        public async Task<IEnumerable<Offer>> GetAll()
         {
-            return _repository.GetAll();
+            return await _repository.GetAll();
         }
 
         public void Create(Offer offer)

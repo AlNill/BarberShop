@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using BarberShop.DAL.Common.Models;
 
 namespace BarberShop.BLL.Interfaces
 {
     public interface IBarberService
     {
-        Barber GetById(int id);
-        IEnumerable<Barber> GetAll();
-        void Create(Barber barber);
-        void Update(Barber barber);
+        public Task<Barber> GetById(int id);
+        public Task<IEnumerable<Barber>> GetAll();
+        public void Create(Barber barber);
+        public void Update(Barber barber);
     }
 }
