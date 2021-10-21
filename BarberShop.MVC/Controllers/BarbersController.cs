@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using AutoMapper;
 using BarberShop.BLL.Interfaces;
 using BarberShop.DAL.Common.Models;
@@ -26,10 +27,10 @@ namespace BarberShop.MVC.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             Logger.LogInformation($"Get request for Barbers get all");
-            var barbers = _barbersService.GetAll();
+            var barbers = await _barbersService.GetAll();
             return View(_mapper.Map<IEnumerable<BarberModel>>(barbers));
         }
 
@@ -43,11 +44,13 @@ namespace BarberShop.MVC.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [CommonExceptionFilter]
-        public IActionResult Add(BarberModel barber, IFormFile image)
+        public async Task<IActionResult> Add(BarberModel barber, IFormFile image)
         {
             if (image != null)
             {
-                string imagePath = SaveFile(image, barber.Surname + image.FileName);
+                var fileName = barber.Surname + image.FileName;
+                string imagePath = $"/images/{fileName}";
+                await SaveFile(image, fileName);
                 barber.ImagePath = imagePath;
             }
 
@@ -62,12 +65,11 @@ namespace BarberShop.MVC.Controllers
             return RedirectToAction("Index");
         }
 
-        public string SaveFile(IFormFile file, string name)
+        public async Task SaveFile(IFormFile file, string name)
         {
-            string filePath = Directory.GetCurrentDirectory() + "/wwwroot/images/" + name;
-            using var stream = new FileStream(filePath, FileMode.Create);
-            file.CopyTo(stream);
-            return $"/images/{name}";
+            var filePath = Directory.GetCurrentDirectory() + "/wwwroot/images/" + name;
+            await using var stream = new FileStream(filePath, FileMode.Create);
+            await file.CopyToAsync(stream);
         }
 
         [HttpGet]
@@ -88,13 +90,16 @@ namespace BarberShop.MVC.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [CommonExceptionFilter]
-        public IActionResult Edit(BarberModel barber, IFormFile image)
+        public async Task<IActionResult> Edit(BarberModel barber, IFormFile image)
         {
             if (image != null)
             {
-                string imagePath = SaveFile(image, barber.Surname + image.FileName);
+                var fileName = barber.Surname + image.FileName;
+                string imagePath = $"/images/{fileName}";
+                await SaveFile(image, fileName);
                 barber.ImagePath = imagePath;
             }
+
             Logger.LogInformation("Post request for Edit Barber");
             if (ModelState.IsValid)
             {

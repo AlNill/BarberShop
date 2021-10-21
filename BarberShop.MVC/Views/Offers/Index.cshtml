@@ -3,14 +3,14 @@
     ViewData["Title"] = "Offers";
 }
 <div class="d-flex justify-content-center flex-column" style="width: 80%; height: 90%;">
-    @using (Html.BeginForm("Index", "Services", FormMethod.Get))
+    @using (Html.BeginForm("Index", "Offers", FormMethod.Get))
     {
         <div class="d-flex justify-content-start flex-row">
             <input name="offerTitleSubstr" class="form-control"/>
             <button class="btn btn-primary" name="submit" type="submit" style="margin: 10px">Find</button>
         </div>
     }
-    @using (Html.BeginForm("AdvancedSearch", "Services", FormMethod.Get))
+    @using (Html.BeginForm("AdvancedSearch", "Offers", FormMethod.Get))
     {
         <div class="form-group">
             <button type="submit" class="btn btn-success">Advanced Search</button>

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using BarberShop.BLL.Interfaces;
 using BarberShop.DAL.Common.Models;
@@ -10,24 +11,24 @@ using Microsoft.Extensions.Logging;
 
 namespace BarberShop.MVC.Controllers
 {
-    public class ServicesController : BaseController
+    public class OffersController : BaseController
     {
         private readonly IMapper _mapper;
         private readonly IOfferService _offerService;
 
-        public ServicesController(IMapper mapper, IOfferService offerService)
+        public OffersController(IMapper mapper, IOfferService offerService)
         {
             _mapper = mapper;
             _offerService = offerService;
         }
 
-        public IActionResult Index(string? serviceTitleSubstr)
+        public async Task<IActionResult> Index(string? serviceTitleSubstr)
         {
             IEnumerable<Offer> services;
             if (serviceTitleSubstr == null)
             {
                 Logger.LogInformation($"Get request for Offers get all");
-                services = _offerService.GetAll().Result;
+                services = await _offerService.GetAll();
                 return View(_mapper.Map<IEnumerable<Offer>, IEnumerable<ServiceModel>>(services));
             }
 

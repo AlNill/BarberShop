@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using BarberShop.BLL.Interfaces;
 using BarberShop.DAL.Common.Models;
@@ -26,11 +27,11 @@ namespace BarberShop.MVC.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public IActionResult Index(int pageSize = 10, int page = 0)
+        public async Task<IActionResult> Index(int pageSize = 10, int page = 0)
         {
             Logger.LogInformation($"Get request for users get all");
-            PageModel pageViewModel = new PageModel(_userService.GetCount().Result, page, pageSize);
-            IndexModel viewModel = new IndexModel
+            var pageViewModel = new PageModel(await _userService.GetCount(), page, pageSize);
+            var viewModel = new IndexModel
             {
                 PageModel = pageViewModel,
                 Users = _mapper.Map<IEnumerable<User>, IEnumerable<UserModel>>(
@@ -41,10 +42,10 @@ namespace BarberShop.MVC.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
             Logger.LogInformation($"Get request for edit user with user id {id}");
-            var user = _userService.GetById(id);
+            var user = await _userService.GetById(id);
             return View(_mapper.Map<UserModel>(user));
         }
 

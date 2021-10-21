@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using BarberShop.BLL.Interfaces;
 using BarberShop.DAL.Common.Models;
@@ -33,10 +34,10 @@ namespace BarberShop.MVC.Controllers
             _mapper = mapper;
         }
 
-        private Tuple<IEnumerable<BarberModel>, IEnumerable<ServiceModel>> GetViewData()
+        private async Task<Tuple<IEnumerable<BarberModel>, IEnumerable<ServiceModel>>> GetViewData()
         {
-            var barbers = _barberService.GetAll().Result;
-            var services = _offerService.GetAll().Result;
+            var barbers = await _barberService.GetAll();
+            var services = await _offerService.GetAll();
             return new Tuple<IEnumerable<BarberModel>, IEnumerable<ServiceModel>>(
                 _mapper.Map<IEnumerable<Barber>, IEnumerable<BarberModel>>(barbers),
                 _mapper.Map<IEnumerable<Offer>, IEnumerable<ServiceModel>>(services)
@@ -45,22 +46,22 @@ namespace BarberShop.MVC.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             Logger.LogInformation($"Records startup request");
-            var barbers = _barberService.GetAll();
-            return View(GetViewData());
+            return View(await GetViewData());
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin, User")]
         [CommonExceptionFilter]
-        public IActionResult Index(int barberId, int serviceId, string date)
+        public async Task<IActionResult> Index(int barberId, int serviceId, string date)
         {
             // TODO: Make beautiful calendar with hours
             var date1 = DateTime.Parse(date + " 00:00 AM", new CultureInfo("en-US"));
             Logger.LogInformation($"Record request with barber id: {barberId}, date {date}");
-            var tupleModel = GetViewData();
+            
+            var tupleModel = await GetViewData();
             if (_busyService.IsExists(barberId, date1) != null)
             {
                 ViewBag.Message = "Sorry, this record exist";
@@ -68,8 +69,8 @@ namespace BarberShop.MVC.Controllers
                 return View(tupleModel);
             }
 
-            var barber = _barberService.GetById(barberId).Result;
-            var service = _offerService.GetById(serviceId).Result;
+            var barber = await _barberService.GetById(barberId);
+            var service = await _offerService.GetById(serviceId);
 
             var record = new BusyRecord()
             {
@@ -81,7 +82,7 @@ namespace BarberShop.MVC.Controllers
             };
 
             var validator = new BusyRecordsValidator();
-            var validationResult = validator.Validate(record);
+            var validationResult = await validator.ValidateAsync(record);
             if (!validationResult.IsValid)
             {
                 string msg = validationResult.Errors.First().ToString();
