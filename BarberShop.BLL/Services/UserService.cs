@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
+using System.Threading.Tasks;
 using BarberShop.BLL.Interfaces;
 using BarberShop.DAL.Common;
 using BarberShop.DAL.Common.Models;
+using BarberShop.DAL.Common.Repositories;
 
 namespace BarberShop.BLL.Services
 {
@@ -12,19 +13,29 @@ namespace BarberShop.BLL.Services
     {
         private readonly IGenericRepository<User> _repository;
 
-        public UserService(IGenericRepository<User> repository)
+        public UserService(IUnitOfWork unitOfWork)
         {
-            _repository = repository;
+            _repository = unitOfWork.UserRepository();
         }
 
-        public User GetById(int id)
+        public async Task<int> GetCount()
         {
-            return _repository.Get(id);
+            return await _repository.GetCount();
         }
 
-        public IEnumerable<User> GetAll()
+        public IEnumerable<User> GetRange(int skipPos = 0, int count = 10)
         {
-            return _repository.GetAll();
+            return _repository.GetRange(skipPos, count);
+        }
+
+        public async Task<User> GetById(int id)
+        {
+            return await _repository.Get(id);
+        }
+
+        public async Task<IEnumerable<User>> GetAll()
+        {
+            return await _repository.GetAll();
         }
 
         public void Create(User user)

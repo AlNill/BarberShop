@@ -7,5 +7,7 @@ namespace BarberShop.MVC.Models
         [Required]
         [StringLength(150)]
         public string Information { get; set; }
+
+        public string ImagePath { get; set; } = "/images/standart_short.jpg";
     }
 }

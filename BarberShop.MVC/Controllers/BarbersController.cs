@@ -1,9 +1,13 @@
 ﻿using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 using AutoMapper;
 using BarberShop.BLL.Interfaces;
 using BarberShop.DAL.Common.Models;
+using BarberShop.MVC.Filters;
 using BarberShop.MVC.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -23,10 +27,10 @@ namespace BarberShop.MVC.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             Logger.LogInformation($"Get request for Barbers get all");
-            var barbers = _barbersService.GetAll();
+            var barbers = await _barbersService.GetAll();
             return View(_mapper.Map<IEnumerable<BarberModel>>(barbers));
         }
 
@@ -39,8 +43,17 @@ namespace BarberShop.MVC.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public IActionResult Add(BarberModel barber)
+        [CommonExceptionFilter]
+        public async Task<IActionResult> Add(BarberModel barber, IFormFile image)
         {
+            if (image != null)
+            {
+                var fileName = barber.Surname + image.FileName;
+                string imagePath = $"/images/{fileName}";
+                await SaveFile(image, fileName);
+                barber.ImagePath = imagePath;
+            }
+
             if (!ModelState.IsValid)
             {
                 Logger.LogInformation($"Bad information for barber add: Name {barber.Name}, Surname {barber.Surname}," +
@@ -52,37 +65,52 @@ namespace BarberShop.MVC.Controllers
             return RedirectToAction("Index");
         }
 
+        public async Task SaveFile(IFormFile file, string name)
+        {
+            var filePath = Directory.GetCurrentDirectory() + "/wwwroot/images/" + name;
+            await using var stream = new FileStream(filePath, FileMode.Create);
+            await file.CopyToAsync(stream);
+        }
+
+        [HttpGet]
         [Authorize(Roles = "Admin")]
         public IActionResult Edit(BarberModel barber)
         {
-            if (HttpContext.Request.Method.ToLower().Equals("get"))
+            Logger.LogInformation("Get request for Edit Barber");
+            if (ModelState.IsValid)
             {
-                Logger.LogInformation("Get request for Edit Barber");
-                if (ModelState.IsValid)
-                {
-                    Logger.LogInformation("Valid model. Send rendered view for editing");
-                    return View(barber);
-                }
-                Logger.LogInformation("Bad barber model for editing");
-                ModelState.AddModelError("", "Bad barber model");
-                return RedirectToAction("Index", "Barbers");
+                Logger.LogInformation("Valid model. Send rendered view for editing");
+                return View(barber);
             }
-            else if (HttpContext.Request.Method.ToLower().Equals("post"))
-            {
-                Logger.LogInformation("Post request for Edit Barber");
-                if (ModelState.IsValid)
-                {
-                    _barbersService.Update(_mapper.Map<BarberModel, Barber>(barber));
-                    Logger.LogInformation($"Success update barber to: name {barber.Name}, surname {barber.Surname}, " +
-                                          $"{barber.FatherName}");
-                    return RedirectToAction("Index", "Barbers");
-                }
+            Logger.LogInformation("Bad barber model for editing");
+            ModelState.AddModelError("", "Bad barber model");
+            return RedirectToAction("Index", "Barbers");
+        }
 
-                Logger.LogInformation("Model for edit barber is not valid");
-                ModelState.AddModelError("", "Bad barber model");
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [CommonExceptionFilter]
+        public async Task<IActionResult> Edit(BarberModel barber, IFormFile image)
+        {
+            if (image != null)
+            {
+                var fileName = barber.Surname + image.FileName;
+                string imagePath = $"/images/{fileName}";
+                await SaveFile(image, fileName);
+                barber.ImagePath = imagePath;
+            }
+
+            Logger.LogInformation("Post request for Edit Barber");
+            if (ModelState.IsValid)
+            {
+                _barbersService.Update(_mapper.Map<BarberModel, Barber>(barber));
+                Logger.LogInformation($"Success update barber to: name {barber.Name}, surname {barber.Surname}, " +
+                                      $"{barber.FatherName}");
                 return RedirectToAction("Index", "Barbers");
             }
-            ModelState.AddModelError("", "Non supported request method");
+
+            Logger.LogInformation("Model for edit barber is not valid");
+            ModelState.AddModelError("", "Bad barber model");
             return RedirectToAction("Index", "Barbers");
         }
     }

@@ -2,55 +2,68 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using BarberShop.DAL.Common;
+using BarberShop.DAL.Common.Repositories;
 using BarberShop.DAL.EF.Contexts;
 using Microsoft.EntityFrameworkCore;
 
 namespace BarberShop.DAL.EF.Repositories
 {
+    // : IGenericRepository<TEntity>
     public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity: class
     {
         private readonly ApplicationContext _context;
-        private readonly DbSet<TEntity> _dbSet;
+        protected readonly DbSet<TEntity> DbSet;
 
         public GenericRepository(ApplicationContext context)
         {
             _context = context;
-            _dbSet = _context.Set<TEntity>();
+            DbSet = _context.Set<TEntity>();
         }
 
-        public IEnumerable<TEntity> GetAll()
+        public async Task<int> GetCount()
         {
-            return _dbSet.AsNoTracking().ToList();
+            return await DbSet.CountAsync();
         }
 
-        public TEntity Get(int id)
+        public IEnumerable<TEntity> GetRange(int skipPos=0, int count=10)
         {
-            return _dbSet.Find(id);
+            return DbSet.AsNoTracking().Skip(skipPos).Take(count);
+        }
+
+        public async Task<IEnumerable<TEntity>> GetAll()
+        {
+            return await DbSet.ToListAsync();
+        }
+
+        public async Task<TEntity> Get(int id)
+        {
+            return await DbSet.FindAsync(id);
         }
 
         public IEnumerable<TEntity> Get(Func<TEntity, bool> predicate)
         {
-            return _dbSet.AsNoTracking().AsEnumerable().Where(predicate).ToList();
+            return DbSet.AsNoTracking().AsEnumerable().Where(predicate).ToList();
         }
 
-        public void Create(TEntity item)
+        public async void Create(TEntity item)
         {
-            _dbSet.Add(item);
-            _context.SaveChanges();
+            await DbSet.AddAsync(item);
+            await _context.SaveChangesAsync();
         }
 
-        public void Update(TEntity item)
+        public async void Update(TEntity item)
         {
             _context.Entry(item).State = EntityState.Modified;
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void Delete(int id)
+        public async void Delete(int id)
         {
-            var item = _dbSet.Find(id);
-            _dbSet.Remove(item);
-            _context.SaveChanges();
+            var item = await DbSet.FindAsync(id);
+            DbSet.Remove(item);
+            await _context.SaveChangesAsync();
         }
 
         public IEnumerable<TEntity> GetWithInclude(params Expression<Func<TEntity, object>>[] includeProperties)
@@ -60,7 +73,7 @@ namespace BarberShop.DAL.EF.Repositories
 
         private IQueryable<TEntity> Include(params Expression<Func<TEntity, object>>[] includeProperties)
         {
-            IQueryable<TEntity> query = _dbSet.AsNoTracking();
+            IQueryable<TEntity> query = DbSet.AsNoTracking();
             return includeProperties
                 .Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
         }

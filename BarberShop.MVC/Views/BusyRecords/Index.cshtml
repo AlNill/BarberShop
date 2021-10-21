@@ -22,7 +22,7 @@
                                 <option value="@barber.Id">@barber.Name @barber.Surname</option>
                             }
                         </select>
-                        <select name="serviceId" style="margin: 10px;">
+                        <select name="offerId" style="margin: 10px;">
                             @foreach (var service in Model.Item2.OrderBy(b => b.Cost))
                             {
                                 <option value="@service.Id">@service.Title @service.Cost</option>

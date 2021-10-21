@@ -1,23 +1,58 @@
-﻿@model IEnumerable<UserModel>
+﻿@model BarberShop.MVC.Models.UsersPage.IndexModel
 @{
     ViewData["Title"] = "Users";
 }
 
-<h1>Users</h1>
-<table class="table table-bordered">
-
-    <tr>
-        <th>Name</th>
-    </tr>
-
-    @foreach (var user in Model.OrderBy(s => s.NickName))
-    {
-        <tr>
-            <td><a asp-controller="Users" asp-action="Edit" asp-route-id="@user.Id">@user.Surname @user.Name</a></td>
-        </tr>
-    }
-
-    <tr>
-        <th><div class="text-info">Total: @Model.Count()</div></th>
-    </tr>
-</table>
+<div class="d-flex justify-content-center flex-column" style="vertical-align: top; width: 100%; height: 95%;">
+    <div>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <td>Full name</td>
+                    <td>Phone Number</td>
+                    <td>Nickname</td>
+                    <td>Password</td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Users.Select((user, i) => new { user, i }))
+                {
+                    <tr>
+                        <th scope="row">@item.i</th>
+                        <td>@item.user.Name @item.user.Surname @item.user.FatherName</td>
+                        <td>@item.user.PhoneNumber</td>
+                        <td>@item.user.NickName</td>
+                        <td>@item.user.Password</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="d-flex justify-content-center flex-row">
+        <div>
+            @if (Model.PageModel.HasPreviousPage)
+            {
+                <a asp-action="Index"
+                   asp-route-pageSize=""
+                   asp-route-page="@(Model.PageModel.PageNumber - 1)"
+                   class="btn btn-primary"
+                   style="margin: 5px;">
+                    Prev
+                </a>
+            }
+        </div>
+        <div>
+            @if (Model.PageModel.HasNextPage)
+            {
+                <a asp-action="Index"
+                   asp-route-pageSize=""
+                   asp-route-page="@(Model.PageModel.PageNumber + 1)"
+                   class="btn btn-primary"
+                   style="margin: 5px;">
+                    Next
+                </a>
+            }
+        </div>
+    </div>
+</div>
