@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using BarberShop.BLL.Services;
 using BarberShop.DAL.Common.Models;
 using BarberShop.DAL.EF;
 using BarberShop.DAL.EF.Contexts;
-using BarberShop.DAL.EF.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Moq;
 using NUnit.Framework;
 
 namespace BarberShop.Tests.OfferTests
@@ -46,55 +45,55 @@ namespace BarberShop.Tests.OfferTests
         }
 
         [Test]
-        public void TestEmptySubTitle()
+        public async Task TestEmptySubTitle()
         {
-            using var context = new ApplicationContext(Opt);
+            await using var context = new ApplicationContext(Opt);
             var repository = new UnitOfWork(context);
-            IEnumerable<Offer> offers = repository.OfferRepository().GetAll().Result;
+            IEnumerable<Offer> offers = await repository.OfferRepository().GetAll();
 
             OfferService offerService = new OfferService(repository);
             Assert.AreEqual(0, offerService.AdvancedSearch(new Offer{ Title = "Offers" }).Count());
         }
 
         [Test]
-        public void TestEmptyCost()
+        public async Task TestEmptyCost()
         {
-            using var context = new ApplicationContext(Opt);
+            await using var context = new ApplicationContext(Opt);
             var repository = new UnitOfWork(context);
-            IEnumerable<Offer> offers = repository.OfferRepository().GetAll().Result;
+            IEnumerable<Offer> offers = await repository.OfferRepository().GetAll();
 
             OfferService offerService = new OfferService(repository);
             Assert.AreEqual(0, offerService.AdvancedSearch(new Offer { Cost = 9 }).Count());
         }
 
         [Test]
-        public void TestSubTitle()
+        public async Task TestSubTitle()
         {
-            using var context = new ApplicationContext(Opt);
+            await using var context = new ApplicationContext(Opt);
             var repository = new UnitOfWork(context);
-            IEnumerable<Offer> offers = repository.OfferRepository().GetAll().Result;
+            IEnumerable<Offer> offers = await repository.OfferRepository().GetAll();
 
             OfferService offerService = new OfferService(repository);
             Assert.AreEqual(3, offerService.AdvancedSearch(new Offer { Title = "Offer" }).Count());
         }
 
         [Test]
-        public void TestCost()
+        public async Task TestCost()
         {
-            using var context = new ApplicationContext(Opt);
+            await using var context = new ApplicationContext(Opt);
             var repository = new UnitOfWork(context);
-            IEnumerable<Offer> offers = repository.OfferRepository().GetAll().Result;
+            IEnumerable<Offer> offers = await repository.OfferRepository().GetAll();
 
             OfferService offerService = new OfferService(repository);
             Assert.AreEqual(2, offerService.AdvancedSearch(new Offer { Cost = 40}).Count());
         }
 
         [Test]
-        public void TestCostAndSubTitle()
+        public async Task TestCostAndSubTitle()
         {
-            using var context = new ApplicationContext(Opt);
+            await using var context = new ApplicationContext(Opt);
             var repository = new UnitOfWork(context);
-            IEnumerable<Offer> offers = repository.OfferRepository().GetAll().Result;
+            IEnumerable<Offer> offers = await repository.OfferRepository().GetAll();
 
             OfferService offerService = new OfferService(repository);
             Assert.AreEqual(1, offerService.AdvancedSearch(new Offer { Title = "Offer", Cost = 40 }).Count());
