@@ -62,7 +62,7 @@ namespace BarberShop.MVC.Controllers
                         UserId = _userService.Get(u => u.NickName == User.Identity.Name).Id
                     };
 
-                    _reviewService.Create(_mapper.Map<ReviewModel, Review>(review));
+                    await _reviewService.Create(_mapper.Map<ReviewModel, Review>(review));
                     ViewBag.Message = "Success add review. Thanks for your attention";
                     return RedirectToAction("Index", "Reviews");
                 }

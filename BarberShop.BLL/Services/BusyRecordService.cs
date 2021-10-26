@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using BarberShop.BLL.Interfaces;
 using BarberShop.DAL.Common;
@@ -27,14 +28,14 @@ namespace BarberShop.BLL.Services
             return await _repository.GetAll();
         }
 
-        public void Create(BusyRecord record)
+        public async Task Create(BusyRecord record)
         {
-            _repository.Create(record);
+            await _repository.Create(record);
         }
 
-        public void Update(BusyRecord record)
+        public async Task Update(BusyRecord record)
         {
-            _repository.Update(record);
+            await _repository.Update(record);
         }
 
         public BusyRecord IsExists(int barberId, DateTime date)

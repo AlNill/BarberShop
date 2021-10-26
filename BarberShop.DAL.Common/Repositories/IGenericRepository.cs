@@ -11,9 +11,9 @@ namespace BarberShop.DAL.Common.Repositories
         public Task<IEnumerable<TEntity>> GetAll();
         public Task<TEntity> Get(int id);
         IEnumerable<TEntity> Get(Func<TEntity, bool> predicate);
-        void Create(TEntity item);
-        void Update(TEntity item);
-        void Delete(int id);
+        Task Create(TEntity item);
+        Task Update(TEntity item);
+        Task Delete(int id);
         public Task<int> GetCount();
         public IEnumerable<TEntity> GetWithInclude(params Expression<Func<TEntity, object>>[] includeProperties);
     }

@@ -38,9 +38,9 @@ namespace BarberShop.BLL.Services
             return await _repository.GetAll();
         }
 
-        public void Create(User user)
+        public async Task Create(User user)
         {
-            _repository.Create(user);
+            await _repository.Create(user);
         }
 
         public User Get(Func<User, bool> predicate)
@@ -48,9 +48,9 @@ namespace BarberShop.BLL.Services
             return _repository.Get(predicate).FirstOrDefault();
         }
 
-        public void Update(User user)
+        public async Task Update(User user)
         {
-            _repository.Update(user);
+            await _repository.Update(user);
         }
 
         public User GetWithInclude()

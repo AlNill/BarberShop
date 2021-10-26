@@ -26,9 +26,9 @@ namespace BarberShop.BLL.Services
             return _repository.GetWithInclude(x => x.Barber, u => u.User);
         }
 
-        public void Create(Review review)
+        public async Task Create(Review review)
         {
-            _repository.Create(review);
+            await _repository.Create(review);
         }
     }
 }

@@ -31,7 +31,8 @@ namespace BarberShop.MVC.Controllers
         {
             Logger.LogInformation($"Get request for Barbers get all");
             var barbers = await _barbersService.GetAll();
-            return View(_mapper.Map<IEnumerable<BarberModel>>(barbers));
+            return View(_mapper.Map<IEnumerable<BarberModel>>(
+                barbers));
         }
 
         [HttpGet]
@@ -61,7 +62,7 @@ namespace BarberShop.MVC.Controllers
                 ModelState.AddModelError("", "Badly input information");
                 return View();
             }
-            _barbersService.Create(_mapper.Map<BarberModel, Barber>(barber));
+            await _barbersService.Create(_mapper.Map<BarberModel, Barber>(barber));
             return RedirectToAction("Index");
         }
 
@@ -103,7 +104,7 @@ namespace BarberShop.MVC.Controllers
             Logger.LogInformation("Post request for Edit Barber");
             if (ModelState.IsValid)
             {
-                _barbersService.Update(_mapper.Map<BarberModel, Barber>(barber));
+                await _barbersService.Update(_mapper.Map<BarberModel, Barber>(barber));
                 Logger.LogInformation($"Success update barber to: name {barber.Name}, surname {barber.Surname}, " +
                                       $"{barber.FatherName}");
                 return RedirectToAction("Index", "Barbers");

@@ -91,7 +91,7 @@ namespace BarberShop.MVC.Controllers
                 return View(tupleModel);
             }
 
-            _busyService.Create(record);
+            await _busyService.Create(record);
             Logger.LogInformation($"Success record with barber id: {barberId}, date {date}");
             ViewBag.Message = $"Success record to barber: {barber.Name + barber.Surname}";
             return View(tupleModel);

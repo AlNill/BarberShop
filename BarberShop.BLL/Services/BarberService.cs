@@ -26,14 +26,14 @@ namespace BarberShop.BLL.Services
             return await _repository.GetAll();
         }
 
-        public void Create(Barber barber)
+        public async Task Create(Barber barber)
         {
-            _repository.Create(barber);
+            await _repository.Create(barber);
         }
 
-        public void Update(Barber barber)
+        public async Task Update(Barber barber)
         {
-            _repository.Update(barber);
+            await _repository.Update(barber);
         }
     }
 }

@@ -9,9 +9,9 @@ namespace BarberShop.BLL.Interfaces
     {
         public Task<User> GetById(int id);
         public Task<IEnumerable<User>> GetAll();
-        public void Create(User user);
+        public Task Create(User user);
         public User Get(Func<User, bool> predicate);
-        public void Update(User user);
+        public Task Update(User user);
         public User GetWithInclude();
         public User GetWithInclude(int id);
         public Task<int> GetCount();

@@ -21,10 +21,16 @@ namespace BarberShop.DAL.EF.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            RolesSeed.SeedRoles(modelBuilder);
-            UsersSeed.SeedUsers(modelBuilder);
-            BarbersSeed.SeedBarbers(modelBuilder);
-            OffersSeed.SeedOffers(modelBuilder);
+            var roles = RolesSeed.SeedRoles();
+            var users = UsersSeed.SeedUsers();
+            var barbers = BarbersSeed.SeedBarbers();
+            var offers = OffersSeed.SeedOffers();
+
+            modelBuilder.Entity<Role>().HasData(roles);
+            modelBuilder.Entity<User>().HasData(users);
+            modelBuilder.Entity<Barber>().HasData(barbers);
+            modelBuilder.Entity<Offer>().HasData(offers);
+
             base.OnModelCreating(modelBuilder);
         }
     }

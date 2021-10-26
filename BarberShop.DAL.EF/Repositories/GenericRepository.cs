@@ -32,10 +32,7 @@ namespace BarberShop.DAL.EF.Repositories
             return DbSet.AsNoTracking().Skip(skipPos).Take(count);
         }
 
-        public async Task<IEnumerable<TEntity>> GetAll()
-        {
-            return await DbSet.ToListAsync();
-        }
+        public async Task<IEnumerable<TEntity>> GetAll() => await DbSet.ToListAsync();
 
         public async Task<TEntity> Get(int id)
         {
@@ -47,19 +44,19 @@ namespace BarberShop.DAL.EF.Repositories
             return DbSet.AsNoTracking().AsEnumerable().Where(predicate).ToList();
         }
 
-        public async void Create(TEntity item)
+        public async Task Create(TEntity item)
         {
             await DbSet.AddAsync(item);
             await _context.SaveChangesAsync();
         }
 
-        public async void Update(TEntity item)
+        public async Task Update(TEntity item)
         {
             _context.Entry(item).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
 
-        public async void Delete(int id)
+        public async Task Delete(int id)
         {
             var item = await DbSet.FindAsync(id);
             DbSet.Remove(item);

@@ -95,7 +95,7 @@ namespace BarberShop.MVC.Controllers
                     Password = model.Password,
                     PhoneNumber = model.PhoneNumber
                 };
-                _userService.Create(_mapper.Map<UserModel, User>(user));
+                await _userService.Create(_mapper.Map<UserModel, User>(user));
                 user = _mapper.Map<User, UserModel>
                 (_userService.GetWithInclude
                     (_userService.Get(u => u.NickName == user.NickName && u.Password == user.Password).Id)
