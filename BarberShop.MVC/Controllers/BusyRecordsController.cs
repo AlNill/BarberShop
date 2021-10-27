@@ -62,15 +62,10 @@ namespace BarberShop.MVC.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin, User")]
         [CommonExceptionFilter]
-        public async Task<IActionResult> Index(int barberId, int serviceId, string date)
+        public async Task<IActionResult> Index(int barberId, int serviceId, DateTime date)
         {
-            // TODO: Make beautiful calendar with hours
-            //var date1 = DateTime.Parse("10/29/2021 00:00 AM");
-            //Logger.LogInformation($"Record request with barber id: {barberId}, date {date}");
-            
-            var date1 = DateTime.Now;
             var tupleModel = await GetViewData();
-            if (_busyService.IsExists(barberId, date1) != null)
+            if (_busyService.IsExists(barberId, date) != null)
             {
                 ViewBag.Message = "Sorry, this record exist";
                 return View(tupleModel);
@@ -83,12 +78,11 @@ namespace BarberShop.MVC.Controllers
             {
                 BarberId = barberId,
                 Barber = barber,
-                RecordTime = date1,
+                RecordTime = date,
                 ServiceId = serviceId,
                 Offer = service,
             };
 
-            
             var validator = new BusyRecordsValidator();
             var validationResult = await validator.ValidateAsync(record);
             if (!validationResult.IsValid)
