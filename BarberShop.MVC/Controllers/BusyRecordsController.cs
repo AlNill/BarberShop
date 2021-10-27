@@ -21,18 +21,21 @@ namespace BarberShop.MVC.Controllers
         private readonly IBusyRecordService _busyService;
         private readonly IOfferService _offerService;
         private readonly IUserService _userService;
+        private readonly IEmailNotificator _emailNotificator;
         private readonly IMapper _mapper;
 
         public BusyRecordsController(IBusyRecordService busyService, 
             IBarberService barberService,
             IOfferService offerService,
             IUserService userService,
+            IEmailNotificator emailNotificator,
             IMapper mapper)
         {
             _barberService = barberService;
             _offerService = offerService;
             _busyService = busyService;
             _userService = userService;
+            _emailNotificator = emailNotificator;
             _mapper = mapper;
         }
 
@@ -62,7 +65,7 @@ namespace BarberShop.MVC.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin, User")]
         [CommonExceptionFilter]
-        public async Task<IActionResult> Index(int barberId, int serviceId, DateTime date)
+        public async Task<IActionResult> Index(int barberId, int offerId, DateTime date)
         {
             var tupleModel = await GetViewData();
             if (_busyService.IsExists(barberId, date) != null)
@@ -72,15 +75,15 @@ namespace BarberShop.MVC.Controllers
             }
 
             var barber = await _barberService.GetById(barberId);
-            var service = await _offerService.GetById(serviceId);
+            var offer = await _offerService.GetById(offerId);
 
             var record = new BusyRecord()
             {
                 BarberId = barberId,
                 Barber = barber,
                 RecordTime = date,
-                ServiceId = serviceId,
-                Offer = service,
+                ServiceId = offerId,
+                Offer = offer,
             };
 
             var validator = new BusyRecordsValidator();
@@ -93,6 +96,12 @@ namespace BarberShop.MVC.Controllers
             }
 
             await _busyService.Create(record);
+
+            var user = await GetUserByNickName();
+            _emailNotificator.SmtpNotify("Black rock record", 
+                $"You are recorded for {offer.Title} to barber {barber.Name} {barber.Surname} on {date}." +
+                $"Have a nice day!", user.Email);
+
             ViewBag.Message = $"Success record to barber: {barber.Name + barber.Surname}";
             return View(tupleModel);
         }
