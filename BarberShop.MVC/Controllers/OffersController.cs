@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using BarberShop.BLL.Interfaces;
@@ -7,11 +6,10 @@ using BarberShop.DAL.Common.Models;
 using BarberShop.MVC.Filters;
 using BarberShop.MVC.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace BarberShop.MVC.Controllers
 {
-    public class OffersController : BaseController
+    public class OffersController : Controller
     {
         private readonly IMapper _mapper;
         private readonly IOfferService _offerService;
@@ -27,7 +25,6 @@ namespace BarberShop.MVC.Controllers
             IEnumerable<Offer> services;
             if (serviceTitleSubstr == null)
             {
-                Logger.LogInformation($"Get request for Offers get all");
                 services = await _offerService.GetAll();
                 return View(_mapper.Map<IEnumerable<Offer>, IEnumerable<ServiceModel>>(services));
             }

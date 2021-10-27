@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BarberShop.MVC.Controllers
 {
     [AllowAnonymous]
-    public class AboutController : BaseController
+    public class AboutController : Controller
     {
         public IActionResult Index()
         {

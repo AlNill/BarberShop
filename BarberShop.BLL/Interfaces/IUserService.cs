@@ -8,6 +8,7 @@ namespace BarberShop.BLL.Interfaces
     public interface IUserService
     {
         public Task<User> GetById(int id);
+        public Task<User> GetByNickName(string nickName);
         public Task<IEnumerable<User>> GetAll();
         public Task Create(User user);
         public User Get(Func<User, bool> predicate);
