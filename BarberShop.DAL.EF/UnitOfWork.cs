@@ -15,7 +15,7 @@ namespace BarberShop.DAL.EF
         private IGenericRepository<Log> _logRepository;
         private IOfferRepository _offerRepository;
         private IGenericRepository<Review> _reviewRepository;
-        private IGenericRepository<User> _userRepository;
+        private IUserRepository _userRepository;
 
         public UnitOfWork(ApplicationContext context)
         {
@@ -27,6 +27,6 @@ namespace BarberShop.DAL.EF
         public IGenericRepository<Log> LogRepository() => _logRepository ??= new GenericRepository<Log>(_context);
         public IOfferRepository OfferRepository() => _offerRepository ??= new OfferRepository(_context);
         public IGenericRepository<Review> ReviewRepository() => _reviewRepository ??= new GenericRepository<Review>(_context);
-        public IGenericRepository<User> UserRepository() => _userRepository ??= new GenericRepository<User>(_context);
+        public IUserRepository UserRepository() => _userRepository ??= new UserRepository(_context);
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 using BarberShop.DAL.Common.Repositories;
 using BarberShop.DAL.EF.Contexts;
@@ -20,26 +21,21 @@ namespace BarberShop.DAL.EF.Repositories
             DbSet = _context.Set<TEntity>();
         }
 
-        public async Task<int> GetCount()
-        {
-            return await DbSet.CountAsync();
-        }
+        public async Task<int> GetCount() => await DbSet.CountAsync();
 
-        public IEnumerable<TEntity> GetRange(int skipPos=0, int count=10)
-        {
-            return DbSet.AsNoTracking().Skip(skipPos).Take(count);
-        }
+        public IEnumerable<TEntity> GetRange(int skipPos=0, int count=10) => 
+            DbSet.AsNoTracking().Skip(skipPos).Take(count);
 
         public async Task<IEnumerable<TEntity>> GetAll() => await DbSet.ToListAsync();
 
-        public async Task<TEntity> Get(int id)
-        {
-            return await DbSet.FindAsync(id);
-        }
+        public async Task<TEntity> Get(int id) => await DbSet.FindAsync(id);
 
-        public IEnumerable<TEntity> Get(Func<TEntity, bool> predicate)
+        public IEnumerable<TEntity> Get(Func<TEntity, bool> predicate) => 
+            DbSet.AsNoTracking().AsEnumerable().Where(predicate).ToList();
+
+        public async Task<TEntity> GetFirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            return DbSet.AsNoTracking().AsEnumerable().Where(predicate).ToList();
+            return await DbSet.FirstOrDefaultAsync(predicate);
         }
 
         public async Task Create(TEntity item)

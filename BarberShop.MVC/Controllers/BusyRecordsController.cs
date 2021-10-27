@@ -20,16 +20,19 @@ namespace BarberShop.MVC.Controllers
         private readonly IBarberService _barberService;
         private readonly IBusyRecordService _busyService;
         private readonly IOfferService _offerService;
+        private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
         public BusyRecordsController(IBusyRecordService busyService, 
             IBarberService barberService,
             IOfferService offerService,
+            IUserService userService,
             IMapper mapper)
         {
             _barberService = barberService;
             _offerService = offerService;
             _busyService = busyService;
+            _userService = userService;
             _mapper = mapper;
         }
 
@@ -48,6 +51,12 @@ namespace BarberShop.MVC.Controllers
         public async Task<IActionResult> Index()
         {
             return View(await GetViewData());
+        }
+
+        private async Task<UserModel> GetUserByNickName()
+        {
+            var nickName = HttpContext.User.FindFirstValue(ClaimsIdentity.DefaultNameClaimType);
+            return _mapper.Map<User, UserModel>(await _userService.GetByNickName(nickName));
         }
 
         [HttpPost]
@@ -79,7 +88,7 @@ namespace BarberShop.MVC.Controllers
                 Offer = service,
             };
 
-            var s = HttpContext.User.FindFirstValue(ClaimsIdentity.DefaultNameClaimType);
+            
             var validator = new BusyRecordsValidator();
             var validationResult = await validator.ValidateAsync(record);
             if (!validationResult.IsValid)
