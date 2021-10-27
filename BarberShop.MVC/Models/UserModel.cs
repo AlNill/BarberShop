@@ -8,7 +8,7 @@ namespace BarberShop.MVC.Models
         public string NickName { get; set; }
         [Required]
         [Phone]
-        public string PhoneNumber { get; set; }
+        public string Email { get; set; }
         public string Password { get; set; }
         public int RoleId { get; set; } = 2;
         public RoleModel Role { get; set; }
