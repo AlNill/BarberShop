@@ -5,7 +5,7 @@ namespace BarberShop.DAL.EF.Seed
 {
     public static class BarbersSeed
     {
-        public static void SeedBarbers(ModelBuilder modelBuilder)
+        public static Barber[] SeedBarbers()
         {
             // Seed barbers
             Barber barber1 = new Barber()
@@ -34,7 +34,7 @@ namespace BarberShop.DAL.EF.Seed
                 FatherName = "Pupkinovich",
                 Information = "Cool information about barber Pupkin must be here.",
             };
-            modelBuilder.Entity<Barber>().HasData(new Barber[] { barber1, barber2, barber3 });
+            return new Barber[] {barber1, barber2, barber3};
         }
     }
 }

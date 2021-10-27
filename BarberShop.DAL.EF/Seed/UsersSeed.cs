@@ -1,11 +1,10 @@
 ﻿using BarberShop.DAL.Common.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace BarberShop.DAL.EF.Seed
 {
     public static class UsersSeed
     {
-        public static void SeedUsers(ModelBuilder modelBuilder)
+        public static User[] SeedUsers()
         {
             // Seed users
             User admin = new User
@@ -38,7 +37,7 @@ namespace BarberShop.DAL.EF.Seed
                 };
             }
 
-            modelBuilder.Entity<User>().HasData(users);
+            return users;
         }
     }
 }

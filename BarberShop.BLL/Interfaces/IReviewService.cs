@@ -8,6 +8,6 @@ namespace BarberShop.BLL.Interfaces
     {
         public Task<Review> GetById(int id);
         public IEnumerable<Review> GetAll();
-        public void Create(Review review);
+        public Task Create(Review review);
     }
 }

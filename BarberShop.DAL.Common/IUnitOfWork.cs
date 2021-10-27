@@ -10,6 +10,6 @@ namespace BarberShop.DAL.Common
         public IGenericRepository<Log> LogRepository();
         public IOfferRepository OfferRepository();
         public IGenericRepository<Review> ReviewRepository();
-        public IGenericRepository<User> UserRepository();
+        public IUserRepository UserRepository();
     }
 }

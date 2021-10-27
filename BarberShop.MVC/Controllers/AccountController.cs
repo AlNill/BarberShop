@@ -15,7 +15,7 @@ using Microsoft.Extensions.Logging;
 namespace BarberShop.MVC.Controllers
 {
     [Authorize]
-    public class AccountController : BaseController
+    public class AccountController : Controller
     {
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
@@ -39,7 +39,6 @@ namespace BarberShop.MVC.Controllers
         [CommonExceptionFilter]
         public async Task<IActionResult> Login(LoginModel loginModel)
         {
-            Logger.LogInformation("Login request");
             if (ModelState.IsValid)
             {
                 UserModel user = _mapper.Map<User, UserModel>(_userService.Get(
@@ -48,10 +47,8 @@ namespace BarberShop.MVC.Controllers
                 {
                     user = _mapper.Map<User, UserModel>(_userService.GetWithInclude(user.Id));
                     await Authenticate(user);
-                    Logger.LogInformation($"Login success for user: {user.NickName}");
                     return RedirectToAction("Index", "BusyRecords");
                 }
-                Logger.LogInformation($"Login failed: not found user with nickname {loginModel.NickName}");
                 ModelState.AddModelError("", "Bad login or password");
             }
             return View(loginModel);
@@ -83,7 +80,6 @@ namespace BarberShop.MVC.Controllers
         {
             if (!ModelState.IsValid) 
                 return View(model);
-            Logger.LogInformation($"Register request");
             if (_userService.Get(u => u.NickName == model.NickName) == null)
             {
                 var user = new UserModel()
@@ -95,16 +91,14 @@ namespace BarberShop.MVC.Controllers
                     Password = model.Password,
                     PhoneNumber = model.PhoneNumber
                 };
-                _userService.Create(_mapper.Map<UserModel, User>(user));
+                await _userService.Create(_mapper.Map<UserModel, User>(user));
                 user = _mapper.Map<User, UserModel>
                 (_userService.GetWithInclude
                     (_userService.Get(u => u.NickName == user.NickName && u.Password == user.Password).Id)
                 );
                 await Authenticate(user);
-                Logger.LogInformation($"Success register user with nickname: {user.NickName}");
                 return RedirectToAction("Index", "BusyRecords");
             }
-            Logger.LogInformation($"Exists user tried to register");
             ModelState.AddModelError("", "Bad login or password");
             return View(model);
         }
@@ -112,7 +106,6 @@ namespace BarberShop.MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> Logout()
         {
-            Logger.LogInformation($"Logout request");
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login", "Account");
         }

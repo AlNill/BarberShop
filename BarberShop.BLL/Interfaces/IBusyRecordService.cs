@@ -9,8 +9,8 @@ namespace BarberShop.BLL.Interfaces
     {
         public Task<BusyRecord> GetById(int id);
         public Task<IEnumerable<BusyRecord>> GetAll();
-        public void Create(BusyRecord record);
-        public void Update(BusyRecord record);
+        public Task Create(BusyRecord record);
+        public Task Update(BusyRecord record);
         public BusyRecord IsExists(int barberId, DateTime date);
     }
 }

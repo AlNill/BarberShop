@@ -9,12 +9,11 @@ using BarberShop.MVC.Models;
 using BarberShop.MVC.Models.UsersPage;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace BarberShop.MVC.Controllers
 {
     [Authorize]
-    public class UsersController : BaseController
+    public class UsersController : Controller
     {
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
@@ -29,7 +28,6 @@ namespace BarberShop.MVC.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index(int pageSize = 10, int page = 0)
         {
-            Logger.LogInformation($"Get request for users get all");
             var pageViewModel = new PageModel(await _userService.GetCount(), page, pageSize);
             var viewModel = new IndexModel
             {
@@ -44,7 +42,6 @@ namespace BarberShop.MVC.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id)
         {
-            Logger.LogInformation($"Get request for edit user with user id {id}");
             var user = await _userService.GetById(id);
             return View(_mapper.Map<UserModel>(user));
         }
@@ -56,7 +53,6 @@ namespace BarberShop.MVC.Controllers
         {
             try
             {
-                Logger.LogInformation($"Get request for edit user with user nickname {userModel.NickName}");
                 if (ModelState.IsValid)
                 {
                     _userService.Update(_mapper.Map<User>(userModel));
@@ -66,8 +62,6 @@ namespace BarberShop.MVC.Controllers
             }
             catch (Exception e)
             {
-                Logger.LogError($"Error to edit user with user nickname {userModel.NickName}. " +
-                                $"Exception message: {e.Message}");
                 return RedirectToAction("Index");
             }
         }

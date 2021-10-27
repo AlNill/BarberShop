@@ -37,19 +37,19 @@ namespace BarberShop.BLL.Services
             return await _repository.GetAll();
         }
 
-        public void Create(Offer offer)
+        public async Task Create(Offer offer)
         {
-            _repository.Create(offer);
+            await _repository.Create(offer);
         }
 
-        public void Update(Offer offer)
+        public async Task Update(Offer offer)
         {
-            _repository.Update(offer);
+            await _repository.Update(offer);
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            _repository.Delete(id);
+            await _repository.Delete(id);
         }
     }
 }

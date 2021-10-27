@@ -8,7 +8,7 @@ namespace BarberShop.BLL.Interfaces
     {
         public Task<Barber> GetById(int id);
         public Task<IEnumerable<Barber>> GetAll();
-        public void Create(Barber barber);
-        public void Update(Barber barber);
+        public Task Create(Barber barber);
+        public Task Update(Barber barber);
     }
 }

@@ -3,6 +3,7 @@ using BarberShop.BLL.Interfaces;
 using BarberShop.BLL.Services;
 using BarberShop.DAL.Common;
 using BarberShop.DAL.Common.Models;
+using BarberShop.DAL.Common.Repositories;
 using BarberShop.DAL.EF;
 using BarberShop.DAL.EF.Contexts;
 using BarberShop.DAL.EF.Repositories;
