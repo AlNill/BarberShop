@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using BarberShop.DAL.Common;
 using BarberShop.DAL.Common.Repositories;
 using BarberShop.DAL.EF.Contexts;
 using Microsoft.EntityFrameworkCore;
 
 namespace BarberShop.DAL.EF.Repositories
 {
-    // : IGenericRepository<TEntity>
     public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity: class
     {
         private readonly ApplicationContext _context;

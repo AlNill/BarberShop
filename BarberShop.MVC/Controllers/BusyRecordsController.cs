@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using BarberShop.BLL.Interfaces;
@@ -11,12 +11,11 @@ using BarberShop.MVC.Models;
 using BarberShop.MVC.Validators;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace BarberShop.MVC.Controllers
 {
     [Authorize]
-    public class BusyRecordsController : BaseController
+    public class BusyRecordsController : Controller
     {
         private readonly IBarberService _barberService;
         private readonly IBusyRecordService _busyService;
@@ -48,7 +47,6 @@ namespace BarberShop.MVC.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            Logger.LogInformation($"Records startup request");
             return View(await GetViewData());
         }
 
@@ -58,14 +56,14 @@ namespace BarberShop.MVC.Controllers
         public async Task<IActionResult> Index(int barberId, int serviceId, string date)
         {
             // TODO: Make beautiful calendar with hours
-            var date1 = DateTime.Parse(date + " 00:00 AM", new CultureInfo("en-US"));
-            Logger.LogInformation($"Record request with barber id: {barberId}, date {date}");
+            //var date1 = DateTime.Parse("10/29/2021 00:00 AM");
+            //Logger.LogInformation($"Record request with barber id: {barberId}, date {date}");
             
+            var date1 = DateTime.Now;
             var tupleModel = await GetViewData();
             if (_busyService.IsExists(barberId, date1) != null)
             {
                 ViewBag.Message = "Sorry, this record exist";
-                Logger.LogInformation($"Tried record to exist time with barber id: {barberId}, date {date}");
                 return View(tupleModel);
             }
 
@@ -81,18 +79,17 @@ namespace BarberShop.MVC.Controllers
                 Offer = service,
             };
 
+            var s = HttpContext.User.FindFirstValue(ClaimsIdentity.DefaultNameClaimType);
             var validator = new BusyRecordsValidator();
             var validationResult = await validator.ValidateAsync(record);
             if (!validationResult.IsValid)
             {
                 string msg = validationResult.Errors.First().ToString();
-                Logger.LogInformation($"In record Validation error {msg}");
                 ViewBag.Message = msg;
                 return View(tupleModel);
             }
 
             await _busyService.Create(record);
-            Logger.LogInformation($"Success record with barber id: {barberId}, date {date}");
             ViewBag.Message = $"Success record to barber: {barber.Name + barber.Surname}";
             return View(tupleModel);
         }

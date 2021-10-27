@@ -2,8 +2,11 @@ using AutoMapper;
 using BarberShop.BLL.Interfaces;
 using BarberShop.BLL.Services;
 using BarberShop.DAL.Common;
+using BarberShop.DAL.Common.Models;
+using BarberShop.DAL.Common.Repositories;
 using BarberShop.DAL.EF;
 using BarberShop.DAL.EF.Contexts;
+using BarberShop.DAL.EF.Repositories;
 using BarberShop.MVC.Mapper;
 using BarberShop.MVC.Utils;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -30,7 +33,7 @@ namespace BarberShop.MVC
             string connectionString = DbOptionsBuilder.GetConnectionString();
             services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(
                 connectionString
-                ), ServiceLifetime.Transient);
+                ));
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
