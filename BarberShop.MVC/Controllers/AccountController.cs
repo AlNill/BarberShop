@@ -89,7 +89,7 @@ namespace BarberShop.MVC.Controllers
                     Surname = model.Surname,
                     NickName = model.NickName,
                     Password = model.Password,
-                    PhoneNumber = model.PhoneNumber
+                    Email = model.PhoneNumber
                 };
                 await _userService.Create(_mapper.Map<UserModel, User>(user));
                 user = _mapper.Map<User, UserModel>

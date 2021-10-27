@@ -35,38 +35,31 @@ namespace BarberShop.MVC.Controllers
             return View(_mapper.Map<IEnumerable<ReviewModel>>(reviews));
         }
 
+        [HttpGet]
         [Authorize]
         [CommonExceptionFilter]
-        public async Task<IActionResult> Add(string? reviewText, int? barberId)
+        public async Task<IActionResult> Add()
         {
-            switch (HttpContext.Request.Method.ToLower())
-            {
-                case "get":
-                {
-                    IEnumerable<BarberModel> barbers = _mapper.Map<IEnumerable<Barber>, 
-                        IEnumerable<BarberModel>>(await _barberService.GetAll());
-                    return View(barbers);
-                }
-                case "post" when barberId == null || reviewText == null:
-                    ModelState.AddModelError("", "Review text and barber must not be null");
-                    return RedirectToAction("Index", "Reviews");
-                case "post":
-                {
-                    var review = new ReviewModel()
-                    {
-                        BarberId = _mapper.Map<Barber, BarberModel>(_barberService.GetById((int)barberId).Result).Id,
-                        UserReview = reviewText,
-                        UserId = _userService.Get(u => u.NickName == User.Identity.Name).Id
-                    };
+            IEnumerable<BarberModel> barbers = _mapper.Map<IEnumerable<Barber>, 
+                IEnumerable<BarberModel>>(await _barberService.GetAll());
+            return View(barbers);
+        }
 
-                    await _reviewService.Create(_mapper.Map<ReviewModel, Review>(review));
-                    ViewBag.Message = "Success add review. Thanks for your attention";
-                    return RedirectToAction("Index", "Reviews");
-                }
-                default:
-                    ViewBag.Message = "Unsupported request method";
-                    return RedirectToAction("Index", "Reviews");
-            }
+        [HttpPost]
+        [Authorize]
+        [CommonExceptionFilter]
+        public async Task<IActionResult> Add(string reviewText, int barberId)
+        {
+            var review = new ReviewModel()
+            {
+                BarberId = _mapper.Map<Barber, BarberModel>(_barberService.GetById(barberId).Result).Id,
+                UserReview = reviewText,
+                UserId = _userService.Get(u => u.NickName == User.Identity.Name).Id
+            };
+
+            await _reviewService.Create(_mapper.Map<ReviewModel, Review>(review));
+            ViewBag.Message = "Success add review. Thanks for your attention";
+            return RedirectToAction("Index", "Reviews");
         }
     }
 }

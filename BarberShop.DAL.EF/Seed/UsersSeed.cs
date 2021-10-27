@@ -6,7 +6,6 @@ namespace BarberShop.DAL.EF.Seed
     {
         public static User[] SeedUsers()
         {
-            // Seed users
             User admin = new User
             {
                 Id = 1,
@@ -15,10 +14,9 @@ namespace BarberShop.DAL.EF.Seed
                 FatherName = "Admin",
                 Password = "Admin",
                 NickName = "Admin",
-                PhoneNumber = "+111223333333",
+                Email = "us3rt35t@yandex.ru",
                 RoleId = 1,
             };
-
 
             User[] users = new User[21];
             users[0] = admin;
@@ -32,11 +30,10 @@ namespace BarberShop.DAL.EF.Seed
                     FatherName = $"FatherName{i}",
                     Password = $"User{i}",
                     NickName = $"User{i}",
-                    PhoneNumber = "+111223333333",
+                    Email = "us3rt35t@yandex.ru",
                     RoleId = 2,
                 };
             }
-
             return users;
         }
     }
