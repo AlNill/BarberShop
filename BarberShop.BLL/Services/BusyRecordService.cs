@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using BarberShop.BLL.Interfaces;
 using BarberShop.DAL.Common;
@@ -12,35 +11,53 @@ namespace BarberShop.BLL.Services
 {
     public class BusyRecordService: IBusyRecordService
     {
-        private readonly IGenericRepository<BusyRecord> _repository;
+        private readonly IGenericRepository<BusyRecord> _recordRepository;
+        private readonly IGenericRepository<Offer> _offerRepository;
         public BusyRecordService(IUnitOfWork unitOfWork)
         {
-            _repository = unitOfWork.BusyRecordRepository();
+            _recordRepository = unitOfWork.BusyRecordRepository();
+            _offerRepository = unitOfWork.OfferRepository();
         }
 
-        public async Task<BusyRecord> GetById(int id)
+        public async Task<BusyRecord> GetAsync(int id)
         {
-            return await _repository.Get(id);
+            return await _recordRepository.GetAsync(id);
         }
 
-        public async Task<IEnumerable<BusyRecord>> GetAll()
+        public async Task<IEnumerable<BusyRecord>> GetAllAsync()
         {
-            return await _repository.GetAllAsync();
+            return await _recordRepository.GetAllAsync();
         }
 
-        public async Task Create(BusyRecord record)
+        public async Task CreateAsync(int barberId, int offerId, DateTime date)
         {
-            await _repository.CreateAsync(record);
+            if (await IsExists(barberId, offerId, date) != null)
+                throw new ArgumentException("Sorry! This date is booked.");
+
+            await _recordRepository.CreateAsync(
+                new BusyRecord()
+                {
+                    BarberId = barberId,
+                    RecordTime = date,
+                    ServiceId = offerId
+                }
+            );
         }
 
-        public async Task Update(BusyRecord record)
+        public async Task UpdateAsync(BusyRecord record)
         {
-            await _repository.UpdateAsync(record);
+            await _recordRepository.UpdateAsync(record);
         }
 
-        public BusyRecord IsExists(int barberId, DateTime date)
+        private async Task<BusyRecord> IsExists(int barberId, int offerId, DateTime date)
         {
-            return _repository.Get(b => b.BarberId == barberId && b.RecordTime == date).FirstOrDefault();
+            //TODO: change Result to Task
+            var offer = await _offerRepository.GetAsync(offerId);
+            var startDate = date.AddMinutes(-offer.Duration);
+            var endDate = date.AddMinutes(offer.Duration);
+            return _recordRepository.Get(b => b.BarberId == barberId && 
+                                        (b.RecordTime > startDate && b.RecordTime <= endDate)
+                                        ).FirstOrDefault();
         }
     }
 }

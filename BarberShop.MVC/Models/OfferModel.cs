@@ -1,6 +1,6 @@
 ﻿namespace BarberShop.MVC.Models
 {
-    public class ServiceModel
+    public class OfferModel
     {
         public int Id { get; set; }
         public string Title { get; set; }

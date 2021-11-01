@@ -49,7 +49,7 @@ namespace BarberShop.MVC.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        [CommonExceptionFilter]
+        [ExceptionFilter]
         public IActionResult Edit(UserModel userModel)
         {
             try

@@ -27,11 +27,11 @@ namespace BarberShop.MVC.Controllers
             if (serviceTitleSubstr == null)
             {
                 services = await _offerService.GetAll();
-                return View(_mapper.Map<IEnumerable<Offer>, IEnumerable<ServiceModel>>(services));
+                return View(_mapper.Map<IEnumerable<Offer>, IEnumerable<OfferModel>>(services));
             }
 
             services = _offerService.GetServicesForSubTitle((string)serviceTitleSubstr);
-            return View(_mapper.Map<IEnumerable<Offer>, IEnumerable<ServiceModel>>(services));
+            return View(_mapper.Map<IEnumerable<Offer>, IEnumerable<OfferModel>>(services));
         }
 
         [HttpGet]
@@ -41,12 +41,12 @@ namespace BarberShop.MVC.Controllers
         }
 
         [HttpPost]
-        [CommonExceptionFilter]
-        public IActionResult AdvancedSearch(ServiceModel serviceSearchParams)
+        [ExceptionFilter]
+        public IActionResult AdvancedSearch(OfferModel offerSearchParams)
         {
             var services = _mapper.Map<IEnumerable<Offer>,
-                IEnumerable<ServiceModel>>(_offerService.AdvancedSearch(
-                _mapper.Map<ServiceModel, Offer>(serviceSearchParams))
+                IEnumerable<OfferModel>>(_offerService.AdvancedSearch(
+                _mapper.Map<OfferModel, Offer>(offerSearchParams))
             );
             return View("Index", services);
         }

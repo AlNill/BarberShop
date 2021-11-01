@@ -11,7 +11,7 @@ namespace BarberShop.MVC.Utils
             var builder = new ConfigurationBuilder();
             // Set path to current directory
             builder.SetBasePath(Directory.GetCurrentDirectory());
-            // Get configuration from json file
+            // GetAsync configuration from json file
             builder.AddJsonFile("appsettings.json");
             // Save configuration
             return builder.Build();

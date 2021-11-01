@@ -9,8 +9,9 @@ namespace BarberShop.DAL.Common.Repositories
     {
         public IEnumerable<TEntity> GetRange(int skipPos = 0, int count = 10);
         public Task<IEnumerable<TEntity>> GetAllAsync();
-        public Task<TEntity> Get(int id);
+        public Task<TEntity> GetAsync(int id);
         IEnumerable<TEntity> Get(Func<TEntity, bool> predicate);
+        public Task<bool> ExistsAsync(int id);
         public Task<TEntity> GetFirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
         Task CreateAsync(TEntity item);
         void Create(TEntity item);

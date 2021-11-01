@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace BarberShop.MVC.Filters
 {
-    public class CommonExceptionFilterAttribute: Attribute, IExceptionFilter
+    public class ExceptionFilterAttribute: Attribute, IExceptionFilter
     {
         public void OnException(ExceptionContext context)
         {

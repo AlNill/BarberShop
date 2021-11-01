@@ -19,7 +19,7 @@ namespace BarberShop.BLL.Services
 
         public async Task<Offer> GetById(int id)
         {
-            return await _repository.Get(id);
+            return await _repository.GetAsync(id);
         }
 
         public IEnumerable<Offer> GetServicesForSubTitle(string subTitle)

@@ -36,7 +36,7 @@ namespace BarberShop.MVC.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        [CommonExceptionFilter]
+        [ExceptionFilter]
         public async Task<IActionResult> Login(LoginModel loginModel)
         {
             if (ModelState.IsValid)
@@ -75,7 +75,7 @@ namespace BarberShop.MVC.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        [CommonExceptionFilter]
+        [ExceptionFilter]
         public async Task<IActionResult> Register(RegisterModel model)
         {
             if (!ModelState.IsValid) 

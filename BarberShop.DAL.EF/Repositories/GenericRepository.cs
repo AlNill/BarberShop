@@ -20,6 +20,8 @@ namespace BarberShop.DAL.EF.Repositories
             DbSet = _context.Set<TEntity>();
         }
 
+        public async Task<bool> ExistsAsync(int id) => await DbSet.FindAsync(id) != null;
+
         public async Task<int> GetCountAsync() => await DbSet.CountAsync();
 
         public IEnumerable<TEntity> GetRange(int skipPos=0, int count=10) => 
@@ -27,7 +29,7 @@ namespace BarberShop.DAL.EF.Repositories
 
         public async Task<IEnumerable<TEntity>> GetAllAsync() => await DbSet.ToListAsync();
 
-        public async Task<TEntity> Get(int id) => await DbSet.FindAsync(id);
+        public async Task<TEntity> GetAsync(int id) => await DbSet.FindAsync(id);
 
         public IEnumerable<TEntity> Get(Func<TEntity, bool> predicate) => 
             DbSet.AsNoTracking().AsEnumerable().Where(predicate).ToList();

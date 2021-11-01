@@ -25,6 +25,13 @@
         @{if (User.IsInRole("Admin"))
             {
                 <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("Edit", "Barbers", barber)'">Edit</button>
+                @using (Html.BeginForm("Remove", "Barbers", FormMethod.Post))
+                {
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-danger"
+                                name="id" value="@barber.Id">Remove</button>
+                    </div>
+                }
             }
         }
     </div>

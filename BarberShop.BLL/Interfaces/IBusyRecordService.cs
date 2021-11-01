@@ -7,10 +7,9 @@ namespace BarberShop.BLL.Interfaces
 {
     public interface IBusyRecordService
     {
-        public Task<BusyRecord> GetById(int id);
-        public Task<IEnumerable<BusyRecord>> GetAll();
-        public Task Create(BusyRecord record);
-        public Task Update(BusyRecord record);
-        public BusyRecord IsExists(int barberId, DateTime date);
+        public Task<BusyRecord> GetAsync(int id);
+        public Task<IEnumerable<BusyRecord>> GetAllAsync();
+        public Task CreateAsync(int barberId, int offerId, DateTime date);
+        public Task UpdateAsync(BusyRecord record);
     }
 }

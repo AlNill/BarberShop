@@ -38,22 +38,22 @@ namespace BarberShop.MVC.Controllers
 
         [HttpGet]
         [Authorize]
-        [CommonExceptionFilter]
+        [ExceptionFilter]
         public async Task<IActionResult> Add()
         {
             IEnumerable<BarberModel> barbers = _mapper.Map<IEnumerable<Barber>, 
-                IEnumerable<BarberModel>>(await _barberService.GetAll());
+                IEnumerable<BarberModel>>(await _barberService.GetAllAsync());
             return View(barbers);
         }
 
         [HttpPost]
         [Authorize]
-        [CommonExceptionFilter]
+        [ExceptionFilter]
         public async Task<IActionResult> Add(string reviewText, int barberId)
         {
             var review = new ReviewModel()
             {
-                BarberId = _mapper.Map<Barber, BarberModel>(_barberService.GetById(barberId).Result).Id,
+                BarberId = _mapper.Map<Barber, BarberModel>(_barberService.GetAsync(barberId).Result).Id,
                 UserReview = reviewText,
                 UserId = _userService.Get(u => u.NickName == User.Identity.Name).Id
             };

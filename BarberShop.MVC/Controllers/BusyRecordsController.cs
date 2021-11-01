@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -10,7 +8,6 @@ using BarberShop.DAL.Common.Models;
 using BarberShop.MVC.Controllers.Base;
 using BarberShop.MVC.Filters;
 using BarberShop.MVC.Models;
-using BarberShop.MVC.Validators;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -42,13 +39,13 @@ namespace BarberShop.MVC.Controllers
             _mapper = mapper;
         }
 
-        private async Task<Tuple<IEnumerable<BarberModel>, IEnumerable<ServiceModel>>> GetViewData()
+        private async Task<Tuple<IEnumerable<BarberModel>, IEnumerable<OfferModel>>> GetViewData()
         {
-            var barbers = await _barberService.GetAll();
+            var barbers = await _barberService.GetAllAsync();
             var services = await _offerService.GetAll();
-            return new Tuple<IEnumerable<BarberModel>, IEnumerable<ServiceModel>>(
+            return new Tuple<IEnumerable<BarberModel>, IEnumerable<OfferModel>>(
                 _mapper.Map<IEnumerable<Barber>, IEnumerable<BarberModel>>(barbers),
-                _mapper.Map<IEnumerable<Offer>, IEnumerable<ServiceModel>>(services)
+                _mapper.Map<IEnumerable<Offer>, IEnumerable<OfferModel>>(services)
             );
         }
 
@@ -60,7 +57,6 @@ namespace BarberShop.MVC.Controllers
             return View(await GetViewData());
         }
 
-
         private async Task<UserModel> GetUserByNickName()
         {
             var nickName = HttpContext.User.FindFirstValue(ClaimsIdentity.DefaultNameClaimType);
@@ -69,49 +65,41 @@ namespace BarberShop.MVC.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin, User")]
-        [CommonExceptionFilter]
+        [ExceptionFilter]
         public async Task<IActionResult> Index(int barberId, int offerId, DateTime date)
         {
             Logger.LogInformation($"Record request with barber id: {barberId}, date {date}");
             var tupleModel = await GetViewData();
-            if (_busyService.IsExists(barberId, date) != null)
-            {
-                ViewBag.Message = "Sorry, this record exist";
-                Logger.LogInformation($"Tried record to exist time with barber id: {barberId}, date {date}");
-                return View(tupleModel);
-            }
-
-            var barber = await _barberService.GetById(barberId);
+            var barber = await _barberService.GetAsync(barberId);
             var offer = await _offerService.GetById(offerId);
 
-            var record = new BusyRecord()
+            // TODO: Make validator
+            //var validator = new BusyRecordsValidator();
+            //var validationResult = await validator.ValidateAsync(record);
+            //if (!validationResult.IsValid)
+            //{
+            //    string msg = validationResult.Errors.First().ToString();
+            //    Logger.LogInformation($"In record Validation error {msg}");
+            //    ViewBag.Message = msg;
+            //    return View(tupleModel);
+            //}
+            try
             {
-                BarberId = barberId,
-                Barber = barber,
-                RecordTime = date,
-                ServiceId = offerId,
-                Offer = offer,
-            };
+                await _busyService.CreateAsync(barberId, offerId, date);
+                Logger.LogInformation($"Success record with barber id: {barberId}, date {date}");
 
-            var validator = new BusyRecordsValidator();
-            var validationResult = await validator.ValidateAsync(record);
-            if (!validationResult.IsValid)
-            {
-                string msg = validationResult.Errors.First().ToString();
-                Logger.LogInformation($"In record Validation error {msg}");
-                ViewBag.Message = msg;
-                return View(tupleModel);
+                var user = await GetUserByNickName();
+                _emailNotificator.SmtpNotify("Black rock record",
+                    $"You are recorded for {offer.Title} to barber {barber.Name} {barber.Surname} on {date}." +
+                    $"Have a nice day!", user.Email);
+
+                ViewBag.Message = $"Success record to barber: {barber.Name + barber.Surname}";
             }
-
-            await _busyService.Create(record);
-            Logger.LogInformation($"Success record with barber id: {barberId}, date {date}");
-
-            var user = await GetUserByNickName();
-            _emailNotificator.SmtpNotify("Black rock record",
-                $"You are recorded for {offer.Title} to barber {barber.Name} {barber.Surname} on {date}." +
-                $"Have a nice day!", user.Email);
-
-            ViewBag.Message = $"Success record to barber: {barber.Name + barber.Surname}";
+            catch (ArgumentException e)
+            {
+                ViewBag.Message = e.Message;
+                Logger.LogInformation($"Tried record to exist time with barber id: {barberId}, date {date}");
+            }
             return View(tupleModel);
         }
     }

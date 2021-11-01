@@ -18,7 +18,7 @@ namespace BarberShop.BLL.Services
 
         public async Task<Review> GetById(int id)
         {
-            return await _repository.Get(id);
+            return await _repository.GetAsync(id);
         }
 
         public IEnumerable<Review> GetAll()

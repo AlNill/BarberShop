@@ -13,6 +13,6 @@ namespace BarberShop.MVC.Models
         [Required]
         public DateTime RecordTime { get; set; }
         public int ServiceId { get; set; }
-        public ServiceModel Service {get; set; }
+        public OfferModel Offer {get; set; }
     }
 }
