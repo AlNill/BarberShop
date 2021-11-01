@@ -34,22 +34,22 @@ namespace BarberShop.BLL.Services
 
         public async Task<IEnumerable<Offer>> GetAll()
         {
-            return await _repository.GetAll();
+            return await _repository.GetAllAsync();
         }
 
         public async Task Create(Offer offer)
         {
-            await _repository.Create(offer);
+            await _repository.CreateAsync(offer);
         }
 
         public async Task Update(Offer offer)
         {
-            await _repository.Update(offer);
+            await _repository.UpdateAsync(offer);
         }
 
         public async Task Delete(int id)
         {
-            await _repository.Delete(id);
+            await _repository.DeleteAsync(id);
         }
     }
 }

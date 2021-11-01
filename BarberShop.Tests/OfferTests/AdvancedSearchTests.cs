@@ -49,7 +49,7 @@ namespace BarberShop.Tests.OfferTests
         {
             await using var context = new ApplicationContext(Opt);
             var repository = new UnitOfWork(context);
-            IEnumerable<Offer> offers = await repository.OfferRepository().GetAll();
+            IEnumerable<Offer> offers = await repository.OfferRepository().GetAllAsync();
 
             OfferService offerService = new OfferService(repository);
             Assert.AreEqual(0, offerService.AdvancedSearch(new Offer{ Title = "Offers" }).Count());
@@ -60,7 +60,7 @@ namespace BarberShop.Tests.OfferTests
         {
             await using var context = new ApplicationContext(Opt);
             var repository = new UnitOfWork(context);
-            IEnumerable<Offer> offers = await repository.OfferRepository().GetAll();
+            IEnumerable<Offer> offers = await repository.OfferRepository().GetAllAsync();
 
             OfferService offerService = new OfferService(repository);
             Assert.AreEqual(0, offerService.AdvancedSearch(new Offer { Cost = 9 }).Count());
@@ -71,7 +71,7 @@ namespace BarberShop.Tests.OfferTests
         {
             await using var context = new ApplicationContext(Opt);
             var repository = new UnitOfWork(context);
-            IEnumerable<Offer> offers = await repository.OfferRepository().GetAll();
+            IEnumerable<Offer> offers = await repository.OfferRepository().GetAllAsync();
 
             OfferService offerService = new OfferService(repository);
             Assert.AreEqual(3, offerService.AdvancedSearch(new Offer { Title = "Offer" }).Count());
@@ -82,7 +82,7 @@ namespace BarberShop.Tests.OfferTests
         {
             await using var context = new ApplicationContext(Opt);
             var repository = new UnitOfWork(context);
-            IEnumerable<Offer> offers = await repository.OfferRepository().GetAll();
+            IEnumerable<Offer> offers = await repository.OfferRepository().GetAllAsync();
 
             OfferService offerService = new OfferService(repository);
             Assert.AreEqual(2, offerService.AdvancedSearch(new Offer { Cost = 40}).Count());
@@ -93,7 +93,7 @@ namespace BarberShop.Tests.OfferTests
         {
             await using var context = new ApplicationContext(Opt);
             var repository = new UnitOfWork(context);
-            IEnumerable<Offer> offers = await repository.OfferRepository().GetAll();
+            IEnumerable<Offer> offers = await repository.OfferRepository().GetAllAsync();
 
             OfferService offerService = new OfferService(repository);
             Assert.AreEqual(1, offerService.AdvancedSearch(new Offer { Title = "Offer", Cost = 40 }).Count());

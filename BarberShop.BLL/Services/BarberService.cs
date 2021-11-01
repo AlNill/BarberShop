@@ -23,17 +23,17 @@ namespace BarberShop.BLL.Services
 
         public async Task<IEnumerable<Barber>> GetAll()
         {
-            return await _repository.GetAll();
+            return await _repository.GetAllAsync();
         }
 
         public async Task Create(Barber barber)
         {
-            await _repository.Create(barber);
+            await _repository.CreateAsync(barber);
         }
 
         public async Task Update(Barber barber)
         {
-            await _repository.Update(barber);
+            await _repository.UpdateAsync(barber);
         }
     }
 }

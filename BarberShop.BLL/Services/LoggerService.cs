@@ -18,10 +18,10 @@ namespace BarberShop.BLL.Services
             _repository = unitOfWork.LogRepository();
         }
 
-        public async void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
             var log = new Log { Level = logLevel, Time = DateTime.Now, Message = formatter(state, exception) };
-            await _repository.Create(log);
+            _repository.Create(log);
         }
 
         public bool IsEnabled(LogLevel logLevel)
@@ -36,7 +36,7 @@ namespace BarberShop.BLL.Services
 
         public async Task<IEnumerable<Log>> GetAll()
         {
-            return await _repository.GetAll();
+            return await _repository.GetAllAsync();
         }
     }
 }

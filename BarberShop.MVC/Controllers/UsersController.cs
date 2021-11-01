@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BarberShop.BLL.Interfaces;
 using BarberShop.DAL.Common.Models;
+using BarberShop.MVC.Controllers.Base;
 using BarberShop.MVC.Filters;
 using BarberShop.MVC.Models;
 using BarberShop.MVC.Models.UsersPage;
@@ -13,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BarberShop.MVC.Controllers
 {
     [Authorize]
-    public class UsersController : Controller
+    public class UsersController : BaseController
     {
         private readonly IUserService _userService;
         private readonly IMapper _mapper;

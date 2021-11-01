@@ -3,13 +3,14 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BarberShop.BLL.Interfaces;
 using BarberShop.DAL.Common.Models;
+using BarberShop.MVC.Controllers.Base;
 using BarberShop.MVC.Filters;
 using BarberShop.MVC.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BarberShop.MVC.Controllers
 {
-    public class OffersController : Controller
+    public class OffersController : BaseController
     {
         private readonly IMapper _mapper;
         private readonly IOfferService _offerService;

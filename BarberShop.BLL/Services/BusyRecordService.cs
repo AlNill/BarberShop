@@ -25,17 +25,17 @@ namespace BarberShop.BLL.Services
 
         public async Task<IEnumerable<BusyRecord>> GetAll()
         {
-            return await _repository.GetAll();
+            return await _repository.GetAllAsync();
         }
 
         public async Task Create(BusyRecord record)
         {
-            await _repository.Create(record);
+            await _repository.CreateAsync(record);
         }
 
         public async Task Update(BusyRecord record)
         {
-            await _repository.Update(record);
+            await _repository.UpdateAsync(record);
         }
 
         public BusyRecord IsExists(int barberId, DateTime date)

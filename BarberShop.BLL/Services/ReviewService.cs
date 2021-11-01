@@ -28,7 +28,7 @@ namespace BarberShop.BLL.Services
 
         public async Task Create(Review review)
         {
-            await _repository.Create(review);
+            await _repository.CreateAsync(review);
         }
     }
 }

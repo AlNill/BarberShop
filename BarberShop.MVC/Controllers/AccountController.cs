@@ -4,18 +4,18 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BarberShop.BLL.Interfaces;
 using BarberShop.DAL.Common.Models;
+using BarberShop.MVC.Controllers.Base;
 using BarberShop.MVC.Filters;
 using BarberShop.MVC.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace BarberShop.MVC.Controllers
 {
     [Authorize]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
@@ -89,7 +89,7 @@ namespace BarberShop.MVC.Controllers
                     Surname = model.Surname,
                     NickName = model.NickName,
                     Password = model.Password,
-                    Email = model.PhoneNumber
+                    Email = model.Email
                 };
                 await _userService.Create(_mapper.Map<UserModel, User>(user));
                 user = _mapper.Map<User, UserModel>

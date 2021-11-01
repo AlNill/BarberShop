@@ -23,9 +23,9 @@
                             }
                         </select>
                         <select name="offerId" style="margin: 10px;">
-                            @foreach (var service in Model.Item2.OrderBy(b => b.Cost))
+                            @foreach (var offer in Model.Item2.OrderBy(b => b.Cost))
                             {
-                                <option value="@service.Id">@service.Title @service.Cost</option>
+                                <option value="@offer.Id">@offer.Title @offer.Cost</option>
                             }
                         </select>
                     </div>

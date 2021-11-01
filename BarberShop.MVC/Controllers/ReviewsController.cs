@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using BarberShop.BLL.Interfaces;
 using BarberShop.DAL.Common.Models;
+using BarberShop.MVC.Controllers.Base;
 using BarberShop.MVC.Filters;
 using BarberShop.MVC.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -11,7 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace BarberShop.MVC.Controllers
 {
     [Authorize]
-    public class ReviewsController : Controller
+    public class ReviewsController : BaseController
     {
         private readonly IReviewService _reviewService;
         private readonly IMapper _mapper;
