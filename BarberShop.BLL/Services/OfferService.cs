@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using BarberShop.BLL.Interfaces;
 using BarberShop.DAL.Common;
@@ -17,7 +16,7 @@ namespace BarberShop.BLL.Services
             _repository = unitOfWork.OfferRepository();
         }
 
-        public async Task<Offer> GetById(int id)
+        public async Task<Offer> Get(int id)
         {
             return await _repository.GetAsync(id);
         }
@@ -32,24 +31,25 @@ namespace BarberShop.BLL.Services
             return _repository.AdvancedSearch(offerParams);
         }
 
-        public async Task<IEnumerable<Offer>> GetAll()
+        public async Task<IEnumerable<Offer>> GetAllAsync()
         {
             return await _repository.GetAllAsync();
         }
 
-        public async Task Create(Offer offer)
+        public async Task CreateAsync(Offer offer)
         {
             await _repository.CreateAsync(offer);
         }
 
-        public async Task Update(Offer offer)
+        public async Task UpdateAsync(Offer offer)
         {
             await _repository.UpdateAsync(offer);
         }
 
-        public async Task Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            await _repository.DeleteAsync(id);
+            if(await _repository.ExistsAsync(id))
+                await _repository.DeleteAsync(id);
         }
     }
 }

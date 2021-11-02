@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Offers";
 }
-<div class="d-flex justify-content-center flex-column" style="width: 80%; height: 90%;">
+<div class="d-flex justify-content-center flex-column" style="width: 80%; height: 100%;">
     @using (Html.BeginForm("Index", "Offers", FormMethod.Get))
     {
         <div class="d-flex justify-content-start flex-row">
@@ -16,13 +16,34 @@
             <button type="submit" class="btn btn-success">Advanced Search</button>
         </div>
     }
+    @if (User.IsInRole("Admin"))
+    {
+        <a asp-action="Add" class="btn btn-primary" style="margin: 5px; width: 17rem;">
+            New
+        </a>
+    }
     @{
-        foreach (var service in Model.OrderBy(s => s.Title))
+        foreach (var offer in Model.OrderBy(s => s.Title))
         {
-            <div class="card" style="width: 20rem; height: 10rem; margin: 2rem;">
-                <h5 class="card-title">@service.Title</h5>
-                <h4 class="card-text">@service.Cost</h4>
-            </div>
+        <div class="card" style="width: 20rem; height: 10rem; margin: 2rem;">
+            <h5 class="card-title">@offer.Title</h5>
+            <h6 class="card-text">Cost: @offer.Cost</h6>
+            <h6 class="card-text">Duration: @offer.Duration</h6>
+            @if (User.IsInRole("Admin"))
+            {
+                <button type="button" class="btn btn-success" style="margin: 5px; width: 8rem;"
+                        onclick="location.href = '@Url.Action("Edit", "Offers", offer)'">
+                    Edit
+                </button>
+                @using (Html.BeginForm("Remove", "Offers", FormMethod.Post))
+                {
+                    <button type="submit" name="id" value="@offer.Id"
+                            class="btn btn-danger" style="margin: 5px; width: 8rem;">
+                        Remove
+                    </button>
+                }
             }
+        </div>
+        }
     }
 </div>

@@ -1,7 +1,6 @@
-﻿using System;
+﻿using AutoMapper;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using AutoMapper;
 using BarberShop.BLL.Interfaces;
 using BarberShop.DAL.Common.Models;
 using BarberShop.MVC.Controllers.Base;
@@ -10,6 +9,7 @@ using BarberShop.MVC.Models;
 using BarberShop.MVC.Models.UsersPage;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace BarberShop.MVC.Controllers
 {
@@ -29,6 +29,7 @@ namespace BarberShop.MVC.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index(int pageSize = 10, int page = 0)
         {
+            Logger.LogInformation($"Get request for Users page {page}");
             var pageViewModel = new PageModel(await _userService.GetCount(), page, pageSize);
             var viewModel = new IndexModel
             {
@@ -43,6 +44,7 @@ namespace BarberShop.MVC.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id)
         {
+            Logger.LogInformation($"Edit request for user with id {id}");
             var user = await _userService.GetById(id);
             return View(_mapper.Map<UserModel>(user));
         }
@@ -52,19 +54,13 @@ namespace BarberShop.MVC.Controllers
         [ExceptionFilter]
         public IActionResult Edit(UserModel userModel)
         {
-            try
+            Logger.LogInformation($"Update user with id {userModel.Id}");
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
-                {
-                    _userService.Update(_mapper.Map<User>(userModel));
-                    return RedirectToAction("Index");
-                }
-                return View(userModel);
-            }
-            catch (Exception e)
-            {
+                _userService.Update(_mapper.Map<User>(userModel));
                 return RedirectToAction("Index");
             }
+            return View(userModel);
         }
     }
 }

@@ -42,7 +42,7 @@ namespace BarberShop.MVC.Controllers
         private async Task<Tuple<IEnumerable<BarberModel>, IEnumerable<OfferModel>>> GetViewData()
         {
             var barbers = await _barberService.GetAllAsync();
-            var services = await _offerService.GetAll();
+            var services = await _offerService.GetAllAsync();
             return new Tuple<IEnumerable<BarberModel>, IEnumerable<OfferModel>>(
                 _mapper.Map<IEnumerable<Barber>, IEnumerable<BarberModel>>(barbers),
                 _mapper.Map<IEnumerable<Offer>, IEnumerable<OfferModel>>(services)
@@ -71,7 +71,7 @@ namespace BarberShop.MVC.Controllers
             Logger.LogInformation($"Record request with barber id: {barberId}, date {date}");
             var tupleModel = await GetViewData();
             var barber = await _barberService.GetAsync(barberId);
-            var offer = await _offerService.GetById(offerId);
+            var offer = await _offerService.Get(offerId);
 
             // TODO: Make validator
             //var validator = new BusyRecordsValidator();

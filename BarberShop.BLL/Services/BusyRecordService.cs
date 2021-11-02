@@ -51,7 +51,6 @@ namespace BarberShop.BLL.Services
 
         private async Task<BusyRecord> IsExists(int barberId, int offerId, DateTime date)
         {
-            //TODO: change Result to Task
             var offer = await _offerRepository.GetAsync(offerId);
             var startDate = date.AddMinutes(-offer.Duration);
             var endDate = date.AddMinutes(offer.Duration);

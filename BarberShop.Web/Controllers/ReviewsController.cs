@@ -25,7 +25,7 @@ namespace BarberShop.Web.Controllers
         [HttpGet("{id}")]
         public ActionResult<Review> Get(int id)
         {
-            var review = _service.GetById(id);
+            var review = _service.GetAsync(id);
             if (review == null)
                 return NotFound();
             return Ok(review);

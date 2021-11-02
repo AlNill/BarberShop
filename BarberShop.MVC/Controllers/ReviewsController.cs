@@ -51,15 +51,37 @@ namespace BarberShop.MVC.Controllers
         [ExceptionFilter]
         public async Task<IActionResult> Add(string reviewText, int barberId)
         {
-            var review = new ReviewModel()
-            {
-                BarberId = _mapper.Map<Barber, BarberModel>(_barberService.GetAsync(barberId).Result).Id,
-                UserReview = reviewText,
-                UserId = _userService.Get(u => u.NickName == User.Identity.Name).Id
-            };
-
-            await _reviewService.Create(_mapper.Map<ReviewModel, Review>(review));
+            await _reviewService.CreateAsync(barberId, reviewText, GetUserNickNameFromContext());
             ViewBag.Message = "Success add review. Thanks for your attention";
+            return RedirectToAction("Index", "Reviews");
+        }
+
+        [HttpGet]
+        [Authorize]
+        [ExceptionFilter]
+        public async Task<IActionResult> Remove(int id)
+        {
+            var userRole = GetUserRoleFromContext();
+            var userNickName = GetUserNickNameFromContext();
+            await _reviewService.DeleteAsync(id, userRole, userNickName);
+            return RedirectToAction("Index", "Reviews");
+        }
+
+        [Authorize]
+        [ExceptionFilter]
+        public async Task<IActionResult> Edit(ReviewModel reviewModel)
+        {
+            switch (HttpContext.Request.Method.ToLower())
+            {
+                case "get":
+                    IEnumerable<BarberModel> barbers = _mapper.Map<IEnumerable<Barber>,
+                        IEnumerable<BarberModel>>(await _barberService.GetAllAsync());
+                    ViewData["Barbers"] = barbers;
+                    return View(reviewModel);
+                case "post":
+                    await _reviewService.UpdateAsync(_mapper.Map<ReviewModel, Review>(reviewModel));
+                    break;
+            } 
             return RedirectToAction("Index", "Reviews");
         }
     }
