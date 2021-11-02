@@ -31,11 +31,12 @@ namespace BarberShop.MVC.Controllers
         {
             Logger.LogInformation($"Get request for Users page {page}");
             var pageViewModel = new PageModel(await _userService.GetCountAsync(), page, pageSize);
+
             var viewModel = new IndexModel
             {
                 PageModel = pageViewModel,
                 Users = _mapper.Map<IEnumerable<User>, IEnumerable<UserModel>>(
-                    _userService.GetRange(page * pageSize, pageSize))
+                    _userService.GetRangeWithRole(page * pageSize, pageSize))
             };
             return View(viewModel);
         }
@@ -69,6 +70,24 @@ namespace BarberShop.MVC.Controllers
         public async Task<IActionResult> Remove(int id)
         {
             await _userService.DeleteAsync(id);
+            return RedirectToAction("Index", "Users");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [ExceptionFilter]
+        public async Task<IActionResult> SetBan(int id)
+        {
+            await _userService.SetBan(id);
+            return RedirectToAction("Index", "Users");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [ExceptionFilter]
+        public async Task<IActionResult> UnsetBan(int id)
+        {
+            await _userService.UnsetBan(id);
             return RedirectToAction("Index", "Users");
         }
     }

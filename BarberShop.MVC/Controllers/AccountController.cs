@@ -47,6 +47,12 @@ namespace BarberShop.MVC.Controllers
                     u => u.NickName == loginModel.NickName && u.Password == loginModel.Password));
                 if (user != null)
                 {
+                    if (user.IsBanned)
+                    {
+                        Logger.LogInformation($"User {user.NickName} is banned.");
+                        ViewBag.Message = "You are banned.";
+                        return View(loginModel);
+                    }
                     user = _mapper.Map<User, UserModel>(_userService.GetWithInclude(user.Id));
                     await Authenticate(user);
                     Logger.LogInformation($"Success login user {loginModel.NickName}");

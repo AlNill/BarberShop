@@ -23,10 +23,27 @@ namespace BarberShop.BLL.Services
         public IEnumerable<User> GetRange(int skipPos = 0, int count = 10) => 
             _repository.GetRange(skipPos, count);
 
+        public IEnumerable<User> GetRangeWithRole(int skipPos = 0, int count = 10) =>
+            _repository.GetRangeWithRole(skipPos, count);
+
         public async Task DeleteAsync(int id)
         {
             if (await _repository.GetAsync(id) != null)
                 await _repository.DeleteAsync(id);
+        }
+
+        public async Task SetBan(int id)
+        {
+            var user = await _repository.GetAsync(id);
+            user.IsBanned = true;
+            await UpdateAsync(user);
+        }
+
+        public async Task UnsetBan(int id)
+        {
+            var user = await _repository.GetAsync(id);
+            user.IsBanned = false;
+            await UpdateAsync(user);
         }
 
         public async Task<User> GetAsync(int id) => await _repository.GetAsync(id);

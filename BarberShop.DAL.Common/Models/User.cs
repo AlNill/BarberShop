@@ -7,5 +7,6 @@
         public string Password { get; set; }
         public int RoleId { get; set; } = 2;
         public Role Role { get; set; }
+        public bool IsBanned { get; set; } = false;
     }
 }

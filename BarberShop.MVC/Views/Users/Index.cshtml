@@ -27,7 +27,27 @@
                         <td>@item.user.NickName</td>
                         <td>@item.user.Password</td>
                         <td>
-                            <button >Ban</button>
+                            @if (item.user.Role.Name != "Admin")
+                            {
+                                if (item.user.IsBanned)
+                                {
+                                <form method="post" asp-action="UnsetBan">
+                                    <button class="btn btn-success" type="submit"
+                                            name="id" value="@item.user.Id">
+                                        Allow
+                                    </button>
+                                </form>
+                                }
+                                else
+                                {
+                                <form method="post" asp-action="SetBan">
+                                    <button class="btn btn-danger" type="submit"
+                                            name="id" value="@item.user.Id">
+                                        Ban
+                                    </button>
+                                </form>
+                                }
+                            }
                         </td>
                         <td>
                             <a class="btn btn-danger" asp-route-id="@item.user.Id" asp-action="Remove">Remove</a>

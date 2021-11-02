@@ -17,6 +17,9 @@ namespace BarberShop.BLL.Interfaces
         public User GetWithInclude(int id);
         public Task<int> GetCountAsync();
         public IEnumerable<User> GetRange(int skipPos = 0, int count = 10);
+        public IEnumerable<User> GetRangeWithRole(int skipPos = 0, int count = 10);
         public Task DeleteAsync(int id);
+        public Task SetBan(int id);
+        public Task UnsetBan(int id);
     }
 }
