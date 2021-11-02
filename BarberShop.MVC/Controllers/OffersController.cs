@@ -8,6 +8,7 @@ using BarberShop.MVC.Filters;
 using BarberShop.MVC.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace BarberShop.MVC.Controllers
 {
@@ -28,6 +29,7 @@ namespace BarberShop.MVC.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index(string? serviceTitleSubstr)
         {
+            Logger.LogInformation($"Get request to offers index");
             IEnumerable<Offer> services;
             if (serviceTitleSubstr == null)
             {
@@ -35,6 +37,7 @@ namespace BarberShop.MVC.Controllers
                 return View(_mapper.Map<IEnumerable<Offer>, IEnumerable<OfferModel>>(services));
             }
 
+            Logger.LogInformation($"Request to find offers with subtitle {serviceTitleSubstr}");
             services = _offerService.GetServicesForSubTitle((string)serviceTitleSubstr);
             return View(_mapper.Map<IEnumerable<Offer>, IEnumerable<OfferModel>>(services));
         }
@@ -43,6 +46,7 @@ namespace BarberShop.MVC.Controllers
         [AllowAnonymous]
         public IActionResult AdvancedSearch()
         {
+            Logger.LogInformation($"Get request to offers advanced search");
             return View();
         }
 
@@ -51,10 +55,12 @@ namespace BarberShop.MVC.Controllers
         [AllowAnonymous]
         public IActionResult AdvancedSearch(OfferModel offerSearchParams)
         {
+            Logger.LogInformation($"Advanced search in offers {offerSearchParams.Cost} {offerSearchParams.Title}");
             var services = _mapper.Map<IEnumerable<Offer>,
                 IEnumerable<OfferModel>>(_offerService.AdvancedSearch(
                 _mapper.Map<OfferModel, Offer>(offerSearchParams))
             );
+            Logger.LogInformation($"Successfully advanced search in offers");
             return View("Index", services);
         }
 
@@ -62,6 +68,7 @@ namespace BarberShop.MVC.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Add()
         {
+            Logger.LogInformation($"Get request to add offer");
             return View();
         }
 
@@ -70,7 +77,9 @@ namespace BarberShop.MVC.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Add(OfferModel offerModel)
         {
+            Logger.LogInformation($"Request to add offer {offerModel.Title}");
             await _offerService.CreateAsync(_mapper.Map<OfferModel, Offer>(offerModel));
+            Logger.LogInformation($"Successfully added offer {offerModel.Title}");
             return RedirectToAction("Index", "Offers");
         }
 
@@ -79,7 +88,9 @@ namespace BarberShop.MVC.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Remove(int id)
         {
+            Logger.LogInformation($"Request to remove offer {id}");
             await _offerService.DeleteAsync(id);
+            Logger.LogInformation($"Successfully removed offer {id}");
             return RedirectToAction("Index", "Offers");
         }
 
@@ -90,9 +101,11 @@ namespace BarberShop.MVC.Controllers
             switch (HttpContext.Request.Method.ToLower())
             {
                 case "get":
+                    Logger.LogInformation($"Request to edit offer {offerModel.Title}");
                     return View(offerModel);
                 case "post":
                     await _offerService.UpdateAsync(_mapper.Map<OfferModel, Offer>(offerModel));
+                    Logger.LogInformation($"Success edit offer with id {offerModel.Id}");
                     break;
             }
             return RedirectToAction("Index", "Offers");

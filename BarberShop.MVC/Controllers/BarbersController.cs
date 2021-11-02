@@ -29,6 +29,7 @@ namespace BarberShop.MVC.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
+            Logger.LogInformation("Get request to barbers index");
             var barbers = await _barbersService.GetAllAsync();
             return View(_mapper.Map<IEnumerable<BarberModel>>(barbers));
         }
@@ -45,16 +46,23 @@ namespace BarberShop.MVC.Controllers
         [ExceptionFilter]
         public async Task<IActionResult> Add(BarberModel barberModel, IFormFile image)
         {
+            Logger.LogInformation($"Request to add barber {barberModel.Name} {barberModel.Surname}");
             var barber = _mapper.Map<BarberModel, Barber>(barberModel);
             if (image != null)
+            {
+                Logger.LogInformation("Request contains image");
                 await _barbersService.SaveAvatarAsync(barber, image);
+            }
 
             if (!ModelState.IsValid)
             {
+                Logger.LogInformation("Add barber model not valid");
                 ModelState.AddModelError("", "Badly input information");
                 return View();
             }
+
             await _barbersService.CreateAsync(barber);
+            Logger.LogInformation($"Successfully barber created {barberModel.Name} {barberModel.Surname}");
             return RedirectToAction("Index");
         }
 
