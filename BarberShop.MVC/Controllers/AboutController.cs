@@ -7,6 +7,7 @@ namespace BarberShop.MVC.Controllers
     [AllowAnonymous]
     public class AboutController : BaseController
     {
+        [HttpGet]
         public IActionResult Index()
         {
             return View();

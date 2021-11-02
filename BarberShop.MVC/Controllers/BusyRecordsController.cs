@@ -60,7 +60,7 @@ namespace BarberShop.MVC.Controllers
         private async Task<UserModel> GetUserByNickName()
         {
             var nickName = HttpContext.User.FindFirstValue(ClaimsIdentity.DefaultNameClaimType);
-            return _mapper.Map<User, UserModel>(await _userService.GetByNickName(nickName));
+            return _mapper.Map<User, UserModel>(await _userService.GetByNickNameAsync(nickName));
         }
 
         [HttpPost]

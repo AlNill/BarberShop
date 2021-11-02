@@ -18,24 +18,38 @@ namespace BarberShop.BLL.Services
             _repository = unitOfWork.UserRepository();
         }
 
-        public async Task<int> GetCount() => await _repository.GetCountAsync();
+        public async Task<int> GetCountAsync() => await _repository.GetCountAsync();
 
         public IEnumerable<User> GetRange(int skipPos = 0, int count = 10) => 
             _repository.GetRange(skipPos, count);
     
-        public async Task<User> GetById(int id) => await _repository.GetAsync(id);
+        public async Task<User> GetAsync(int id) => await _repository.GetAsync(id);
 
-        public async Task<User> GetByNickName(string nickName) => await _repository.GetByNickName(nickName);
+        public async Task<User> GetByNickNameAsync(string nickName) => await _repository.GetByNickName(nickName);
 
-        public async Task<IEnumerable<User>> GetAll() => await _repository.GetAllAsync();
+        public async Task<IEnumerable<User>> GetAllAsync() => await _repository.GetAllAsync();
 
-        public async Task Create(User user) => await _repository.CreateAsync(user);
+        public async Task CreateAsync(string name, string fatherName, string surname, 
+            string nickname, string password, string email)
+        {
+            if (Get(u => u.NickName == nickname) != null)
+                throw new ArgumentException($"User with nickname {nickname} exists");
+
+            var user = new User()
+            {
+                Name = name,
+                FatherName = fatherName,
+                Surname = surname,
+                NickName = nickname,
+                Password = password,
+                Email = email
+            };
+            await _repository.CreateAsync(user);
+        }
 
         public User Get(Func<User, bool> predicate) => _repository.Get(predicate).FirstOrDefault();
 
-        public async Task Update(User user) => await _repository.UpdateAsync(user);
-
-        public User GetWithInclude() => _repository.GetWithInclude(u => u.Role).FirstOrDefault();
+        public async Task UpdateAsync(User user) => await _repository.UpdateAsync(user);
 
         public User GetWithInclude(int id)
         {

@@ -30,7 +30,7 @@ namespace BarberShop.MVC.Controllers
         public async Task<IActionResult> Index(int pageSize = 10, int page = 0)
         {
             Logger.LogInformation($"Get request for Users page {page}");
-            var pageViewModel = new PageModel(await _userService.GetCount(), page, pageSize);
+            var pageViewModel = new PageModel(await _userService.GetCountAsync(), page, pageSize);
             var viewModel = new IndexModel
             {
                 PageModel = pageViewModel,
@@ -45,7 +45,7 @@ namespace BarberShop.MVC.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             Logger.LogInformation($"Edit request for user with id {id}");
-            var user = await _userService.GetById(id);
+            var user = await _userService.GetAsync(id);
             return View(_mapper.Map<UserModel>(user));
         }
 
@@ -54,10 +54,10 @@ namespace BarberShop.MVC.Controllers
         [ExceptionFilter]
         public IActionResult Edit(UserModel userModel)
         {
-            Logger.LogInformation($"Update user with id {userModel.Id}");
+            Logger.LogInformation($"UpdateAsync user with id {userModel.Id}");
             if (ModelState.IsValid)
             {
-                _userService.Update(_mapper.Map<User>(userModel));
+                _userService.UpdateAsync(_mapper.Map<User>(userModel));
                 return RedirectToAction("Index");
             }
             return View(userModel);
