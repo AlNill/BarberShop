@@ -22,7 +22,13 @@ namespace BarberShop.BLL.Services
 
         public IEnumerable<User> GetRange(int skipPos = 0, int count = 10) => 
             _repository.GetRange(skipPos, count);
-    
+
+        public async Task DeleteAsync(int id)
+        {
+            if (await _repository.GetAsync(id) != null)
+                await _repository.DeleteAsync(id);
+        }
+
         public async Task<User> GetAsync(int id) => await _repository.GetAsync(id);
 
         public async Task<User> GetByNickNameAsync(string nickName) => await _repository.GetByNickName(nickName);

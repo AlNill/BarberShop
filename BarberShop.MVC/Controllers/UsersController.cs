@@ -62,5 +62,14 @@ namespace BarberShop.MVC.Controllers
             }
             return View(userModel);
         }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [ExceptionFilter]
+        public async Task<IActionResult> Remove(int id)
+        {
+            await _userService.DeleteAsync(id);
+            return RedirectToAction("Index", "Users");
+        }
     }
 }
