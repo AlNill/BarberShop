@@ -29,5 +29,12 @@ namespace BarberShop.MVC.Utils
                 SetConfig().GetSection("NotifyEmail:Password").Value
                 );
         }
+
+        public static string GetHtmlTemplatePath()
+        {
+            return Path.Join(Directory.GetCurrentDirectory(),
+                SetConfig().GetSection("HtmlTemplateName:Subdir").Value,
+                SetConfig().GetSection("HtmlTemplateName:Name").Value);
+        }
     }
 }

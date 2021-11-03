@@ -39,6 +39,11 @@ namespace BarberShop.MVC
             services.AddSingleton<IEmailNotificator, EmailNotificator>(
                 x => new EmailNotificator(emailInfo.Item1, emailInfo.Item2));
 
+            var htmlTemplatePath = AppSettingsParser.GetHtmlTemplatePath();
+            services.AddSingleton<IHtmlTemplatePreparer, HtmlTemplatePreparer>(
+                x => new HtmlTemplatePreparer(htmlTemplatePath));
+
+            services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IBarberService, BarberService>();
             services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<IUserService, UserService>();

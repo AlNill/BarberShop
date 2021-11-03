@@ -2,6 +2,7 @@
 {
     public interface IEmailNotificator
     {
-        public void SmtpNotify(string title, string text, string toEmailAddr);
+        public void SmtpYandexNotify(string title, string text, string toEmailAddr);
+        public void SmtpHtmlBodyYandexNotify(string title, string htmlBody, string toEmailAddr);
     }
 }
