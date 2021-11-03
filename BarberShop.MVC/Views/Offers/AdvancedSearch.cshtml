@@ -1,16 +1,21 @@
-﻿@model OfferModel
+﻿@model OfferParamsModel
 
 @using (Html.BeginForm("AdvancedSearch", "Offers", FormMethod.Post))
 {
     <div class="form-group">
-        <label asp-for="Title"></label>
-        <input class="form-control" type="text" asp-for="Title" />
-        <span class="alert-danger" asp-validation-for="Title" />
+        <label asp-for="SubTitle"></label>
+        <input class="form-control" type="text" asp-for="SubTitle" />
+        <span class="alert-danger" asp-validation-for="SubTitle" />
     </div>
     <div class="form-group">
-        <label asp-for="Cost"></label>
-        <input class="form-control" type="text" asp-for="Cost" />
-        <span class="alert-danger" asp-validation-for="Cost" />
+        <label asp-for="MinCost"></label>
+        <input class="form-control" type="text" asp-for="MinCost" />
+        <span class="alert-danger" asp-validation-for="MinCost" />
+    </div>
+    <div class="form-group">
+        <label asp-for="MaxCost"></label>
+        <input class="form-control" type="text" asp-for="MaxCost" />
+        <span class="alert-danger" asp-validation-for="MaxCost" />
     </div>
     <div class="form-group">
         <button type="submit" class="btn btn-success">Search</button>

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using BarberShop.BLL.Interfaces;
 using BarberShop.DAL.Common;
@@ -26,9 +28,18 @@ namespace BarberShop.BLL.Services
             return _repository.Get(s => s.Title.Contains(subTitle));
         }
 
-        public IEnumerable<Offer> AdvancedSearch(Offer offerParams)
+        public IEnumerable<Offer> AdvancedSearch(string subtitle = null, int minCost = 0, int maxCost = 0)
         {
-            return _repository.AdvancedSearch(offerParams);
+            if ((minCost > maxCost && maxCost != 0) || minCost < 0 || maxCost < 0)
+                throw new ArgumentException("Bad search parameters.");
+            Func<Offer, bool> predicate = new Func<Offer, bool>(
+                (offer) => (
+                    (subtitle == null || offer.Title.Contains(subtitle)) &&
+                    (minCost == 0 || offer.Cost >= minCost) &&
+                    (maxCost == 0 || offer.Cost <= maxCost)
+                    ));
+
+            return _repository.Get(predicate);
         }
 
         public async Task<IEnumerable<Offer>> GetAllAsync()

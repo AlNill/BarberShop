@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -29,8 +28,8 @@ namespace BarberShop.MVC.Controllers
             IBarberService barberService,
             IOfferService offerService,
             IUserService userService,
-            IMapper mapper, 
-            IEmailService emailService)
+            IEmailService emailService,
+            IMapper mapper)
         {
             _barberService = barberService;
             _offerService = offerService;

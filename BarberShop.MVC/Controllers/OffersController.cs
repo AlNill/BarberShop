@@ -27,7 +27,7 @@ namespace BarberShop.MVC.Controllers
         [HttpGet]
         [ExceptionFilter]
         [AllowAnonymous]
-        public async Task<IActionResult> Index(string? serviceTitleSubstr)
+        public async Task<IActionResult> Index(string serviceTitleSubstr)
         {
             Logger.LogInformation($"Get request to offers index");
             IEnumerable<Offer> services;
@@ -38,7 +38,7 @@ namespace BarberShop.MVC.Controllers
             }
 
             Logger.LogInformation($"Request to find offers with subtitle {serviceTitleSubstr}");
-            services = _offerService.GetServicesForSubTitle((string)serviceTitleSubstr);
+            services = _offerService.GetServicesForSubTitle(serviceTitleSubstr);
             return View(_mapper.Map<IEnumerable<Offer>, IEnumerable<OfferModel>>(services));
         }
 
@@ -53,12 +53,16 @@ namespace BarberShop.MVC.Controllers
         [HttpPost]
         [ExceptionFilter]
         [AllowAnonymous]
-        public IActionResult AdvancedSearch(OfferModel offerSearchParams)
+        public IActionResult AdvancedSearch(OfferParamsModel offerSearchParams)
         {
-            Logger.LogInformation($"Advanced search in offers {offerSearchParams.Cost} {offerSearchParams.Title}");
+            Logger.LogInformation($"Advanced search in offers " +
+                                  $"with min cost: {offerSearchParams.MinCost} " +
+                                  $"max cost: {offerSearchParams.MaxCost} " +
+                                  $"subtitle: {offerSearchParams.SubTitle}");
             var services = _mapper.Map<IEnumerable<Offer>,
                 IEnumerable<OfferModel>>(_offerService.AdvancedSearch(
-                _mapper.Map<OfferModel, Offer>(offerSearchParams))
+                offerSearchParams.SubTitle, offerSearchParams.MinCost, offerSearchParams.MaxCost
+                )
             );
             Logger.LogInformation($"Successfully advanced search in offers");
             return View("Index", services);

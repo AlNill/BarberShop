@@ -49,10 +49,8 @@ namespace BarberShop.Tests.OfferTests
         {
             await using var context = new ApplicationContext(Opt);
             var repository = new UnitOfWork(context);
-            IEnumerable<Offer> offers = await repository.OfferRepository().GetAllAsync();
-
             OfferService offerService = new OfferService(repository);
-            Assert.AreEqual(0, offerService.AdvancedSearch(new Offer{ Title = "Offers" }).Count());
+            Assert.AreEqual(0, offerService.AdvancedSearch(subtitle:"Offers").Count());
         }
 
         [Test]
@@ -60,10 +58,8 @@ namespace BarberShop.Tests.OfferTests
         {
             await using var context = new ApplicationContext(Opt);
             var repository = new UnitOfWork(context);
-            IEnumerable<Offer> offers = await repository.OfferRepository().GetAllAsync();
-
             OfferService offerService = new OfferService(repository);
-            Assert.AreEqual(0, offerService.AdvancedSearch(new Offer { Cost = 9 }).Count());
+            Assert.AreEqual(0, offerService.AdvancedSearch(maxCost:9).Count());
         }
 
         [Test]
@@ -71,10 +67,8 @@ namespace BarberShop.Tests.OfferTests
         {
             await using var context = new ApplicationContext(Opt);
             var repository = new UnitOfWork(context);
-            IEnumerable<Offer> offers = await repository.OfferRepository().GetAllAsync();
-
             OfferService offerService = new OfferService(repository);
-            Assert.AreEqual(3, offerService.AdvancedSearch(new Offer { Title = "Offer" }).Count());
+            Assert.AreEqual(3, offerService.AdvancedSearch(subtitle:"Offer").Count());
         }
 
         [Test]
@@ -82,10 +76,8 @@ namespace BarberShop.Tests.OfferTests
         {
             await using var context = new ApplicationContext(Opt);
             var repository = new UnitOfWork(context);
-            IEnumerable<Offer> offers = await repository.OfferRepository().GetAllAsync();
-
             OfferService offerService = new OfferService(repository);
-            Assert.AreEqual(2, offerService.AdvancedSearch(new Offer { Cost = 40}).Count());
+            Assert.AreEqual(2, offerService.AdvancedSearch(minCost:40).Count());
         }
 
         [Test]
@@ -93,10 +85,62 @@ namespace BarberShop.Tests.OfferTests
         {
             await using var context = new ApplicationContext(Opt);
             var repository = new UnitOfWork(context);
-            IEnumerable<Offer> offers = await repository.OfferRepository().GetAllAsync();
-
             OfferService offerService = new OfferService(repository);
-            Assert.AreEqual(1, offerService.AdvancedSearch(new Offer { Title = "Offer", Cost = 40 }).Count());
+            Assert.AreEqual(1, offerService.AdvancedSearch(subtitle:"Offer", minCost:40).Count());
+        }
+
+        [Test]
+        public async Task TestRangeCost()
+        {
+            await using var context = new ApplicationContext(Opt);
+            var repository = new UnitOfWork(context);
+            OfferService offerService = new OfferService(repository);
+            Assert.AreEqual(2, offerService.AdvancedSearch(minCost: 5, maxCost:29).Count());
+        }
+
+        [Test]
+        public async Task TestRangeCostAll()
+        {
+            await using var context = new ApplicationContext(Opt);
+            var repository = new UnitOfWork(context);
+            OfferService offerService = new OfferService(repository);
+            Assert.AreEqual(5, offerService.AdvancedSearch(minCost: 5, maxCost: 50).Count());
+        }
+
+        [Test]
+        public async Task TestMinMoreMaxException()
+        {
+            await using var context = new ApplicationContext(Opt);
+            var repository = new UnitOfWork(context);
+            OfferService offerService = new OfferService(repository);
+            Assert.Throws<ArgumentException>(() => offerService.AdvancedSearch(minCost: 15, maxCost: 3));
+        }
+
+        [Test]
+        public async Task TestNegativeMinException()
+        {
+            await using var context = new ApplicationContext(Opt);
+            var repository = new UnitOfWork(context);
+            OfferService offerService = new OfferService(repository);
+            Assert.Throws<ArgumentException>(() => offerService.AdvancedSearch(minCost: -15, maxCost: 3));
+        }
+
+        [Test]
+        public async Task TestNegativeMaxException()
+        {
+            await using var context = new ApplicationContext(Opt);
+            var repository = new UnitOfWork(context);
+            OfferService offerService = new OfferService(repository);
+            Assert.Throws<ArgumentException>(() => offerService.AdvancedSearch(maxCost: -3));
+        }
+
+        [Test]
+        public async Task TestNegativeMinAndMaxException()
+        {
+            await using var context = new ApplicationContext(Opt);
+            var repository = new UnitOfWork(context);
+            OfferService offerService = new OfferService(repository);
+            Assert.Throws<ArgumentException>(() => offerService.AdvancedSearch(minCost:-4, maxCost: -3));
         }
     }
 }

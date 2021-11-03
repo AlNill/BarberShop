@@ -12,6 +12,6 @@ namespace BarberShop.BLL.Interfaces
         public Task UpdateAsync(Offer offer);
         public Task DeleteAsync(int id);
         public IEnumerable<Offer> GetServicesForSubTitle(string subTitle);
-        public IEnumerable<Offer> AdvancedSearch(Offer offerParams);
+        public IEnumerable<Offer> AdvancedSearch(string subtitle, int minCost, int maxCost);
     }
 }
