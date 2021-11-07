@@ -1,21 +1,28 @@
 ﻿@model LoginModel
 
-@using (Html.BeginForm("Login", "Account", FormMethod.Post))
-{
-    <div>
-        @Html.ValidationSummary()
-    </div>
-
-    <div class="form-group">
-        <label asp-for="NickName"></label>
-        <input class="form-control" type="text" asp-for="NickName" />
-        <span class="alert-danger" asp-validation-for="NickName" />
-    </div>
-    <div class="form-group">
-        <label asp-for="Password"></label>
-        <input class="form-control" type="text" asp-for="Password" />
-    </div>
-    <div class="form-group">
-        <button type="submit" class="btn btn-success">Login</button>
-    </div>
-}
+<div class="d-flex align-items-center justify-content-center" style="width: 100%; height: 90%;">
+    @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+    {
+        <div>
+            @{
+                var errMessage = ViewBag.Message;
+                <h1>@errMessage</h1>
+            }
+        </div>
+        <div>
+            @Html.ValidationSummary()
+        </div>
+        <div class="form-group">
+            <label asp-for="NickName"></label>
+            <input class="form-control" type="text" asp-for="NickName" />
+            <span class="alert-danger" asp-validation-for="NickName" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Password"></label>
+            <input class="form-control" type="password" asp-for="Password" />
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-success">Login</button>
+        </div>
+    }
+</div>

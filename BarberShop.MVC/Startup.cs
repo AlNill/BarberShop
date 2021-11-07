@@ -1,12 +1,10 @@
 using AutoMapper;
+using BarberShop.BLL;
 using BarberShop.BLL.Interfaces;
 using BarberShop.BLL.Services;
 using BarberShop.DAL.Common;
-using BarberShop.DAL.Common.Models;
-using BarberShop.DAL.Common.Repositories;
 using BarberShop.DAL.EF;
 using BarberShop.DAL.EF.Contexts;
-using BarberShop.DAL.EF.Repositories;
 using BarberShop.MVC.Mapper;
 using BarberShop.MVC.Utils;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -30,13 +28,22 @@ namespace BarberShop.MVC
 
         public void ConfigureServices(IServiceCollection services)
         {
-            string connectionString = DbOptionsBuilder.GetConnectionString();
+            string connectionString = AppSettingsParser.GetConnectionString();
             services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(
                 connectionString
                 ));
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+            var emailInfo = AppSettingsParser.GetEmailCredentials();
+            services.AddSingleton<IEmailNotificator, EmailNotificator>(
+                x => new EmailNotificator(emailInfo.Item1, emailInfo.Item2));
+
+            var htmlTemplatePath = AppSettingsParser.GetHtmlTemplatePath();
+            services.AddSingleton<IHtmlTemplatePreparer, HtmlTemplatePreparer>(
+                x => new HtmlTemplatePreparer(htmlTemplatePath));
+
+            services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IBarberService, BarberService>();
             services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<IUserService, UserService>();
@@ -85,7 +92,7 @@ namespace BarberShop.MVC
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=About}/{action=Index}");
+                    pattern: "{controller=Barbers}/{action=Index}");
             });
         }
     }

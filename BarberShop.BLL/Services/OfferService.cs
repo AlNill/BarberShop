@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using BarberShop.BLL.Interfaces;
 using BarberShop.DAL.Common;
@@ -17,9 +18,9 @@ namespace BarberShop.BLL.Services
             _repository = unitOfWork.OfferRepository();
         }
 
-        public async Task<Offer> GetById(int id)
+        public async Task<Offer> Get(int id)
         {
-            return await _repository.Get(id);
+            return await _repository.GetAsync(id);
         }
 
         public IEnumerable<Offer> GetServicesForSubTitle(string subTitle)
@@ -27,29 +28,39 @@ namespace BarberShop.BLL.Services
             return _repository.Get(s => s.Title.Contains(subTitle));
         }
 
-        public IEnumerable<Offer> AdvancedSearch(Offer offerParams)
+        public IEnumerable<Offer> AdvancedSearch(string subtitle = null, int minCost = 0, int maxCost = 0)
         {
-            return _repository.AdvancedSearch(offerParams);
+            if ((minCost > maxCost && maxCost != 0) || minCost < 0 || maxCost < 0)
+                throw new ArgumentException("Bad search parameters.");
+            Func<Offer, bool> predicate = new Func<Offer, bool>(
+                (offer) => (
+                    (subtitle == null || offer.Title.Contains(subtitle)) &&
+                    (minCost == 0 || offer.Cost >= minCost) &&
+                    (maxCost == 0 || offer.Cost <= maxCost)
+                    ));
+
+            return _repository.Get(predicate);
         }
 
-        public async Task<IEnumerable<Offer>> GetAll()
+        public async Task<IEnumerable<Offer>> GetAllAsync()
         {
-            return await _repository.GetAll();
+            return await _repository.GetAllAsync();
         }
 
-        public async Task Create(Offer offer)
+        public async Task CreateAsync(Offer offer)
         {
-            await _repository.Create(offer);
+            await _repository.CreateAsync(offer);
         }
 
-        public async Task Update(Offer offer)
+        public async Task UpdateAsync(Offer offer)
         {
-            await _repository.Update(offer);
+            await _repository.UpdateAsync(offer);
         }
 
-        public async Task Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            await _repository.Delete(id);
+            if(await _repository.ExistsAsync(id))
+                await _repository.DeleteAsync(id);
         }
     }
 }

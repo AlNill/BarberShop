@@ -11,7 +11,7 @@ namespace BarberShop.MVC.Utils
             var builder = new ConfigurationBuilder();
             // Set path to current directory
             builder.SetBasePath(Directory.GetCurrentDirectory());
-            // Get configuration from json file
+            // GetAsync configuration from json file
             builder.AddJsonFile("appsettings.json");
             // Save configuration
             return builder.Build();
@@ -28,6 +28,13 @@ namespace BarberShop.MVC.Utils
                 SetConfig().GetSection("NotifyEmail:Email").Value,
                 SetConfig().GetSection("NotifyEmail:Password").Value
                 );
+        }
+
+        public static string GetHtmlTemplatePath()
+        {
+            return Path.Join(Directory.GetCurrentDirectory(),
+                SetConfig().GetSection("HtmlTemplateName:Subdir").Value,
+                SetConfig().GetSection("HtmlTemplateName:Name").Value);
         }
     }
 }

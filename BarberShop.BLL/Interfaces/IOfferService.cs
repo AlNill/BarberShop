@@ -6,12 +6,12 @@ namespace BarberShop.BLL.Interfaces
 {
     public interface IOfferService
     {
-        public Task<Offer> GetById(int id);
-        public Task<IEnumerable<Offer>> GetAll();
-        public Task Create(Offer offer);
-        public Task Update(Offer offer);
-        public Task Delete(int id);
+        public Task<Offer> Get(int id);
+        public Task<IEnumerable<Offer>> GetAllAsync();
+        public Task CreateAsync(Offer offer);
+        public Task UpdateAsync(Offer offer);
+        public Task DeleteAsync(int id);
         public IEnumerable<Offer> GetServicesForSubTitle(string subTitle);
-        public IEnumerable<Offer> AdvancedSearch(Offer offerParams);
+        public IEnumerable<Offer> AdvancedSearch(string subtitle, int minCost, int maxCost);
     }
 }

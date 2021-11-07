@@ -1,33 +1,34 @@
-﻿@using System.Security.Cryptography.Xml
-@model BarberModel
+﻿@model BarberModel
 
-@using (Html.BeginForm("Edit", "Barbers", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    @Html.HiddenFor(x => x.Id)
+<div class="d-flex justify-content-center align-items-center" style="width: 100%;">
+    @using (Html.BeginForm("Edit", "Barbers", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.HiddenFor(x => x.Id)
 
-    <div class="form-group">
-        <label asp-for="Name"></label>
-        <input class="form-control" type="text" asp-for="Name" />
-        <span class="alert-danger" asp-validation-for="Name" />
-    </div>
-    <div class="form-group">
-        <label asp-for="Surname"></label>
-        <input class="form-control" type="text" asp-for="Surname" />
-    </div>
-    <div class="form-group">
-        <label asp-for="FatherName"></label>
-        <input class="form-control" type="text" asp-for="FatherName" />
-    </div>
-    <div class="form-group">
-        <label asp-for="Information"></label>
-        <input class="form-control" type="text" asp-for="Information" />
-    </div>
-    <div class="form-group">
-        <label asp-for="ImagePath">ImagePath</label>
-        <input class="form-control" type="text" asp-for="ImagePath" disabled />
-        <input type="file" name="image" />
-    </div>
-    <div class="form-group">
-        <button type="submit" class="btn btn-success">Save</button>
-    </div>
-}
+        <div class="form-group">
+            <label asp-for="Name"></label>
+            <input class="form-control" type="text" asp-for="Name" />
+            <span class="alert-danger" asp-validation-for="Name" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Surname"></label>
+            <input class="form-control" type="text" asp-for="Surname" />
+        </div>
+        <div class="form-group">
+            <label asp-for="FatherName"></label>
+            <input class="form-control" type="text" asp-for="FatherName" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Information"></label>
+            <input class="form-control" type="text" asp-for="Information" />
+        </div>
+        <div class="form-group">
+            <label asp-for="ImagePath">ImagePath</label>
+            <input class="form-control" type="text" asp-for="ImagePath" disabled />
+            <input type="file" name="image" />
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-success">Save</button>
+        </div>
+    }
+</div>

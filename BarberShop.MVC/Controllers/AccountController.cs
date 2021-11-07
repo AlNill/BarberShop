@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using BarberShop.BLL.Interfaces;
 using BarberShop.DAL.Common.Models;
+using BarberShop.MVC.Controllers.Base;
 using BarberShop.MVC.Filters;
 using BarberShop.MVC.Models;
 using Microsoft.AspNetCore.Authentication;
@@ -15,7 +17,7 @@ using Microsoft.Extensions.Logging;
 namespace BarberShop.MVC.Controllers
 {
     [Authorize]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
@@ -36,7 +38,7 @@ namespace BarberShop.MVC.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        [CommonExceptionFilter]
+        [ExceptionFilter]
         public async Task<IActionResult> Login(LoginModel loginModel)
         {
             if (ModelState.IsValid)
@@ -45,12 +47,20 @@ namespace BarberShop.MVC.Controllers
                     u => u.NickName == loginModel.NickName && u.Password == loginModel.Password));
                 if (user != null)
                 {
+                    if (user.IsBanned)
+                    {
+                        Logger.LogInformation($"User {user.NickName} is banned.");
+                        ViewBag.Message = "You are banned.";
+                        return View(loginModel);
+                    }
                     user = _mapper.Map<User, UserModel>(_userService.GetWithInclude(user.Id));
                     await Authenticate(user);
+                    Logger.LogInformation($"Success login user {loginModel.NickName}");
                     return RedirectToAction("Index", "BusyRecords");
                 }
                 ModelState.AddModelError("", "Bad login or password");
             }
+            Logger.LogInformation($"Login model validation error for user {loginModel.NickName}");
             return View(loginModel);
         }
 
@@ -69,43 +79,47 @@ namespace BarberShop.MVC.Controllers
         [AllowAnonymous]
         public IActionResult Register()
         {
+            Logger.LogInformation("Get request for register user");
             return View();
         }
 
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        [CommonExceptionFilter]
+        [ExceptionFilter]
         public async Task<IActionResult> Register(RegisterModel model)
         {
-            if (!ModelState.IsValid) 
-                return View(model);
-            if (_userService.Get(u => u.NickName == model.NickName) == null)
+            Logger.LogInformation($"Get request for register with data {model.Name} " +
+                                  $"{model.Surname} and nickname {model.NickName}");
+            if (!ModelState.IsValid)
             {
-                var user = new UserModel()
-                {
-                    Name = model.Name,
-                    FatherName = model.FatherName,
-                    Surname = model.Surname,
-                    NickName = model.NickName,
-                    Password = model.Password,
-                    PhoneNumber = model.PhoneNumber
-                };
-                await _userService.Create(_mapper.Map<UserModel, User>(user));
-                user = _mapper.Map<User, UserModel>
+                Logger.LogInformation("Register model validation error");
+                return View(model);
+            }
+            try
+            {
+                await _userService.CreateAsync(model.Name, model.FatherName, model.Surname,
+                    model.NickName, model.Password, model.Email);
+                var user = _mapper.Map<User, UserModel>
                 (_userService.GetWithInclude
-                    (_userService.Get(u => u.NickName == user.NickName && u.Password == user.Password).Id)
+                    (_userService.Get(u => u.NickName == model.NickName && u.Password == model.Password).Id)
                 );
                 await Authenticate(user);
+                Logger.LogInformation($"Success authenticate user with nickname {user.NickName}");
                 return RedirectToAction("Index", "BusyRecords");
             }
-            ModelState.AddModelError("", "Bad login or password");
-            return View(model);
+            catch (ArgumentException e)
+            {
+                Logger.LogInformation(e.Message);
+                ModelState.AddModelError("", "Bad login or password");
+                return View(model);
+            }
         }
 
         [HttpGet]
         public async Task<IActionResult> Logout()
         {
+            Logger.LogInformation($"Logout user {GetUserNickNameFromContext()}");
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login", "Account");
         }

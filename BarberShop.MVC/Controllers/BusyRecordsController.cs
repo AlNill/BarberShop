@@ -1,32 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using BarberShop.BLL.Interfaces;
 using BarberShop.DAL.Common.Models;
+using BarberShop.MVC.Controllers.Base;
 using BarberShop.MVC.Filters;
 using BarberShop.MVC.Models;
-using BarberShop.MVC.Validators;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace BarberShop.MVC.Controllers
 {
     [Authorize]
-    public class BusyRecordsController : Controller
+    public class BusyRecordsController : BaseController
     {
         private readonly IBarberService _barberService;
         private readonly IBusyRecordService _busyService;
         private readonly IOfferService _offerService;
         private readonly IUserService _userService;
+        private readonly IEmailService _emailService;
         private readonly IMapper _mapper;
 
         public BusyRecordsController(IBusyRecordService busyService, 
             IBarberService barberService,
             IOfferService offerService,
             IUserService userService,
+            IEmailService emailService,
             IMapper mapper)
         {
             _barberService = barberService;
@@ -34,15 +36,16 @@ namespace BarberShop.MVC.Controllers
             _busyService = busyService;
             _userService = userService;
             _mapper = mapper;
+            _emailService = emailService;
         }
 
-        private async Task<Tuple<IEnumerable<BarberModel>, IEnumerable<ServiceModel>>> GetViewData()
+        private async Task<Tuple<IEnumerable<BarberModel>, IEnumerable<OfferModel>>> GetViewData()
         {
-            var barbers = await _barberService.GetAll();
-            var services = await _offerService.GetAll();
-            return new Tuple<IEnumerable<BarberModel>, IEnumerable<ServiceModel>>(
+            var barbers = await _barberService.GetAllAsync();
+            var services = await _offerService.GetAllAsync();
+            return new Tuple<IEnumerable<BarberModel>, IEnumerable<OfferModel>>(
                 _mapper.Map<IEnumerable<Barber>, IEnumerable<BarberModel>>(barbers),
-                _mapper.Map<IEnumerable<Offer>, IEnumerable<ServiceModel>>(services)
+                _mapper.Map<IEnumerable<Offer>, IEnumerable<OfferModel>>(services)
             );
         }
 
@@ -50,50 +53,52 @@ namespace BarberShop.MVC.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
+            Logger.LogInformation($"Records startup request");
             return View(await GetViewData());
         }
 
         private async Task<UserModel> GetUserByNickName()
         {
             var nickName = HttpContext.User.FindFirstValue(ClaimsIdentity.DefaultNameClaimType);
-            return _mapper.Map<User, UserModel>(await _userService.GetByNickName(nickName));
+            return _mapper.Map<User, UserModel>(await _userService.GetByNickNameAsync(nickName));
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin, User")]
-        [CommonExceptionFilter]
-        public async Task<IActionResult> Index(int barberId, int serviceId, DateTime date)
+        [ExceptionFilter]
+        public async Task<IActionResult> Index(int barberId, int offerId, DateTime date)
         {
+            Logger.LogInformation($"Record request with barber id: {barberId}, date {date}");
             var tupleModel = await GetViewData();
-            if (_busyService.IsExists(barberId, date) != null)
+            var barber = await _barberService.GetAsync(barberId);
+            var offer = await _offerService.Get(offerId);
+
+            // TODO: Make validator
+            //var validator = new BusyRecordsValidator();
+            //var validationResult = await validator.ValidateAsync(record);
+            //if (!validationResult.IsValid)
+            //{
+            //    string msg = validationResult.Errors.First().ToString();
+            //    Logger.LogInformation($"In record Validation error {msg}");
+            //    ViewBag.Message = msg;
+            //    return View(tupleModel);
+            //}
+            try
             {
-                ViewBag.Message = "Sorry, this record exist";
-                return View(tupleModel);
+                await _busyService.CreateAsync(barberId, offerId, date);
+                Logger.LogInformation($"Success record with barber id: {barberId}, date {date}");
+
+                var user = await GetUserByNickName();
+                await _emailService.SmtpHtmlBodyYandexNotify(user.NickName, offer.Title, date,
+                    barber.Name + barber.Surname, user.Email);
+
+                ViewBag.Message = $"Success record to barber: {barber.Name + barber.Surname}";
             }
-
-            var barber = await _barberService.GetById(barberId);
-            var service = await _offerService.GetById(serviceId);
-
-            var record = new BusyRecord()
+            catch (ArgumentException e)
             {
-                BarberId = barberId,
-                Barber = barber,
-                RecordTime = date,
-                ServiceId = serviceId,
-                Offer = service,
-            };
-
-            var validator = new BusyRecordsValidator();
-            var validationResult = await validator.ValidateAsync(record);
-            if (!validationResult.IsValid)
-            {
-                string msg = validationResult.Errors.First().ToString();
-                ViewBag.Message = msg;
-                return View(tupleModel);
+                ViewBag.Message = e.Message;
+                Logger.LogInformation($"Tried record to exist time with barber id: {barberId}, date {date}");
             }
-
-            await _busyService.Create(record);
-            ViewBag.Message = $"Success record to barber: {barber.Name + barber.Surname}";
             return View(tupleModel);
         }
     }

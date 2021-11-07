@@ -1,0 +1,39 @@
+﻿@model ReviewModel
+
+@using (Html.BeginForm("Edit", "Reviews", FormMethod.Post))
+{
+    @Html.HiddenFor(x => x.Id)
+    @Html.HiddenFor(x => x.UserId)
+    <div>
+        <div class="form-group">
+            <label asp-for="UserReview">Your review:</label>
+            <input class="form-control" type="text" asp-for="UserReview"/>
+            <span class="alert-danger" />
+        </div>
+        <div class="form-group">
+            <select style="margin: 10px;" asp-for="BarberId">
+                @{
+                    IEnumerable<BarberModel> barbers = ViewData["Barbers"] as IEnumerable<BarberModel>;
+                }
+                @foreach (var barber in barbers.OrderBy(b => b.Surname))
+                {
+                    if (barber.Id == Model.BarberId)
+                    {
+                        <option value="@barber.Id" selected="selected">
+                            @barber.Name @barber.Surname
+                        </option>
+                    }
+                    else
+                    {
+                        <option value="@barber.Id">
+                            @barber.Name @barber.Surname
+                        </option>
+                    }
+                }
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-success">Change</button>
+    </div>
+}

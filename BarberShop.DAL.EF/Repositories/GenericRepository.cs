@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading;
 using System.Threading.Tasks;
 using BarberShop.DAL.Common.Repositories;
 using BarberShop.DAL.EF.Contexts;
@@ -21,14 +20,16 @@ namespace BarberShop.DAL.EF.Repositories
             DbSet = _context.Set<TEntity>();
         }
 
-        public async Task<int> GetCount() => await DbSet.CountAsync();
+        public async Task<bool> ExistsAsync(int id) => await DbSet.FindAsync(id) != null;
+
+        public async Task<int> GetCountAsync() => await DbSet.CountAsync();
 
         public IEnumerable<TEntity> GetRange(int skipPos=0, int count=10) => 
             DbSet.AsNoTracking().Skip(skipPos).Take(count);
 
-        public async Task<IEnumerable<TEntity>> GetAll() => await DbSet.ToListAsync();
+        public async Task<IEnumerable<TEntity>> GetAllAsync() => await DbSet.ToListAsync();
 
-        public async Task<TEntity> Get(int id) => await DbSet.FindAsync(id);
+        public async Task<TEntity> GetAsync(int id) => await DbSet.FindAsync(id);
 
         public IEnumerable<TEntity> Get(Func<TEntity, bool> predicate) => 
             DbSet.AsNoTracking().AsEnumerable().Where(predicate).ToList();
@@ -38,19 +39,25 @@ namespace BarberShop.DAL.EF.Repositories
             return await DbSet.FirstOrDefaultAsync(predicate);
         }
 
-        public async Task Create(TEntity item)
+        public async Task CreateAsync(TEntity item)
         {
             await DbSet.AddAsync(item);
             await _context.SaveChangesAsync();
         }
 
-        public async Task Update(TEntity item)
+        public void Create(TEntity item)
+        {
+            DbSet.Add(item);
+            _context.SaveChanges();
+        }
+
+        public async Task UpdateAsync(TEntity item)
         {
             _context.Entry(item).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
 
-        public async Task Delete(int id)
+        public async Task DeleteAsync(int id)
         {
             var item = await DbSet.FindAsync(id);
             DbSet.Remove(item);

@@ -10,9 +10,11 @@
                 <tr>
                     <th scope="col">#</th>
                     <td>Full name</td>
-                    <td>Phone Number</td>
+                    <td>Email</td>
                     <td>Nickname</td>
                     <td>Password</td>
+                    <td>Ban button</td>
+                    <td>Remove button</td>
                 </tr>
             </thead>
             <tbody>
@@ -21,15 +23,41 @@
                     <tr>
                         <th scope="row">@item.i</th>
                         <td>@item.user.Name @item.user.Surname @item.user.FatherName</td>
-                        <td>@item.user.PhoneNumber</td>
+                        <td>@item.user.Email</td>
                         <td>@item.user.NickName</td>
                         <td>@item.user.Password</td>
+                        <td>
+                            @if (item.user.Role.Name != "Admin")
+                            {
+                                if (item.user.IsBanned)
+                                {
+                                <form method="post" asp-action="UnsetBan">
+                                    <button class="btn btn-success" type="submit"
+                                            name="id" value="@item.user.Id">
+                                        Allow
+                                    </button>
+                                </form>
+                                }
+                                else
+                                {
+                                <form method="post" asp-action="SetBan">
+                                    <button class="btn btn-danger" type="submit"
+                                            name="id" value="@item.user.Id">
+                                        Ban
+                                    </button>
+                                </form>
+                                }
+                            }
+                        </td>
+                        <td>
+                            <a class="btn btn-danger" asp-route-id="@item.user.Id" asp-action="Remove">Remove</a>
+                        </td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
-    <div class="d-flex justify-content-center flex-row">
+    <div class="d-flex justify-content-center flex-row align-items-end" style="height: 100%;">
         <div>
             @if (Model.PageModel.HasPreviousPage)
             {

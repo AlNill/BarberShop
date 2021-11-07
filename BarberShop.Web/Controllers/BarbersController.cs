@@ -19,13 +19,13 @@ namespace BarberShop.Web.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Barber>> GetAll()
         {
-            return Ok(_service.GetAll());
+            return Ok(_service.GetAllAsync());
         }
 
         [HttpGet("{id}")]
         public ActionResult<Barber> Get(int id)
         {
-            var barber = _service.GetById(id);
+            var barber = _service.GetAsync(id);
             if (barber == null)
                 return NotFound();
             return Ok(barber);
@@ -34,16 +34,16 @@ namespace BarberShop.Web.Controllers
         [HttpPost]
         public ActionResult<Barber> AddBarber(Barber barber)
         {
-            _service.Create(barber);
+            _service.CreateAsync(barber);
             return Ok(barber);
         }
 
         [HttpPut]
         public ActionResult<Barber> ChangeBarber(Barber barber)
         {
-            if (_service.GetById(barber.Id) == null)
+            if (_service.GetAsync(barber.Id) == null)
                 return NotFound();
-            _service.Update(barber);
+            _service.UpdateAsync(barber);
             return Ok(barber);
         }
     }
