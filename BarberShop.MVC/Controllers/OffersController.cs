@@ -27,18 +27,18 @@ namespace BarberShop.MVC.Controllers
         [HttpGet]
         [ExceptionFilter]
         [AllowAnonymous]
-        public async Task<IActionResult> Index(string serviceTitleSubstr)
+        public async Task<IActionResult> Index(string offerTitleSubstr)
         {
             Logger.LogInformation($"Get request to offers index");
             IEnumerable<Offer> services;
-            if (serviceTitleSubstr == null)
+            if (offerTitleSubstr == null)
             {
                 services = await _offerService.GetAllAsync();
                 return View(_mapper.Map<IEnumerable<Offer>, IEnumerable<OfferModel>>(services));
             }
 
-            Logger.LogInformation($"Request to find offers with subtitle {serviceTitleSubstr}");
-            services = _offerService.GetServicesForSubTitle(serviceTitleSubstr);
+            Logger.LogInformation($"Request to find offers with subtitle {offerTitleSubstr}");
+            services = _offerService.GetServicesForSubTitle(offerTitleSubstr);
             return View(_mapper.Map<IEnumerable<Offer>, IEnumerable<OfferModel>>(services));
         }
 

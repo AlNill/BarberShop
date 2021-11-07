@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using BarberShop.BLL.Interfaces;
 using BarberShop.DAL.Common.Models;
@@ -8,8 +9,10 @@ using BarberShop.MVC.Filters;
 using BarberShop.MVC.Models;
 using BarberShop.MVC.Models.UsersPage;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using OfficeOpenXml;
 
 namespace BarberShop.MVC.Controllers
 {

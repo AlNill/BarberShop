@@ -25,11 +25,13 @@ namespace BarberShop.DAL.EF.Contexts
             var users = UsersSeed.SeedUsers();
             var barbers = BarbersSeed.SeedBarbers();
             var offers = OffersSeed.SeedOffers();
+            var reviews = ReviewsSeed.SeedReviews();
 
             modelBuilder.Entity<Role>().HasData(roles);
             modelBuilder.Entity<User>().HasData(users);
             modelBuilder.Entity<Barber>().HasData(barbers);
             modelBuilder.Entity<Offer>().HasData(offers);
+            modelBuilder.Entity<Review>().HasData(reviews);
 
             base.OnModelCreating(modelBuilder);
         }

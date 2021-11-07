@@ -92,7 +92,7 @@ namespace BarberShop.MVC
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=About}/{action=Index}");
+                    pattern: "{controller=Barbers}/{action=Index}");
             });
         }
     }

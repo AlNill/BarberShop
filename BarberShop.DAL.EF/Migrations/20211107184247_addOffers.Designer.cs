@@ -4,14 +4,16 @@ using BarberShop.DAL.EF.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BarberShop.DAL.EF.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20211107184247_addOffers")]
+    partial class addOffers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,29 +51,29 @@ namespace BarberShop.DAL.EF.Migrations
                         new
                         {
                             Id = 1,
-                            FatherName = "Mark",
+                            FatherName = "Ivanovich",
                             ImagePath = "/images/standart_short.jpg",
-                            Information = "Have hairstylist license and Organizational and time-management abilities.",
-                            Name = "Joe",
-                            Surname = "God"
+                            Information = "Cool information about barber Ivanov must be here.",
+                            Name = "Ivan",
+                            Surname = "Ivanov"
                         },
                         new
                         {
                             Id = 2,
-                            FatherName = "Aleksandrovich",
+                            FatherName = "Petrovich",
                             ImagePath = "/images/standart_short.jpg",
-                            Information = "High school diploma.\r\nStrong communication, listening, and interpersonal skills.",
+                            Information = "Cool information about barber Petrov must be here.",
                             Name = "Petr",
-                            Surname = "Shark"
+                            Surname = "Petrov"
                         },
                         new
                         {
                             Id = 3,
-                            FatherName = "John",
+                            FatherName = "Pupkinovich",
                             ImagePath = "/images/standart_short.jpg",
-                            Information = "Have a GED certificate. \r\nAttention to detail.",
-                            Name = "Mark",
-                            Surname = "House"
+                            Information = "Cool information about barber Pupkin must be here.",
+                            Name = "Pup",
+                            Surname = "Pupkin"
                         });
                 });
 
@@ -212,43 +214,6 @@ namespace BarberShop.DAL.EF.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Reviews");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            BarberId = 1,
-                            UserId = 2,
-                            UserReview = "I moved from the Twin Cities and was looking for an actual Barber vs salon that calls themselves barbers. There are only 2 shops in La X that are legit Barbers. I go to Barber Joe in Valley View Mall. The guy is phenomenal! Can book the appointment online and he has a little kiosk style store by the food court. I can not say enough good things about him. Check him out."
-                        },
-                        new
-                        {
-                            Id = 2,
-                            BarberId = 2,
-                            UserId = 3,
-                            UserReview = "It was our first time using Barber Petr. My sons never had a haircut he’s loved, until now! Great work, fast, efficient and friendly! We will be back!"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            BarberId = 1,
-                            UserId = 5,
-                            UserReview = "A great haircut at a great price. Conversation with Joe is always easy and fun. Highly recommended"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            BarberId = 3,
-                            UserId = 7,
-                            UserReview = "Barber Mark is highly professional. Will definitely recommend."
-                        },
-                        new
-                        {
-                            Id = 5,
-                            BarberId = 2,
-                            UserId = 12,
-                            UserReview = "Barber Petr is awesome! He treats you like a person and not a hair trimmer number like commercial shops. He knows his trade and is extremely skilled. He even asks how your last haircut worked out and grew out to make the next one even better. Do yourself a favor and visit Barber Petr. He is the real deal, and you'll be glad you did!"
-                        });
                 });
 
             modelBuilder.Entity("BarberShop.DAL.Common.Models.Role", b =>

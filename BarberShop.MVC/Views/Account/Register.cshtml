@@ -1,42 +1,44 @@
 ﻿@model RegisterModel
 
-@using (Html.BeginForm("Register", "Account", FormMethod.Post))
-{
-    <div>
-        @Html.ValidationSummary()
-    </div>
+<div class="d-flex align-items-center justify-content-center" style="width: 100%; height: 90%;">
+    @using (Html.BeginForm("Register", "Account", FormMethod.Post))
+    {
+        <div>
+            @Html.ValidationSummary()
+        </div>
 
-    <div class="form-group">
-        <label asp-for="Name"></label>
-        <input class="form-control" type="text" asp-for="Name" />
-        <span class="alert-danger" asp-validation-for="Name" />
-    </div>
-    <div class="form-group">
-        <label asp-for="Surname"></label>
-        <input class="form-control" type="text" asp-for="Surname" />
-    </div>
-    <div class="form-group">
-        <label asp-for="FatherName"></label>
-        <input class="form-control" type="text" asp-for="FatherName" />
-    </div>
-    <div class="form-group">
-        <label asp-for="NickName"></label>
-        <input class="form-control" type="text" asp-for="NickName" />
-    </div>
-    <div class="form-group">
-        <label asp-for="Email"></label>
-        <input class="form-control" type="text" asp-for="Email" />
-        <span class="alert-danger" asp-validation-for="Email" />
-    </div>
-    <div class="form-group">
-        <label asp-for="Password"></label>
-        <input class="form-control" type="text" asp-for="Password" />
-    </div>
-    <div class="form-group">
-        <label asp-for="ConfirmPassword"></label>
-        <input class="form-control" type="password" asp-for="ConfirmPassword" />
-    </div>
-    <div class="form-group">
-        <button type="submit" class="btn btn-success">Save</button>
-    </div>
-}
+        <div class="form-group">
+            <label asp-for="Name"></label>
+            <input class="form-control" type="text" asp-for="Name" />
+            <span class="alert-danger" asp-validation-for="Name" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Surname"></label>
+            <input class="form-control" type="text" asp-for="Surname" />
+        </div>
+        <div class="form-group">
+            <label asp-for="FatherName"></label>
+            <input class="form-control" type="text" asp-for="FatherName" />
+        </div>
+        <div class="form-group">
+            <label asp-for="NickName"></label>
+            <input class="form-control" type="text" asp-for="NickName" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Email"></label>
+            <input class="form-control" type="text" asp-for="Email" />
+            <span class="alert-danger" asp-validation-for="Email" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Password"></label>
+            <input class="form-control" type="text" asp-for="Password" />
+        </div>
+        <div class="form-group">
+            <label asp-for="ConfirmPassword"></label>
+            <input class="form-control" type="password" asp-for="ConfirmPassword" />
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-success">Save</button>
+        </div>
+    }
+</div>

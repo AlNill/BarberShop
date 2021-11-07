@@ -1,5 +1,4 @@
 ﻿using BarberShop.DAL.Common.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace BarberShop.DAL.EF.Seed
 {
@@ -11,28 +10,31 @@ namespace BarberShop.DAL.EF.Seed
             Barber barber1 = new Barber()
             {
                 Id = 1,
-                Name = "Ivan",
-                Surname = "Ivanov",
-                FatherName = "Ivanovich",
-                Information = "Cool information about barber Ivanov must be here.",
+                Name = "Joe",
+                Surname = "God",
+                FatherName = "Mark",
+                Information = "Have hairstylist license and Organizational and " +
+                              "time-management abilities."
             };
 
             Barber barber2 = new Barber()
             {
                 Id = 2,
                 Name = "Petr",
-                Surname = "Petrov",
-                FatherName = "Petrovich",
-                Information = "Cool information about barber Petrov must be here.",
+                Surname = "Shark",
+                FatherName = "Aleksandrovich",
+                Information = "High school diploma.\r\n" +
+                              "Strong communication, listening, and interpersonal skills.",
             };
 
             Barber barber3 = new Barber()
             {
                 Id = 3,
-                Name = "Pup",
-                Surname = "Pupkin",
-                FatherName = "Pupkinovich",
-                Information = "Cool information about barber Pupkin must be here.",
+                Name = "Mark",
+                Surname = "House",
+                FatherName = "John",
+                Information = "Have a GED certificate. \r\n" +
+                              "Attention to detail.",
             };
             return new Barber[] {barber1, barber2, barber3};
         }

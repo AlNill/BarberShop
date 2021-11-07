@@ -23,16 +23,21 @@
             <div class="card-body">
                 <h5 class="card-title">@review.User.NickName left review to @review.Barber.Name @review.Barber.Surname</h5>
                 <p class="card-text">@review.UserReview</p>
+                <div class="d-flex flex-row">
+                    @if (User.IsInRole("Admin") || review.User.NickName == User.FindFirstValue(ClaimsIdentity.DefaultNameClaimType))
+                    {
+                        <button type="button" class="btn btn-success" 
+                                style="width: 8rem; height: 2.5rem; margin-right: 5px;"
+                                onclick="location.href = '@Url.Action("Edit", "Reviews", review)'">
+                            Edit
+                        </button>
+                        <a class="btn btn-danger" asp-route-id="@review.Id" asp-action="Remove"
+                           style="width: 8rem; height: 2.5rem;">
+                            Remove
+                        </a>
+                    }
+                </div>
             </div>
-            @if (User.IsInRole("Admin") || review.User.NickName == User.FindFirstValue(ClaimsIdentity.DefaultNameClaimType))
-            {
-                <button
-                    type="button" class="btn btn-success" style="margin: 5px; width: 8rem;"
-                    onclick="location.href = '@Url.Action("Edit", "Reviews", review)'">
-                    Edit
-                </button>
-                <a class="btn btn-danger" asp-route-id="@review.Id" asp-action="Remove">Remove</a>
-            }
         </div>
         }
     </div>
