@@ -93,5 +93,25 @@ namespace BarberShop.MVC.Controllers
             await _userService.UnsetBan(id);
             return RedirectToAction("Index", "Users");
         }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [ExceptionFilter]
+        public async Task<FileStreamResult> DownloadUsers()
+        {
+            var users = await _userService.GetAllAsync();
+            var stream = new MemoryStream();
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            using (var package = new ExcelPackage(stream))
+            {
+                var workSheet = package.Workbook.Worksheets.Add("sheetName");
+                workSheet.Cells.LoadFromCollection(users, true);
+                package.Save();
+            };
+            stream.Position = 0;
+            var contentType = "application/octet-stream";
+            var fileName = "fileName.xlsx";
+            return File(stream, contentType, fileName);
+        }
     }
 }
